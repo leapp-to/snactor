@@ -1,0 +1,8 @@
+---
+type: simple
+description: |
+  This is a simple actor example
+execute: /bin/bash
+payload: |
+  #!/bin/bash
+  echo "All your actor are belong to us!"
