@@ -1,0 +1,14 @@
+---
+inputs:
+  - name: target_address
+    type: string
+output:
+  name: target_system_info
+  type: SystemInfo
+extends:
+  name: scan_system
+  inputs:
+    - name: address
+      value: @target_address@
+  output:
+    - name: system_info

@@ -1,5 +1,5 @@
 from subprocess import PIPE, Popen
-from .definition import Definition
+from .executors.default import Definition
 
 
 def execute(definition):
