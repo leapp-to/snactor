@@ -1,9 +1,10 @@
-from .payload import PayloadExecutor, PayloadExecutorDefinition, registered_executor
+from .payload import PayloadExecutor, registered_executor
 
 
-class BashExecutorDefinition(PayloadExecutorDefinition):
+class BashExecutorDefinition(PayloadExecutor.Definition):
     def __init__(self, init):
         super(BashExecutorDefinition, self).__init__(init)
+        self.executable = "/bin/bash"
 
 
 @registered_executor('bash')

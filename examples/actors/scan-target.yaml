@@ -9,6 +9,7 @@ extends:
   name: scan_system
   inputs:
     - name: address
-      value: @target_address@
+      source: '@target_address@'
   output:
     - name: system_info
+      target: '@target_system_info@'

@@ -1,4 +1,6 @@
-from jsl import IPv4Field
+import jsl
 
 
-IPv4Address = IPv4Field
+class IPList(jsl.Document):
+    ips = jsl.ArrayField(jsl.IPv4Field)
+

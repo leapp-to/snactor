@@ -5,3 +5,5 @@ inputs:
 output:
   name: system_info
   type: SystemInfo
+executor:
+  type: default

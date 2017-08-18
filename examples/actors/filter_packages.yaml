@@ -1,19 +1,20 @@
 ---
 inputs:
   - name: filter
-    type: string
+    type: String
   - name: rpm_packages
     type: RPMPackages
 output:
   name: filtered_packages
   type: RPMPackages
-type: python
-python:
+executor:
+  type: python
   arguments:
-    - @filter@
+    - '@filter.value@'
   payload: |
     import json
     import sys
     data = json.load(sys.stdin)
-    data.packages = [p for p in data.packages if p.name.find(sys.argv[1]) != -1]
-    print json.dumps(data)
+    data = data["rpm_packages"]
+    data["packages"] = [p for p in data["packages"] if p["name"].find(sys.argv[1]) != -1]
+    print json.dumps({"filtered_packages": data})

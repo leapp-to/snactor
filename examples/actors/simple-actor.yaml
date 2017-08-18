@@ -1,8 +1,14 @@
 ---
-type: simple
+output:
+  - name: message
+    type: Message
+  - name: message2
+    type: Message
 description: |
   This is a simple actor example
-execute: /bin/bash
-payload: |
-  #!/bin/bash
-  echo "All your actor are belong to us!"
+executor:
+  type: default
+  executable: /bin/bash
+  arguments:
+    - "-c"
+    - "echo {\\\"message\\\": {\\\"value\\\": \\\"All your actor are belong to us!\\\"}, \\\"message2\\\": {\\\"what\\\": \\\"ever\\\"}}"

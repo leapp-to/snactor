@@ -2,10 +2,8 @@
 output:
   name: rpm_packages
   type: RPMPackages
-type: python
-python:
-  arguments:
-    -
+executor:
+  type: python
   payload: |
     import json
     import rpm

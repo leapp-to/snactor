@@ -1,10 +1,10 @@
-from marshmallow.schema import Schema, fields
+import jsl
 
 
-class RPMPackage(Schema):
-    name = fields.String()
-    version = fields.String()
+class RPMPackage(jsl.Document):
+    name = jsl.StringField()
+    version = jsl.StringField()
 
 
-class RPMPackages(Schema):
-    packages = fields.List(RPMPackage)
+class RPMPackages(jsl.Document):
+    packages = jsl.ArrayField(RPMPackage)

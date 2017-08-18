@@ -1,6 +1,6 @@
-from marshmallow.schema import Schema, fields
+import jsl
 
 
-class OSVersion(Schema):
-    name = fields.String()
-    version = fields.String()
+class OSVersion(jsl.Document):
+    name = jsl.StringField()
+    version = jsl.StringField()

@@ -12,3 +12,4 @@ extends:
       value: kernel
   outputs:
     - name: filtered_packages
+      target: '@kernel_packages@'
