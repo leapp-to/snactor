@@ -6,7 +6,7 @@ output:
   name: target_system_info
   type: SystemInfo
 extends:
-  name: scan_system
+  name: scan-system
   inputs:
     - name: address
       source: '@target_address@'

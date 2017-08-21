@@ -2,27 +2,15 @@ import json
 import logging
 from subprocess import Popen, PIPE
 
-from ..registry import registered_executor
+from ..utils.variables import resolve_variable_spec
 from ..definition import Definition
+from ..registry import registered_executor
 
 
 class ExecutorDefinition(object):
     def __init__(self, init):
         self.executable = init.get('executable', None)
         self.arguments = init.get('arguments', [])
-
-
-def resolve_variable_spec(data, spec):
-    if data and spec.startswith('@') and spec.endswith('@'):
-        for element in spec.strip('@').split('.'):
-            if element in data:
-                data = data.get(element, None)
-            if not data:
-                break
-        if not data:
-            raise ValueError("unresolved reference")
-        return data
-    return spec
 
 
 def filter_by_channel(channel_list, data):

@@ -9,7 +9,8 @@ extends:
   name: filter_packages
   inputs:
     - name: filter
-      value: kernel
+      value:
+        value: kernel
   outputs:
-    - name: filtered_packages
-      target: '@kernel_packages@'
+    - name: kernel_packages
+      source: '@filtered_packages@'
