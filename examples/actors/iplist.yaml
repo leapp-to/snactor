@@ -1,6 +1,7 @@
 ---
 output:
-  ip_list: IPList
+  name: ip_list
+  type: IPList
 executor:
   type: bash
   output:
