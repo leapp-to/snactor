@@ -99,7 +99,7 @@ def load(location):
     post_resolve = {}
     for root, dirs, files in os.walk(location):
         if '_actor.yaml' in files:
-            _load(os.path.dirname(root), os.path.join(root, '_actor.yaml'), post_resolve)
+            _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), post_resolve)
         else:
             for f in files:
                 _load(os.path.splitext(f)[0], os.path.join(root, f), post_resolve)
