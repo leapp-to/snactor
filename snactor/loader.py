@@ -1,9 +1,10 @@
 import os
 import yaml
-from .executors.default import Executor, ExecutorDefinition
+from .executors.default import ExecutorDefinition
 from .registry import registered_actor, get_executor, get_actor
 from .definition import Definition
 from .utils.variables import resolve_variable_spec
+
 
 def _load(name, definition, post_resolve):
     with open(definition) as f:
