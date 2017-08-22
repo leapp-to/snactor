@@ -35,7 +35,6 @@ def create_actor(name, definition, executor):
             super(Actor, self).__init__(Definition(name, definition))
 
 
-
 class ExtendsActorDefinition(ExecutorDefinition):
     def __init__(self, init):
         self.extended = init['extended']

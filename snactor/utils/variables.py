@@ -2,12 +2,13 @@ def assign_to_variable_spec(data, spec, value):
     if not spec.startswith('@') or not spec.endswith('@'):
         raise ValueError("{} is not a reference".format(spec))
     parts = spec.strip('@').split('.')
-    obj = resolve_variable_spec(data, '@{}@'.format('.'.join(parts[:-1])))
-    if not obj or parts[-1] not in obj:
-        raise ValueError("Unresolved reference")
-    else:
-        obj[parts[-1]] = value
-    return data
+    data[parts[0]] = {}
+    gen = data[parts[0]]
+    for part in parts[1:-1]:
+        gen[part] = {}
+        gen = gen[part]
+    gen[parts[-1]] = value
+    return data[parts[0]]
 
 
 def resolve_variable_spec(data, spec):
