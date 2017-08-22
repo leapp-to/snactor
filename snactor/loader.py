@@ -34,16 +34,6 @@ def create_actor(name, definition, executor):
             super(Actor, self).__init__(Definition(name, definition))
 
 
-class NameValueOrTargetDefinition(object):
-    def __init__(self, o):
-        self.name = o['name']
-        from pprint import pprint
-        pprint(o)
-        if 'value' in o:
-            self.value = o['value']
-        else:
-            self.target = o['target']
-
 
 class ExtendsActorDefinition(ExecutorDefinition):
     def __init__(self, init):
@@ -62,7 +52,8 @@ def _create_extends_actor(name, definition, executor):
         def execute(self, data):
             extends = ExtendsActorDefinition(definition)
             restricted = {n['name']: data[n['name']] for n in extends.required_inputs}
-            restricted.update({i['name']: i['value'] for i in extends.inputs})
+            restricted.update({i['name']: resolve_variable_spec(restricted, i['source']) for i in extends.inputs if 'source' in i})
+            restricted.update({i['name']: i['value'] for i in extends.inputs if 'value' in i})
 
             ret = super(ExtendsActor, self).execute(restricted)
 
