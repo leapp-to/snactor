@@ -1,10 +1,9 @@
+import snactor.executors
 from snactor.loader import load
-from snactor.utils.auto_loader import from_package
 from snactor.registry import get_actor
 from pprint import pprint
 import logging
 
-from_package('snactor.executors')
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 load('examples/actors')
