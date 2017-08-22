@@ -20,9 +20,9 @@ def _load(name, definition, post_resolve):
             if not executor:
                 raise ValueError("Unknown executor {}".format(executor_name))
 
+            d['executor']['$location'] = os.path.abspath(definition)
             d.update({
                 'executor': executor.Definition(d.get('executor'))})
-            d['executor']['$location'] = os.path.abspath(definition)
             create_actor(name, d, executor)
 
 
