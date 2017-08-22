@@ -11,6 +11,8 @@ extends:
     - name: filter
       value:
         value: kernel
+    - name: rpm_packages
+      source: '@rpm_packages@'
   outputs:
     - name: kernel_packages
       source: '@filtered_packages@'

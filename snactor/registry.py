@@ -1,6 +1,7 @@
 _REGISTERED_ACTORS = {}
 _REGISTERED_EXECUTORS = {}
 _REGISTERED_OUTPUT_PROCESSORS = {}
+_REGISTERED_ENVIRON_VARS = {}
 
 
 def get_executor(executor):
@@ -20,6 +21,17 @@ def get_output_processor(definition):
     return None
 
 
+def get_environment_extension():
+    return _REGISTERED_ENVIRON_VARS
+
+
+def register_environment_variable(name, value):
+    if name in _REGISTERED_ENVIRON_VARS:
+        raise ValueError(
+            "Environment variable '{}' has been already registered previously with value {}".format(
+                name, _REGISTERED_ENVIRON_VARS[name]))
+
+
 def registered_output_processor(name):
     def func(cls):
         if name in _REGISTERED_OUTPUT_PROCESSORS:
@@ -37,6 +49,7 @@ def registered_executor(name):
         cls.type = name
         _REGISTERED_EXECUTORS[name] = cls
         return cls
+
     return func
 
 
@@ -47,5 +60,5 @@ def registered_actor(name):
         cls.type = name
         _REGISTERED_ACTORS[name] = cls
         return cls
-    return func
 
+    return func

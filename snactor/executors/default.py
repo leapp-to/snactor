@@ -1,10 +1,11 @@
 import json
 import logging
+import os
 from subprocess import Popen, PIPE
 
 from ..utils.variables import resolve_variable_spec
 from ..definition import Definition
-from ..registry import registered_executor
+from ..registry import registered_executor, get_environment_extension
 
 
 class ExecutorDefinition(object):
@@ -59,7 +60,10 @@ class Executor(object):
         input_data = filter_by_channel(self.definition.inputs, data)
         params = [resolve_variable_spec(data, a) for a in self.definition.executor.arguments]
         executable = self.definition.executor.executable
-        p = Popen([executable] + params, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+
+        env = os.environ.copy()
+        env.update(get_environment_extension())
+        p = Popen([executable] + params, stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env)
         stdin = self.handle_stdin(input_data)
         out, err = p.communicate(stdin)
         self.handle_stderr(err, data)

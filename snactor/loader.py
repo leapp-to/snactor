@@ -56,9 +56,9 @@ def _create_extends_actor(name, definition, executor):
             restricted.update({i['name']: i['value'] for i in extends.inputs if 'value' in i})
 
             ret = super(ExtendsActor, self).execute(restricted)
-
-            for output in extends.output:
-                data[output['name']] = resolve_variable_spec(restricted, output['source'])
+            if ret:
+                for output in extends.output:
+                    data[output['name']] = resolve_variable_spec(restricted, output['source'])
 
             return ret
 
