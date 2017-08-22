@@ -6,7 +6,7 @@ class BashExecutorDefinition(PayloadExecutor.Definition):
     def __init__(self, init):
         super(BashExecutorDefinition, self).__init__(init)
         self.executable = "/bin/bash"
-        self.output = get_output_processor(init.get('output', None))
+        self.output_processor = get_output_processor(init.get('output-processor', None))
 
 
 @registered_executor('bash')
@@ -14,7 +14,7 @@ class BashExecutor(PayloadExecutor):
     Definition = BashExecutorDefinition
 
     def handle_stdout(self, stdout, data):
-        self.definition.executor.output.process(stdout, data)
+        self.definition.executor.output_processor.process(stdout, data)
 
     def __init__(self, definition):
         super(BashExecutor, self).__init__(definition)
