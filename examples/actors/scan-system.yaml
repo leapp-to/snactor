@@ -2,8 +2,8 @@
 inputs:
   - name: address
     type: string
-output:
-  name: system_info
-  type: SystemInfo
+outputs:
+  - name: system_info
+    type: SystemInfo
 executor:
   type: default

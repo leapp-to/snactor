@@ -1,7 +1,7 @@
 ---
-output:
-  name: rpm_packages
-  type: RPMPackages
+outputs:
+  - name: rpm_packages
+    type: RPMPackages
 executor:
   type: python
   payload: |

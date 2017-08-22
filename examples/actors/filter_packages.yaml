@@ -4,9 +4,9 @@ inputs:
     type: String
   - name: rpm_packages
     type: RPMPackages
-output:
-  name: filtered_packages
-  type: RPMPackages
+outputs:
+  - name: filtered_packages
+    type: RPMPackages
 executor:
   type: python
   arguments:

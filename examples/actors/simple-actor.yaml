@@ -1,5 +1,5 @@
 ---
-output:
+outputs:
   - name: message
     type: Message
   - name: message2

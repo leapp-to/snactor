@@ -2,9 +2,9 @@
 inputs:
   - name: rpm_packages
     type: RPMPackages
-output:
-  name: kernel_packages
-  type: RPMPackages
+outputs:
+  - name: kernel_packages
+    type: RPMPackages
 extends:
   name: filter_packages
   inputs:

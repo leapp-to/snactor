@@ -20,7 +20,7 @@ two unrelated previously unrelated names.
 inputs:
   - name: input_channel_name
     type: schema_name_reference
-output:
+outputs:
   name: output_channel_name
   type: schema_name_reference
 description: |
@@ -38,7 +38,7 @@ executor:
 inputs:
   - name: input_channel_name
     type: schema_name_reference
-output:
+outputs:
   name: output_channel_name
   type: schema_name_reference
 description: |

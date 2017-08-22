@@ -1,7 +1,7 @@
 ---
-output:
-  name: osversion
-  type: OSVersion
+outputs:
+  - name: osversion
+    type: OSVersion
 executor:
   type: python
   payload: |

@@ -4,9 +4,9 @@ class Definition(object):
         init = init or {}
         self.name = name
         self.inputs = init.get('inputs', ())
-        self.output = init.get('output', ())
-        if not isinstance(self.output, (list, tuple)):
-            self.output = (self.output,)
+        self.outputs = init.get('outputs', ())
+        if not isinstance(self.outputs, (list, tuple)):
+            self.output = (self.outputs,)
         self.description = init.get('description', 'No description has been provided for this actor')
         self.executor = init.get('executor', None)
         self.extends = init.get('extends', None)

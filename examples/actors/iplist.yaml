@@ -1,10 +1,10 @@
 ---
-output:
-  name: ip_list
-  type: IPList
+outputs:
+  - name: ip_list
+    type: IPList
 executor:
   type: bash
-  output:
+  output-processor:
     type: string-list
     target: '@ip_list.ips@'
   payload: |

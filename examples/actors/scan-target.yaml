@@ -2,14 +2,14 @@
 inputs:
   - name: target_address
     type: string
-output:
-  name: target_system_info
-  type: SystemInfo
+outputs:
+  - name: target_system_info
+    type: SystemInfo
 extends:
   name: scan-system
   inputs:
     - name: address
       source: '@target_address@'
-  output:
+  outputs:
     - name: target_system_info
       source: '@system_info@'
