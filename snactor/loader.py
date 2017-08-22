@@ -10,7 +10,6 @@ def _load(name, definition, post_resolve):
     with open(definition) as f:
         print("Loading", definition, "...")
         d = yaml.load(f)
-        d['$location'] = os.path.abspath(definition)
         if d.get('extends') and d.get('executor'):
             raise ValueError("Conflicting extends and executor specification found in {}".format(name))
         if d.get('extends'):
@@ -23,6 +22,7 @@ def _load(name, definition, post_resolve):
 
             d.update({
                 'executor': executor.Definition(d.get('executor'))})
+            d['executor']['$location'] = os.path.abspath(definition)
             create_actor(name, d, executor)
 
 
