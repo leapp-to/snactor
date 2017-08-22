@@ -10,7 +10,10 @@ from ..registry import registered_executor, get_environment_extension
 
 class ExecutorDefinition(object):
     def __init__(self, init):
+        self.base_path = os.path.dirname(os.path.abspath(init['$location']))
         self.executable = init.get('executable', None)
+        if self.executable and not os.path.isabs(self.executable):
+            self.executable = os.path.abspath(os.path.join(self.base_path, self.executable))
         self.arguments = init.get('arguments', [])
 
 
@@ -43,7 +46,7 @@ class Executor(object):
     def handle_stdout(self, stdout, data):
         self.log.debug("handle_stdout(%s)", stdout)
         try:
-            output = filter_by_channel(self.definition.output, json.loads(stdout))
+            output = filter_by_channel(self.definition.outputs, json.loads(stdout))
             data.update(output)
         except ValueError:
             self.log.warn("Failed to decode output: %s", stdout, exc_info=True)

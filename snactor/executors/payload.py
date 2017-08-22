@@ -1,4 +1,5 @@
 import tempfile
+import os.path
 
 from .default import Executor, registered_executor
 
@@ -9,6 +10,8 @@ class PayloadExecutorDefinition(Executor.Definition):
         self.payload = init.get('payload', None) or ''
         self.arguments = init.get('arguments', [])
         self.script_file = init.get('script-file', None)
+        if self.script_file:
+            self.script_file = os.path.join(self.base_path, self.script_file)
         self.executable = init.get('executable', None)
         # TODO: warn about payload being unused when script-file defined
 
