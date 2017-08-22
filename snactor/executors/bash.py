@@ -13,5 +13,8 @@ class BashExecutorDefinition(PayloadExecutor.Definition):
 class BashExecutor(PayloadExecutor):
     Definition = BashExecutorDefinition
 
+    def handle_stdout(self, stdout, data):
+        self.definition.executor.output.process(stdout, data)
+
     def __init__(self, definition):
         super(BashExecutor, self).__init__(definition)
