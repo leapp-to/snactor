@@ -11,5 +11,5 @@ extends:
     - name: address
       source: '@target_address@'
   output:
-    - name: system_info
-      target: '@target_system_info@'
+    - name: target_system_info
+      source: '@system_info@'
