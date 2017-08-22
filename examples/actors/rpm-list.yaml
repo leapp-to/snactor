@@ -1,4 +1,6 @@
 ---
+tags:
+  - packages
 outputs:
   - name: rpm_packages
     type: RPMPackages

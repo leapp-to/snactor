@@ -1,4 +1,6 @@
 ---
+tags:
+  - packages
 inputs:
   - name: filter
     type: String

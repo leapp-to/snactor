@@ -6,10 +6,17 @@ from .definition import Definition
 from .utils.variables import resolve_variable_spec
 
 
-def _load(name, definition, post_resolve):
+def _load(name, definition, tags, post_resolve):
     with open(definition) as f:
         print("Loading", definition, "...")
         d = yaml.load(f)
+
+        if tags:
+            actor_tags = d.get('tags')
+            if not actor_tags or not bool(set(tags) & set(actor_tags)):
+                print("Skipping", definition, "due to missing selected tags")
+                return
+
         if d.get('extends') and d.get('executor'):
             raise ValueError("Conflicting extends and executor specification found in {}".format(name))
         if d.get('extends'):
@@ -86,16 +93,16 @@ def _try_resolve(i, l):
         i['resolved'] = True
 
 
-def load(location):
+def load(location, tags=None):
     post_resolve = {}
     for root, dirs, files in os.walk(location):
         if '_actor.yaml' in files:
-            _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), post_resolve)
+            _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), tags, post_resolve)
         else:
             for f in files:
                 filename, ext = os.path.splitext(f)
                 if not filename.startswith('.') and ext.lower() == '.yaml':
-                    _load(filename, os.path.join(root, f), post_resolve)
+                    _load(filename, os.path.join(root, f), tags, post_resolve)
 
     for i in post_resolve.values():
         _try_resolve(i, post_resolve)

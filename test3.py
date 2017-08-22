@@ -5,7 +5,7 @@ from pprint import pprint
 import logging
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-load('examples/actors')
+load('examples/actors', tags=['packages'])
 
 data = {
     "filter": {"value": "test"},
