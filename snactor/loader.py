@@ -93,7 +93,9 @@ def load(location):
             _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), post_resolve)
         else:
             for f in files:
-                _load(os.path.splitext(f)[0], os.path.join(root, f), post_resolve)
+                filename, ext = os.path.splitext(f)
+                if not filename.startswith('.') and ext.lower() == '.yaml':
+                    _load(filename, os.path.join(root, f), post_resolve)
 
     for i in post_resolve.values():
         _try_resolve(i, post_resolve)
