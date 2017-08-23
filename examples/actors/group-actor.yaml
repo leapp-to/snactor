@@ -1,4 +1,9 @@
 ---
+outputs:
+  - name: message
+    type: Message
+  - name: osversion
+    type: OSVersion
 executor:
   type: group
   actors:

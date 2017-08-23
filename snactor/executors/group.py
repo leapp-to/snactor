@@ -17,13 +17,15 @@ class GroupExecutor(Executor):
 
     def execute(self, data):
         restricted = {}
-        if self.definition.inputs:
-            restricted = {k: data[k] for k in self.definition.inputs.keys()}
+        for port in self.definition.inputs:
+            restricted.update({port['name']: data[port['name']]})
+
         ret = True
         for actor in self.definition.executor.actors:
             ret = actor().execute(restricted)
             if not ret:
                 break
-        if self.definition.outputs:
-            data.update({k: data[k] for k in self.definition.outputs.keys()})
+
+        for port in self.definition.outputs:
+            data.update({port['name']: restricted[port['name']]})
         return ret
