@@ -1,0 +1,10 @@
+---
+outputs:
+    - name: ansible_setup
+      type: AnsibleSetupModuleFacts
+executor:
+    type: ansible-module
+    host: localhost
+    user: root
+    output: ansible_setup
+    module: setup
