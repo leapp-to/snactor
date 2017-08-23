@@ -134,3 +134,14 @@ executor:
         - another-actor-name
 ```
 
+### AnsibleModuleExecutor
+```yaml
+---
+executor:
+    type: ansible-module
+    host: localhost
+    user: root
+    output: output_name_this_data_should_go_into
+    module: setup
+```
+
