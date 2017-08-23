@@ -75,9 +75,11 @@ executor:
 ---
 executor:
     type: default
-    executable: path-to-executable
+    executable: /usr/bin/perl
     arguments:
         - ...
+    payload: |
+        print '{"out-message": {"message": "I'm a perl script"}}\n'
     # instead of payload script-file can be used to specify a script
     # which will be passed as a first parameter to the executable
     # script-file: path/to/script
