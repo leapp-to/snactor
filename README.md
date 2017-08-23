@@ -56,3 +56,79 @@ extends:
       source: '@output_channel_name.to.return.in.reference.notation@'
 
 ```
+
+
+## Provided executors
+### DefaultExecutor
+```yaml
+---
+executor:
+    type: default
+    executable: path-to-executable
+    arguments:
+        - ...
+```
+
+
+### PayloadExecutor
+```yaml
+---
+executor:
+    type: default
+    executable: path-to-executable
+    arguments:
+        - ...
+    # instead of payload script-file can be used to specify a script
+    # which will be passed as a first parameter to the executable
+    # script-file: path/to/script
+```
+
+### BashExecutor
+```yaml
+---
+executor:
+    type: bash
+    arguments:
+        - ...
+    payload: |
+        #!/bin/bash
+        echo '{"message": {"value": "This is a bash executor script"}}'
+    # instead of payload script-file can be used to specify a script
+    # script-file: path/to/script
+```
+
+The BashExecutor has some speciality called output-processor that can process
+the output from stdout of the script and transform it to specified format.
+Right now there is only the string-list processor that splits lines from stdout and
+converts it to a string list as specified in the target field.
+```yaml
+    output-processor:
+        - type: string-list
+          target: '@output_name.field_name@'
+```
+
+### PythonExecutor
+```yaml
+---
+executor:
+    type: default
+    executable: path-to-executable
+    arguments:
+        - ...
+    payload: |
+        import json
+        print json.dumps({"message": {"value": "This is a python executor script"}})
+    # instead of payload script-file can be used to specify a script
+    # script-file: path/to/script
+```
+
+### GroupExecutor
+```yaml
+---
+executor:
+    type: default
+    actors:
+        - actor-name
+        - another-actor-name
+```
+
