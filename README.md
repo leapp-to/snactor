@@ -113,7 +113,7 @@ converts it to a string list as specified in the target field.
 ```yaml
 ---
 executor:
-    type: default
+    type: python
     executable: path-to-executable
     arguments:
         - ...
@@ -128,7 +128,7 @@ executor:
 ```yaml
 ---
 executor:
-    type: default
+    type: group
     actors:
         - actor-name
         - another-actor-name
