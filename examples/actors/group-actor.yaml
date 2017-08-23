@@ -1,0 +1,6 @@
+---
+executor:
+  type: group
+  actors:
+    - simple-actor
+    - osversion
