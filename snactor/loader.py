@@ -12,8 +12,8 @@ def _load(name, definition, tags, post_resolve):
         d = yaml.load(f)
 
         if tags:
-            actor_tags = d.get('tags')
-            if not actor_tags or not bool(set(tags) & set(actor_tags)):
+            actor_tags = set(d.get('tags', ()))
+            if not actor_tags or not actor_tags.intersection(tags):
                 print("Skipping", definition, "due to missing selected tags")
                 return
 
@@ -25,7 +25,7 @@ def _load(name, definition, tags, post_resolve):
             executor_name = d.get('executor', {}).get('type')
             executor = get_executor(executor_name)
             if not executor:
-                raise ValueError("Unknown executor {}".format(executor_name))
+                raise LookupError("Unknown executor {}".format(executor_name))
 
             d['executor']['$location'] = os.path.abspath(definition)
             d.update({
@@ -87,14 +87,15 @@ def _try_resolve(i, l):
             actor = get_actor(name)
 
         if not actor:
-            raise RuntimeError("Failed to resolve dependencies for {}".format(i['name']))
+            raise LookupError("Failed to resolve dependencies for {}".format(i['name']))
 
         _apply_resolve(i, actor)
         i['resolved'] = True
 
 
-def load(location, tags=None):
+def load(location, tags=()):
     post_resolve = {}
+    tags = set(tags)
     for root, dirs, files in os.walk(location):
         if '_actor.yaml' in files:
             _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), tags, post_resolve)
