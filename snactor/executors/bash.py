@@ -1,6 +1,6 @@
-from .. import output_processors
-from .payload import PayloadExecutor, registered_executor
-from ..registry import get_output_processor
+import snactor.output_processors
+from snactor.executors.payload import PayloadExecutor, registered_executor
+from snactor.registry import get_output_processor
 
 
 class BashExecutorDefinition(PayloadExecutor.Definition):

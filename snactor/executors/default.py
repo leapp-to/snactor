@@ -3,9 +3,9 @@ import logging
 import os
 from subprocess import Popen, PIPE
 
-from ..utils.variables import resolve_variable_spec
-from ..definition import Definition
-from ..registry import registered_executor, get_environment_extension
+from snactor.utils.variables import resolve_variable_spec
+from snactor.definition import Definition
+from snactor.registry import registered_executor, get_environment_extension
 
 
 class ExecutorDefinition(object):

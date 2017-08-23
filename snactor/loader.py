@@ -1,20 +1,22 @@
 import os
 import yaml
-from .executors.default import ExecutorDefinition
-from .registry import registered_actor, get_executor, get_actor
-from .definition import Definition
-from .utils.variables import resolve_variable_spec
+import logging
+from snactor.executors.default import ExecutorDefinition
+from snactor.registry import registered_actor, get_executor, get_actor
+from snactor.definition import Definition
+from snactor.utils.variables import resolve_variable_spec
 
 
 def _load(name, definition, tags, post_resolve):
+    _log = logging.getLogger('snactor.loader')
     with open(definition) as f:
-        print("Loading", definition, "...")
+        _log.debug("Loading %s ...", definition)
         d = yaml.load(f)
 
         if tags:
             actor_tags = set(d.get('tags', ()))
             if not actor_tags or not actor_tags.intersection(tags):
-                print("Skipping", definition, "due to missing selected tags")
+                _log.debug("Skipping %s due to missing selected tags", definition)
                 return
 
         if d.get('extends') and d.get('executor'):

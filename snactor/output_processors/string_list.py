@@ -1,5 +1,5 @@
-from ..registry import registered_output_processor
-from ..utils.variables import assign_to_variable_spec
+from snactor.registry import registered_output_processor
+from snactor.utils.variables import assign_to_variable_spec
 
 
 class StringListOutputProcessorDefinition(object):

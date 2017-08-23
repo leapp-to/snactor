@@ -1,7 +1,7 @@
 import tempfile
 import os.path
 
-from .default import Executor, registered_executor
+from snactor.executors.default import Executor, registered_executor
 
 
 class PayloadExecutorDefinition(Executor.Definition):

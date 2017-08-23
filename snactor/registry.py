@@ -12,6 +12,10 @@ def get_actor(actor):
     return _REGISTERED_ACTORS.get(actor)
 
 
+def must_get_actor(actor):
+    return _REGISTERED_ACTORS[actor]
+
+
 def get_output_processor(definition):
     if not isinstance(definition, dict):
         return None

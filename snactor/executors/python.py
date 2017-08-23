@@ -1,4 +1,4 @@
-from .payload import PayloadExecutor, registered_executor
+from snactor.executors.payload import PayloadExecutor, registered_executor
 
 
 class PythonExecutorDefinition(PayloadExecutor.Definition):

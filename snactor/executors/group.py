@@ -1,11 +1,11 @@
-from .default import Executor, registered_executor
-from ..registry import get_actor
+from snactor.executors.default import Executor, registered_executor
+from snactor.registry import must_get_actor
 
 
 class GroupExecutorDefinition(Executor.Definition):
     def __init__(self, init):
         super(GroupExecutorDefinition, self).__init__(init)
-        self.actors = map(get_actor, init.get('actors', ()))
+        self.actors = map(must_get_actor, init.get('actors', ()))
 
 
 @registered_executor('group')
