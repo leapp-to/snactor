@@ -16,11 +16,14 @@ class GroupExecutor(Executor):
         super(GroupExecutor, self).__init__(definition)
 
     def execute(self, data):
-        restricted = {k: data[k] for k in self.definition.inputs.keys()}
+        restricted = {}
+        if self.definition.inputs:
+            restricted = {k: data[k] for k in self.definition.inputs.keys()}
         ret = True
         for actor in self.definition.executor.actors:
             ret = actor().execute(restricted)
             if not ret:
                 break
-        data.update({k: data[k] for k in self.definition.outputs.keys()})
+        if self.definition.outputs:
+            data.update({k: data[k] for k in self.definition.outputs.keys()})
         return ret
