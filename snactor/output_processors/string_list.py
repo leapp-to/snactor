@@ -15,4 +15,4 @@ class StringListOutputProcessor(object):
         self.definition = definition
 
     def process(self, output, data):
-        assign_to_variable_spec(data, self.definition.target, output.strip().split('\n'))
+        assign_to_variable_spec(data, self.definition.target, output.strip().splitlines())
