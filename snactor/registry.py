@@ -34,6 +34,7 @@ def register_environment_variable(name, value):
         raise LookupError(
             "Environment variable '{}' has been already registered previously with value {}".format(
                 name, _REGISTERED_ENVIRON_VARS[name]))
+    _REGISTERED_ENVIRON_VARS[name] = value
 
 
 def registered_output_processor(name):
