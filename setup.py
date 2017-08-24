@@ -1,9 +1,10 @@
 from distutils.core import setup
+from setuptools import find_packages
 
 setup(
     name='snactor',
     version='0.1',
-    packages=['snactor'],
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     url='https://github.com/leapp-to/snactor',
     license='ASL 2.0',
     author="Vinzenz 'evilissimo' Feenstra",
