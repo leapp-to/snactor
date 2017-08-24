@@ -15,5 +15,5 @@ def test_group_actor():
 if __name__ == '__main__':
     logging.basicConfig(format='%(levelname)s:%(message)s',
                         level=logging.DEBUG)
-    load('examples/actors')
+    load('../actors')
     test_group_actor()

@@ -25,5 +25,5 @@ def checktarget():
 if __name__ == '__main__':
     logging.basicConfig(format='%(levelname)s:%(message)s',
                         level=logging.INFO)
-    load('examples/actors', tags=['checktarget'])
+    load('../actors', tags=['checktarget'])
     checktarget()
