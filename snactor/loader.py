@@ -92,12 +92,9 @@ def _try_resolve(i, l):
 
     definition = i['definition']
 
-    pending = []
+    pending = definition.get('executor', {}).get('actors', ())
     if definition.get('extends'):
-        pending.append(definition['extends'].get('name'))
-    else:
-        for name in definition.get('executor', {}).get('actors', []):
-            pending.append(name)
+        pending = (definition['extends'].get('name'),)
 
     for name in pending:
         actor = get_actor(name)
