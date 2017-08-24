@@ -16,7 +16,8 @@ class BashExecutor(PayloadExecutor):
 
     def handle_stdout(self, stdout, data):
         self.log.debug("handle_stdout(%s)", stdout)
-        self.definition.executor.output_processor.process(stdout, data)
+        if self.definition.executor.output_processor:
+            self.definition.executor.output_processor.process(stdout, data)
 
     def __init__(self, definition):
         super(BashExecutor, self).__init__(definition)
