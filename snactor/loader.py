@@ -21,26 +21,29 @@ def _load(name, definition, tags, post_resolve):
 
         if d.get('extends') and d.get('executor'):
             raise ValueError("Conflicting extends and executor specification found in {}".format(name))
-        if d.get('extends'):
+
+        if not d.get('extends'):
+            d['executor']['$location'] = os.path.abspath(definition)
+
+        if d.get('extends') or not all(map(get_actor, d.get('executor', {}).get('actors', ()))):
             post_resolve[name] = {'definition': d, 'name': name, 'resolved': False}
             return
 
-        executor_name = d.get('executor', {}).get('type')
-        executor = get_executor(executor_name)
-        if not executor:
-            raise LookupError("Unknown executor {}".format(executor_name))
-
-        d['executor']['$location'] = os.path.abspath(definition)
-        if executor_name == 'group':
-            post_resolve[name] = {'definition': d, 'name': name, 'resolved': False}
-            return
-
-        d.update({
-            'executor': executor.Definition(d.get('executor'))})
-        create_actor(name, d, executor)
+        create_actor(name, d)
 
 
-def create_actor(name, definition, executor):
+def create_actor(name, definition):
+    executor_name = definition.get('executor', {}).get('type')
+    executor = get_executor(executor_name)
+    if not executor:
+        raise LookupError("Unknown executor {}".format(executor_name))
+
+    definition.update({
+        'executor': executor.Definition(definition.get('executor'))})
+    register_actor(name, definition, executor)
+
+
+def register_actor(name, definition, executor):
     @registered_actor(name)
     class Actor(executor):
         Executor = executor
@@ -93,9 +96,8 @@ def _try_resolve(i, l):
     if definition.get('extends'):
         pending.append(definition['extends'].get('name'))
     else:
-        if definition.get('executor', {}).get('type') == 'group':
-            for name in definition.get('executor', {}).get('actors', []):
-                pending.append(name)
+        for name in definition.get('executor', {}).get('actors', []):
+            pending.append(name)
 
     for name in pending:
         actor = get_actor(name)
@@ -112,10 +114,7 @@ def _try_resolve(i, l):
         extends = get_actor(definition['extends'].get('name'))
         _apply_extension_resolve(i, extends)
     else:
-        executor = get_executor(definition.get('executor', {}).get('type'))
-        definition.update({'executor':
-                           executor.Definition(definition.get('executor'))})
-        create_actor(i['name'], definition, executor)
+        create_actor(i['name'], definition)
 
     i['resolved'] = True
 
