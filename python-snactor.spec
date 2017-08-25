@@ -1,3 +1,5 @@
+%global debug_package %{nil}
+
 Name:		python-snactor
 Version:	0.1
 Release:	1
