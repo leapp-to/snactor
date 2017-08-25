@@ -1,0 +1,14 @@
+---
+description: |
+  This is a simple actor example
+tags:
+  - simple_actor
+outputs:
+  - name: foo
+    type: Foo
+executor:
+  type: default
+  executable: /bin/bash
+  arguments:
+    - "-c"
+    - "echo {\\\"foo\\\": \\\"bar\\\"}"
