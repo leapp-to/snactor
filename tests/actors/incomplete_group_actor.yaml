@@ -1,0 +1,10 @@
+---
+description: |
+  This actor will not load for missing group's actors
+tags:
+  - incomplete_group_actor
+executor:
+  type: group
+  actors:
+    - UNKNOWN_ACTOR_ONE
+    - UNKNOWN_ACTOR_TWO

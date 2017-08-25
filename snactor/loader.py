@@ -23,6 +23,8 @@ def _load(name, definition, tags, post_resolve):
             raise ValueError("Conflicting extends and executor specification found in {}".format(name))
 
         if not d.get('extends'):
+            if not d.get('executor'):
+                raise ValueError("Missing executor specification in {}".format(name))
             d['executor']['$location'] = os.path.abspath(definition)
 
         if d.get('extends') or not all(map(get_actor, d.get('executor', {}).get('actors', ()))):

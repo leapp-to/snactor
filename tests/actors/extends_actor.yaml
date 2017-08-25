@@ -1,0 +1,10 @@
+---
+description: |
+  This actor will extend base actor
+tags:
+  - extends_actor
+outputs:
+  - name: foo
+    type: Foo
+extends:
+  name: base_actor

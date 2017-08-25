@@ -19,6 +19,35 @@ class TestLoader(unittest.TestCase):
         load(self.actors_path, tags=['simple_actor'])
         self.assertIsNotNone(get_actor('simple_actor'))
 
+    def test_extends_actor(self):
+        """ Load an extended actor """
+        load(self.actors_path, tags=['extends_actor'])
+        self.assertIsNotNone(get_actor('extends_actor'))
+
+    def test_group_actor(self):
+        """ Load a group actor """
+        load(self.actors_path, tags=['group_actor'])
+        self.assertIsNotNone(get_actor('group_actor'))
+
+    def test_no_executor_actor(self):
+        """ Load an actor with no executor """
+        with self.assertRaises(ValueError):
+            load(self.actors_path, tags=['no_executor_actor'])
+        self.assertIsNone(get_actor('no_executor_actor'))
+
+    def test_unknown_executor_actor(self):
+        """ Load an actor with an unknown executor """
+        with self.assertRaises(LookupError):
+            load(self.actors_path, tags=['unknown_executor_actor'])
+        self.assertIsNone(get_actor('unknown_executor_actor'))
+
+    def test_load_actor_twice(self):
+        """ Load an actor twice"""
+        load(self.actors_path, tags=['load_twice_actor'])
+        self.assertIsNotNone(get_actor('load_twice_actor'))
+        with self.assertRaises(LookupError):
+            load(self.actors_path, tags=['load_twice_actor'])
+
     def test_extends_executor_actor(self):
         """ Load an actor with both extends and executor """
         with self.assertRaises(ValueError):
@@ -30,6 +59,12 @@ class TestLoader(unittest.TestCase):
         with self.assertRaises(LookupError):
             load(self.actors_path, tags=['extends_no_actor'])
         self.assertIsNone(get_actor('extends_no_actor'))
+
+    def test_incomplete_actor(self):
+        """ Load aa incomplete actor """
+        with self.assertRaises(LookupError):
+            load(self.actors_path, tags=['incomplete_group_actor'])
+        self.assertIsNone(get_actor('incomplete_group_actor'))
 
 
 if __name__ == '__main__':

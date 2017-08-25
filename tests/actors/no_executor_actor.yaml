@@ -1,0 +1,5 @@
+---
+description: |
+  This is an actor without executor
+tags:
+  - no_executor_actor

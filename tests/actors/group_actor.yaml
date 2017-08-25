@@ -1,0 +1,10 @@
+---
+description: |
+  This actor will group other actors
+tags:
+  - group_actor
+executor:
+  type: group
+  actors:
+    - group_part_one_actor
+    - group_part_two_actor
