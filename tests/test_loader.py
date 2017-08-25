@@ -21,16 +21,14 @@ class TestLoader(unittest.TestCase):
 
     def test_extends_executor_actor(self):
         """ Load an actor with both extends and executor """
-        self.assertRaises(ValueError,
-                          load(self.actors_path,
-                               tags=['extends_executor_actor']))
+        with self.assertRaises(ValueError):
+            load(self.actors_path, tags=['extends_executor_actor'])
         self.assertIsNone(get_actor('extends_executor_actor'))
 
     def test_extends_no_actor(self):
         """ Load an actor that extends a non-existent actor """
-        self.assertRaises(LookupError,
-                          load(self.actors_path,
-                               tags=['extends_no_actor']))
+        with self.assertRaises(LookupError):
+            load(self.actors_path, tags=['extends_no_actor'])
         self.assertIsNone(get_actor('extends_no_actor'))
 
 
