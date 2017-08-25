@@ -44,3 +44,6 @@ make test
 
 
 %changelog
+* Fri Aug 25 2017 Vinzenz Feenstra <evilissimo@redhat.com> 0.1-1
+- new package built with tito
+
