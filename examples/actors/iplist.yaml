@@ -1,4 +1,6 @@
 ---
+tags:
+  - inspect_machine
 outputs:
   - name: ip_list
     type: IPList
