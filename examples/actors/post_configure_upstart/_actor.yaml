@@ -4,8 +4,6 @@ inputs:
     type: String
   - name: upstart_service_blacklist
     type: StringList
-description: |
-  some description...
 executor:
   type: python
   script-file: post_configure_upstart.py
