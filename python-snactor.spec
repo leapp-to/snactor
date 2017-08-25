@@ -11,6 +11,8 @@ URL:		https://github.com/leapp-to/snactor
 Source0:	%{name}-%{version}.tar.gz
 
 BuildRequires:   python2-devel
+BuildRequires:   PyYAML
+Requires:   PyYAML
 %if 0%{?rhel} && 0%{?rhel} <= 7
 BuildRequires:   python-setuptools
 BuildRequires:   epel-rpm-macros
