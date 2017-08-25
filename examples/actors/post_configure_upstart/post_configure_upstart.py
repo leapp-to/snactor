@@ -3,8 +3,8 @@ import os
 import json
 
 data = json.load(sys.stdin)
-container_dir = data["container_directory"]
-blacklist = data["upstart_service_blacklist"]
+container_dir = data["container_directory"]["value"]
+blacklist = data["upstart_service_blacklist"]["value"]
 
 for level in range(0, 7):
     p = os.path.join(container_dir, 'etc', 'rc{}'.format(level))
