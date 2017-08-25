@@ -1,6 +1,6 @@
 ---
 tags:
-  - checktarget
+  - check_target
 outputs:
   - name: containerslist
     type: ContainersList

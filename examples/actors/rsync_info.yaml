@@ -1,9 +1,9 @@
 ---
 tags:
-  - checktarget
+  - check_target
 outputs:
-  - name: dockerinfo
-    type: DockerInfo
+  - name: rsyncinfo
+    type: RSyncInfo
 executor:
   type: python
   payload: |
@@ -11,9 +11,8 @@ executor:
     from subprocess import Popen, PIPE
 
     info = {}
-    checks = {'path': 'which docker',
-              'systemd_state': 'systemctl show --property ActiveState docker',
-              'info': 'docker info'}
+    checks = {'path': 'which rsync',
+              'version': 'rsync --version'}
 
     for check, cmd in checks.items():
         info.update({check: None})
@@ -25,4 +24,4 @@ executor:
         else:
             info[check] = (proc.returncode, out.strip())
 
-    print(json.dumps({'dockerinfo': info}))
+    print(json.dumps({'rsyncinfo': info}))

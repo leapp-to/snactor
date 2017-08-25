@@ -1,6 +1,6 @@
 ---
 tags:
-  - checktarget
+  - check_target
 inputs:
   - name: rsyncinfo
     type: RSyncInfo
