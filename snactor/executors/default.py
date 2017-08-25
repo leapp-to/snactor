@@ -45,11 +45,12 @@ class Executor(object):
 
     def handle_stdout(self, stdout, data):
         self.log.debug("handle_stdout(%s)", stdout)
-        try:
-            output = filter_by_channel(self.definition.outputs, json.loads(stdout))
-            data.update(output)
-        except ValueError:
-            self.log.warn("Failed to decode output: %s", stdout, exc_info=True)
+        if self.definition.outputs or stdout:
+            try:
+                output = filter_by_channel(self.definition.outputs, json.loads(stdout))
+                data.update(output)
+            except ValueError:
+                self.log.warn("Failed to decode output: %s", stdout, exc_info=True)
 
     def handle_stderr(self, stderr, data):
         self.log.debug("handle_stderr(%s)", stderr)
