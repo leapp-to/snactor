@@ -1,0 +1,17 @@
+---
+inputs:
+  - name: container_name
+    type: BaseTypeString
+
+executor:
+  type: bash
+  arguments:
+    - "@container_name.value@"
+  payload: |
+    if [ -z $1 ]; then
+        return 1
+    fi
+
+    LEAPP_MACROCONTAINER_DIR=/var/lib/leapp/macrocontainers
+
+    rm -rf $LEAPP_MACROCONTAINER_DIR/$1

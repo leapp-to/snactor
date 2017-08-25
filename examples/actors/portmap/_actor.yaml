@@ -1,0 +1,21 @@
+---
+inputs:
+  - name: source_system_ports
+    type: TypePortList
+
+  - name: target_system_ports
+    type: TypePortList
+
+  - name: user_mapping
+    type: TypePortMap
+
+  - name: excluded_ports
+    type: TypePortList
+
+outputs:
+  - name: port_mapping
+    type: TypePortMap
+
+executor:
+  type: python
+  script-file: portmap.py
