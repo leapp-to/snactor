@@ -8,12 +8,18 @@ def get_executor(executor):
     return _REGISTERED_EXECUTORS.get(executor)
 
 
+def _instantiate_actor(data):
+    if not data:
+        return None
+    return data[1](data[0])
+
+
 def get_actor(actor):
-    return _REGISTERED_ACTORS.get(actor)
+    return _instantiate_actor(_REGISTERED_ACTORS.get(actor))
 
 
 def must_get_actor(actor):
-    return _REGISTERED_ACTORS[actor]
+    return _instantiate_actor(_REGISTERED_ACTORS[actor])
 
 
 def get_output_processor(definition):
@@ -58,12 +64,7 @@ def registered_executor(name):
     return func
 
 
-def registered_actor(name):
-    def func(cls):
-        if name in _REGISTERED_ACTORS:
-            raise LookupError("Actor '{}' has been already registered previously".format(name))
-        cls.type = name
-        _REGISTERED_ACTORS[name] = cls
-        return cls
-
-    return func
+def register_actor(name, definition, executor):
+    if name in _REGISTERED_ACTORS:
+        raise LookupError("Actor '{}' has been already registered previously".format(name))
+    _REGISTERED_ACTORS[name] = (definition, executor)

@@ -18,7 +18,7 @@ def test_passing_data_actor():
             ]
         }
     }
-    get_actor('filter_packages')().execute(data)
+    get_actor('filter_packages').execute(data)
     pprint(data)
 
 

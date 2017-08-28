@@ -8,10 +8,10 @@ from snactor.registry import get_actor
 def inspect_machine(shallow=True):
     """ Run multiple checks at target machine """
     machineinfo = {}
-    get_actor('inspect_machine_group')().execute(machineinfo)
+    get_actor('inspect_machine_group').execute(machineinfo)
     if not shallow:
-        get_actor('rpm_list')().execute(machineinfo)
-    get_actor('inspect_machine')().execute(machineinfo)
+        get_actor('rpm_list').execute(machineinfo)
+    get_actor('inspect_machine').execute(machineinfo)
     pprint(machineinfo['machineinfo'])
 
 

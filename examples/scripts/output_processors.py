@@ -13,7 +13,7 @@ def test_output_processors():
     pprint(data)
     print("=" * 70)
     print("Execution result:",
-          get_actor('iplist')().execute(data))
+          get_actor('iplist').execute(data))
     print("=" * 70)
     print("After execution")
     pprint(data)

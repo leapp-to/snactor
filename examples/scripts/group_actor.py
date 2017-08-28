@@ -8,7 +8,7 @@ from snactor.registry import get_actor
 def test_group_actor():
     """ Execute group-actor to test group executor """
     data = {}
-    get_actor('group-actor')().execute(data)
+    get_actor('group-actor').execute(data)
     pprint(data)
 
 

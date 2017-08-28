@@ -23,7 +23,7 @@ def test_extended_actor():
     pprint(data)
     print("=" * 70)
     print("Execution result:",
-          get_actor('filter_kernel_packages')().execute(data))
+          get_actor('filter_kernel_packages').execute(data))
     print("=" * 70)
     print("After execution")
     pprint(data)

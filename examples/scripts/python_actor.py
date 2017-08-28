@@ -8,7 +8,7 @@ from snactor.registry import get_actor
 def test_python_executor():
     """ Execute osversion actor to test python executor """
     data = {}
-    get_actor('osversion')().execute(data)
+    get_actor('osversion').execute(data)
     pprint(data)
 
 

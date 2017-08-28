@@ -13,7 +13,7 @@ def test_ansible_executor():
     pprint(data)
     print("=" * 70)
     print("Execution result:",
-          get_actor('ansible_setup')().execute(data))
+          get_actor('ansible_setup').execute(data))
     print("=" * 70)
     print("After execution")
     pprint(data)

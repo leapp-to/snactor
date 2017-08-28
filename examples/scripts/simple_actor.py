@@ -8,7 +8,7 @@ from snactor.registry import get_actor
 def test_simple_actor():
     """ Execute simple-actor to test simple executor """
     data = {}
-    get_actor('simple-actor')().execute(data)
+    get_actor('simple-actor').execute(data)
     pprint(data)
 
 

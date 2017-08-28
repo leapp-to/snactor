@@ -22,7 +22,7 @@ class GroupExecutor(Executor):
 
         ret = True
         for actor in self.definition.executor.actors:
-            ret = actor().execute(restricted)
+            ret = actor.execute(restricted)
             if not ret:
                 break
 

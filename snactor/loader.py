@@ -5,7 +5,7 @@ import yaml
 
 from snactor.definition import Definition
 from snactor.executors.default import ExecutorDefinition
-from snactor.registry import registered_actor, get_executor, get_actor
+from snactor.registry import register_actor, get_executor, get_actor, must_get_actor
 from snactor.utils.variables import resolve_variable_spec
 
 
@@ -44,16 +44,7 @@ def create_actor(name, definition):
 
     definition.update({
         'executor': executor.Definition(definition.get('executor'))})
-    register_actor(name, definition, executor)
-
-
-def register_actor(name, definition, executor):
-    @registered_actor(name)
-    class Actor(executor):
-        Executor = executor
-
-        def __init__(self):
-            super(Actor, self).__init__(Definition(name, definition))
+    register_actor(name, Definition(name, definition), executor)
 
 
 class ExtendsActorDefinition(ExecutorDefinition):
@@ -65,29 +56,31 @@ class ExtendsActorDefinition(ExecutorDefinition):
         self.restricted_inputs = [i['name'] for i in self.extended.inputs]
 
 
-def _create_extends_actor(name, definition, executor):
-    @registered_actor(name)
-    class ExtendsActor(executor):
-        Definition = ExtendsActorDefinition
+class ExtendsActor(object):
+    Definition = ExtendsActorDefinition
 
-        def execute(self, data):
-            extends = ExtendsActorDefinition(definition)
-            restricted = {n['name']: data[n['name']] for n in extends.required_inputs}
-            restricted.update({i['name']: resolve_variable_spec(restricted, i['source']) for i in extends.inputs if 'source' in i})
-            restricted.update({i['name']: i['value'] for i in extends.inputs if 'value' in i})
+    def __init__(self, definition):
+        self.definition = definition
 
-            ret = super(ExtendsActor, self).execute(restricted)
-            if ret:
-                for output in extends.output:
-                    data[output['name']] = resolve_variable_spec(restricted, output['source'])
+    def execute(self, data):
+        extends = ExtendsActorDefinition(self.definition)
+        restricted = {n['name']: data[n['name']] for n in extends.required_inputs}
+        restricted.update({i['name']: resolve_variable_spec(restricted, i['source']) for i in extends.inputs if 'source' in i})
+        restricted.update({i['name']: i['value'] for i in extends.inputs if 'value' in i})
 
-            return ret
+        actor = must_get_actor(self.definition['extended'].name)
+        ret = actor.execute(restricted)
+        if ret:
+            for output in extends.output:
+                data[output['name']] = resolve_variable_spec(restricted, output['source'])
+
+        return ret
 
 
 def _apply_extension_resolve(extends, base):
     definition = extends['definition']
-    definition['extended'] = base().definition
-    _create_extends_actor(extends['name'], definition, base)
+    definition['extended'] = base.definition
+    register_actor(extends['name'], definition, ExtendsActor)
 
 
 def _try_resolve(i, l):
