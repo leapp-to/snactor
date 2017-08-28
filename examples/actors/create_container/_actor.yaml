@@ -8,8 +8,8 @@ inputs:
     type: BaseTypeString
   - name: init_bin
     type: BaseTypeString
-  - name: forward_ports 
-    type: ForwardPorts
+  - name: exposed_ports
+    type: ExposedPorts
 outputs:
   - name: container_id
     type: BaseTypeString

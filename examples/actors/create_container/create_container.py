@@ -8,7 +8,7 @@ def _execute(cmd):
     return Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE).communicate()
 
 
-def _build_cmd(source_path, name, img, init_bin, forward_ports):
+def _build_cmd(source_path, name, img, init_bin, exposed_ports):
     good_mounts = ['bin', 'etc', 'home', 'lib', 'lib64', 'media',
                    'opt', 'root', 'sbin', 'srv', 'usr', 'var']
 
@@ -17,11 +17,11 @@ def _build_cmd(source_path, name, img, init_bin, forward_ports):
     for mount in good_mounts:
         cmd += ' -v {d}/{m}:/{m}:Z'.format(d=source_path, m=mount)
 
-    for host_port, container_port in forward_ports:
-        if host_port is None:
-            cmd += ' -p {:d}'.format(container_port)  # docker will select random host_port
+    for port in exposed_ports:
+        if not port.get('exposed_port'):
+            cmd += ' -p {:d}/{p}'.format(port['container_port'], p=port['protocol'])
         else:
-            cmd += ' -p {:d}:{:d}'.format(host_port, container_port)
+            cmd += ' -p {:d}:{:d}/{p}'.format(port['exposed_port'], port['container_port'], p=port['protocol'])
 
     cmd += ' --name ' + name + ' ' + img + ' ' + init_bin
 
@@ -31,11 +31,11 @@ def _build_cmd(source_path, name, img, init_bin, forward_ports):
 if __name__ == "__main__":
     inputs = json.load(sys.stdin)
 
-    cmd = _build_cmd(inputs['container_dir'],
-                     inputs['container_name'],
-                     inputs['image'],
-                     inputs['init_bin'],
-                     forward_ports=inputs['forward_ports'])
+    cmd = _build_cmd(inputs['container_dir']['value'],
+                     inputs['container_name']['value'],
+                     inputs['image']['value'],
+                     inputs['init_bin']['value'],
+                     inputs['exposed_ports']['ports'])
 
     out, err = _execute(cmd)
     outputs = {
