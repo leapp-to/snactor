@@ -18,6 +18,6 @@ def resolve_variable_spec(data, spec):
             if not data:
                 break
         if not data:
-            raise ValueError("unresolved reference")
+            raise ValueError("unresolved reference: {}".format(spec.strip("@")))
         return data
     return spec
