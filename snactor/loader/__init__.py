@@ -4,9 +4,8 @@ import os
 import yaml
 
 from snactor.definition import Definition
-from snactor.executors.default import ExecutorDefinition
-from snactor.registry import register_actor, get_executor, get_actor, must_get_actor
-from snactor.utils.variables import resolve_variable_spec
+from snactor.loader.extends import ExtendsActor
+from snactor.registry import register_actor, get_executor, get_actor
 
 
 def _load(name, definition, tags, post_resolve):
@@ -47,47 +46,17 @@ def create_actor(name, definition):
     register_actor(name, Definition(name, definition), executor)
 
 
-class ExtendsActorDefinition(ExecutorDefinition):
-    def __init__(self, init):
-        self.extended = init['extended']
-        self.required_inputs = init.get('inputs', ())
-        self.inputs = init.get('extends', {}).get('inputs', ())
-        self.output = init.get('extends', {}).get('outputs', ())
-        self.restricted_inputs = [i['name'] for i in self.extended.inputs]
-
-
-class ExtendsActor(object):
-    Definition = ExtendsActorDefinition
-
-    def __init__(self, definition):
-        self.definition = definition
-
-    def execute(self, data):
-        extends = ExtendsActorDefinition(self.definition)
-        restricted = {n['name']: data[n['name']] for n in extends.required_inputs}
-        restricted.update({i['name']: resolve_variable_spec(restricted, i['source']) for i in extends.inputs if 'source' in i})
-        restricted.update({i['name']: i['value'] for i in extends.inputs if 'value' in i})
-
-        actor = must_get_actor(self.definition['extended'].name)
-        ret = actor.execute(restricted)
-        if ret:
-            for output in extends.output:
-                data[output['name']] = resolve_variable_spec(restricted, output['source'])
-
-        return ret
-
-
-def _apply_extension_resolve(extends, base):
-    definition = extends['definition']
+def _apply_extension_resolve(data, base):
+    definition = data['definition']
     definition['extended'] = base.definition
-    register_actor(extends['name'], definition, ExtendsActor)
+    register_actor(data['name'], definition, ExtendsActor)
 
 
-def _try_resolve(i, l):
-    if i['resolved']:
+def _try_resolve(current, to_resolve):
+    if current['resolved']:
         return
 
-    definition = i['definition']
+    definition = current['definition']
 
     pending = definition.get('executor', {}).get('actors', ())
     if definition.get('extends'):
@@ -96,21 +65,20 @@ def _try_resolve(i, l):
     for name in pending:
         actor = get_actor(name)
 
-        if not actor and name in l:
-            if not l[name]['resolved']:
-                _try_resolve(l[name], l)
+        if not actor and name in to_resolve:
+            if not to_resolve[name]['resolved']:
+                _try_resolve(to_resolve[name], to_resolve)
             actor = get_actor(name)
 
         if not actor:
-            raise LookupError("Failed to resolve dependencies for {}".format(i['name']))
+            raise LookupError("Failed to resolve dependencies for {}".format(current['name']))
 
     if definition.get('extends'):
-        extends = get_actor(definition['extends'].get('name'))
-        _apply_extension_resolve(i, extends)
+        _apply_extension_resolve(current, get_actor(definition['extends'].get('name')))
     else:
-        create_actor(i['name'], definition)
+        create_actor(current['name'], definition)
 
-    i['resolved'] = True
+    current['resolved'] = True
 
 
 def load(location, tags=()):
@@ -125,5 +93,5 @@ def load(location, tags=()):
                 if not filename.startswith('.') and ext.lower() == '.yaml':
                     _load(filename, os.path.join(root, f), tags, post_resolve)
 
-    for i in post_resolve.values():
-        _try_resolve(i, post_resolve)
+    for item in post_resolve.values():
+        _try_resolve(item, post_resolve)
