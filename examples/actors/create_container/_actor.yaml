@@ -1,0 +1,21 @@
+---
+inputs:
+  - name: container_dir
+    type: BaseTypeString
+  - name: container_name
+    type: BaseTypeString
+  - name: image
+    type: BaseTypeString
+  - name: init_bin
+    type: BaseTypeString
+  - name: forward_ports 
+    type: ForwardPorts
+outputs:
+  - name: container_id
+    type: BaseTypeString
+  - name: error
+    type: BaseTypeString
+executor:
+  type: python
+  script-file: create_container.py
+
