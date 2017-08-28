@@ -2,11 +2,11 @@ import jsl
 
 
 class RSyncInfo(jsl.Document):
-    path = jsl.OneOfField([
+    path = jsl.ArrayField([
         jsl.IntField(),
         jsl.StringField()
     ])
-    version = jsl.OneOfField([
+    version = jsl.ArrayField([
         jsl.IntField(),
         jsl.StringField()
     ])
