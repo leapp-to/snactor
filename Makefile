@@ -1,7 +1,16 @@
+clean:
+	@rm -rf build/ dist/ *.egg-info
+	@find . -name '__pycache__' -exec rm -fr {} +
+	@find . -name '*.pyc' -exec rm -f {} +
+	@find . -name '*.pyo' -exec rm -f {} +
+
 install:
 	pip install .
 
 test:
-	PYTHONPATH=$(PYTHONPATH):$(PWD) python -m unittest discover -vs tests/
+	py.test --flake8 --cov=snactor
 
-.PHONY: init test
+test-all:
+	tox
+
+.PHONY: clean install test test-all
