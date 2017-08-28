@@ -1,9 +1,11 @@
-import os
-import yaml
 import logging
+import os
+
+import yaml
+
+from snactor.definition import Definition
 from snactor.executors.default import ExecutorDefinition
 from snactor.registry import registered_actor, get_executor, get_actor
-from snactor.definition import Definition
 from snactor.utils.variables import resolve_variable_spec
 
 

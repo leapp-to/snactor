@@ -10,5 +10,5 @@ setup(
     author="Vinzenz 'evilissimo' Feenstra",
     author_email='evilissimo@redhat.com',
     description='snactor is a python library for actors',
-    requires=['PyYAML', 'jsl']
+    requires=['PyYAML', 'jsl', 'argcomplete']
 )
