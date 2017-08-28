@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     out, err = _execute(cmd)
     outputs = {
-            'container_id': out or None,
-            'error': err or None
+        'container_id': out or None,
+        'error': err or None
     }
     print(json.dumps(outputs))

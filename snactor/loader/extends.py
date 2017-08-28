@@ -21,7 +21,10 @@ class ExtendsActor(object):
     def execute(self, data):
         extends = ExtendsActorDefinition(self.definition)
         restricted = {n['name']: data[n['name']] for n in extends.required_inputs}
-        restricted.update({i['name']: resolve_variable_spec(restricted, i['source']) for i in extends.inputs if 'source' in i})
+        restricted.update({
+            i['name']: resolve_variable_spec(restricted, i['source'])
+            for i in extends.inputs if 'source' in i
+        })
         restricted.update({i['name']: i['value'] for i in extends.inputs if 'value' in i})
 
         actor = must_get_actor(self.definition['extended'].name)

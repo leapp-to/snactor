@@ -1,5 +1,5 @@
 from jsl import Document
-from jsl.fields import BooleanField 
+from jsl.fields import BooleanField
 
 
 class BaseTypeBool(Document):

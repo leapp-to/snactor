@@ -28,6 +28,7 @@ def test_extended_actor():
     print("After execution")
     pprint(data)
 
+
 if __name__ == '__main__':
     logging.basicConfig(format='%(levelname)s:%(message)s',
                         level=logging.DEBUG)

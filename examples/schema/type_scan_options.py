@@ -1,5 +1,5 @@
 from jsl import Document
-from jsl.fields import BooleanField, StringField 
+from jsl.fields import BooleanField, StringField
 
 
 class TypePortScan(Document):

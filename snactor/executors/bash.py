@@ -1,4 +1,4 @@
-import snactor.output_processors
+import snactor.output_processors  # noqa
 from snactor.executors.payload import PayloadExecutor, registered_executor
 from snactor.registry import get_output_processor
 
