@@ -7,4 +7,4 @@ class RPMPackage(jsl.Document):
 
 
 class RPMPackages(jsl.Document):
-    packages = jsl.ArrayField(RPMPackage)
+    packages = jsl.ArrayField(jsl.DocumentField(RPMPackage()))
