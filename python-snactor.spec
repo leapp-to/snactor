@@ -14,7 +14,7 @@ Source0:	%{name}-%{version}.tar.gz
 
 BuildRequires:   python2-devel
 BuildRequires:   PyYAML
-Requires:   PyYAML
+BuildRequires:   python2-jsonschema
 %if 0%{?rhel} && 0%{?rhel} <= 7
 BuildRequires:   python-setuptools
 BuildRequires:   epel-rpm-macros
@@ -25,7 +25,8 @@ BuildRequires:   python2-setuptools
 BuildRequires:   python-rpm-macros
 %endif
 
-Requires:	 PyYAML
+Requires:       PyYAML
+Requires:       python2-jsonschema
 
 %description
 
