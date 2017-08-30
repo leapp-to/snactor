@@ -29,7 +29,7 @@ def map_ports(source_ports, target_ports, user_mapped_ports=None, user_excluded_
     user_mapped_ports = user_mapped_ports or PortMap()
     user_excluded_ports = user_excluded_ports or PortList()
 
-    remapped_ports = PortMap()
+    remapped_ports = []
 
     # add user ports which was not discovered
     for protocol in user_mapped_ports.get_protocols():
@@ -81,7 +81,11 @@ def map_ports(source_ports, target_ports, user_mapped_ports=None, user_excluded_
                 target_ports.set_port(protocol, target_port)
 
                 # create mapping array
-                remapped_ports.set_port(protocol, source_port, target_port)
+                remapped_ports.append({
+                    "protocol": protocol,
+                    "port": source_port,
+                    "exposed_port": target_port
+                })
 
     return remapped_ports
 
@@ -102,4 +106,4 @@ if __name__ == '__main__':
     exc = PortList(exc_dict)
     usr = PortMap(usr_dict)
 
-    print(dumps({"port_mapping": map_ports(src, tgt, usr, exc)}))
+    print(dumps({"exposed_ports": {"ports": map_ports(src, tgt, usr, exc)}}))

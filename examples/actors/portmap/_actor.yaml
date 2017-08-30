@@ -13,8 +13,8 @@ inputs:
     type: TypePortList
 
 outputs:
-  - name: port_mapping
-    type: TypePortMap
+  - name: exposed_ports
+    type: ExposedPorts
 
 executor:
   type: python
