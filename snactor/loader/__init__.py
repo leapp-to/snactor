@@ -96,7 +96,7 @@ def load(location, tags=()):
             for f in files:
                 filename, ext = os.path.splitext(f)
                 if not filename.startswith('.') and ext.lower() == '.yaml':
-                    _load(filename, os.path.join(root, f), tags)
+                    _load(filename, os.path.join(root, f), tags, post_resolve)
 
     for item in post_resolve.values():
         _try_resolve(item, post_resolve)
