@@ -1,6 +1,7 @@
 import imp
 import logging
 import os
+import sys
 
 import jsl
 import yaml
@@ -32,6 +33,7 @@ def _load(name, definition, tags, post_resolve):
             d['executor']['$location'] = os.path.abspath(definition)
 
         if d.get('extends') or not all(map(get_actor, d.get('executor', {}).get('actors', ()))):
+            d['$location'] = os.path.abspath(definition)
             post_resolve[name] = {'definition': d, 'name': name, 'resolved': False}
             return
 
@@ -52,7 +54,7 @@ def create_actor(name, definition):
 def _apply_extension_resolve(data, base):
     definition = data['definition']
     definition['extended'] = base.definition
-    register_actor(data['name'], definition, ExtendsActor)
+    register_actor(data['name'], ExtendsActor.Definition(data['name'], definition), ExtendsActor)
 
 
 def _try_resolve(current, to_resolve):
@@ -120,24 +122,27 @@ class ActorTypeValidationError(LookupError):
 def validate_actor_types():
     result = []
     for name, (definition, _) in get_registered_actors().items():
-        result.extend((_validate_type(name, 'inputs', current['type']) for current in definition.inputs))
-        result.extend((_validate_type(name, 'outputs', current['type']) for current in definition.outputs))
+        print name, definition.inputs, definition.outputs
+        result.extend((_validate_type(name, 'inputs', current['type']) for current in definition.inputs if not isinstance(current, ExtendsActor.Definition)))
+        result.extend((_validate_type(name, 'outputs', current['type']) for current in definition.outputs if not isinstance(current, ExtendsActor.Definition)))
     if not all((item[0] for item in result)):
         raise ActorTypeValidationError("Failed to lookup schema definitions", (x[1] for x in result if not x[0]))
 
 
 def load_schemas(location):
     _log = logging.getLogger('snactor.loader')
+    sys.path.append(location)
 
     for root, dirs, files in os.walk(location):
-        for schema in files:
-            filename, ext = os.path.splitext(schema)
-            if not filename.startswith('.') and ext.lower() == '.py':
-                f, path, description = imp.find_module(filename, [root])
-                mod = imp.load_module(filename, f, path, description)
+        for schema_file in files:
+            module_name, ext = os.path.splitext(schema_file)
+            if not module_name.startswith('.') and ext.lower() == '.py':
+                f, path, description = imp.find_module(module_name, [root])
 
+                mod = imp.load_module(module_name, f, path, description)
                 for symbol in dir(mod):
                     item = getattr(mod, symbol)
                     if isinstance(item, type) and issubclass(item, jsl.Document) and item is not jsl.Document:
-                        _log.debug("Loading schema %s ...", os.path.join(root, schema))
-                        register_schema(symbol, item)
+                        _log.debug("Loading schema %s from %s...", symbol, os.path.join(root, schema_file))
+                        register_schema(symbol, item.get_schema())
+    sys.path.pop()
