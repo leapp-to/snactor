@@ -1,4 +1,4 @@
-from snactor.executors.default import Executor, registered_executor
+from snactor.executors.default import Executor, registered_executor, filter_by_channel
 from snactor.registry import must_get_actor
 
 
@@ -16,9 +16,7 @@ class GroupExecutor(Executor):
         super(GroupExecutor, self).__init__(definition)
 
     def execute(self, data):
-        restricted = {}
-        for port in self.definition.inputs:
-            restricted.update({port['name']: data[port['name']]})
+        restricted = filter_by_channel(self.definition.inputs, data)
 
         ret = True
         for actor in self.definition.executor.actors:
@@ -26,6 +24,6 @@ class GroupExecutor(Executor):
             if not ret:
                 break
 
-        for port in self.definition.outputs:
-            data.update({port['name']: restricted[port['name']]})
+        data.update(filter_by_channel(self.definition.outputs, restricted))
+
         return ret

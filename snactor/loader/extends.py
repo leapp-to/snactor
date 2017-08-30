@@ -1,4 +1,4 @@
-from snactor.executors.default import ExecutorDefinition
+from snactor.executors.default import ExecutorDefinition, filter_by_channel
 from snactor.registry import must_get_actor
 from snactor.utils.variables import resolve_variable_spec
 
@@ -20,7 +20,7 @@ class ExtendsActor(object):
 
     def execute(self, data):
         extends = ExtendsActorDefinition(self.definition)
-        restricted = {n['name']: data[n['name']] for n in extends.required_inputs}
+        restricted = filter_by_channel(extends.required_inputs, data)
         restricted.update({
             i['name']: resolve_variable_spec(restricted, i['source'])
             for i in extends.inputs if 'source' in i
@@ -31,6 +31,7 @@ class ExtendsActor(object):
         ret = actor.execute(restricted)
         if ret:
             for output in extends.output:
-                data[output['name']] = resolve_variable_spec(restricted, output['source'])
+                restricted[output['name']] = resolve_variable_spec(restricted, output['source'])
+            data.update(filter_by_channel(extends.output, restricted))
 
         return ret
