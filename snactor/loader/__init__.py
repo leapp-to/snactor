@@ -7,7 +7,8 @@ import yaml
 
 from snactor.definition import Definition
 from snactor.loader.extends import ExtendsActor
-from snactor.registry import register_actor, get_executor, get_actor, register_schema, get_registered_actors, get_schema
+from snactor.registry import register_actor, get_executor, get_actor, register_schema, get_registered_actors,\
+    get_schema
 
 
 def _load(name, definition, tags, post_resolve):
