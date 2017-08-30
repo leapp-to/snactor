@@ -1,9 +1,0 @@
----
-inputs:
-  - name: address
-    type: string
-outputs:
-  - name: system_info
-    type: SystemInfo
-executor:
-  type: default
