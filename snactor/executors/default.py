@@ -1,8 +1,9 @@
 import json
 import logging
 import os
-import jsonschema
 from subprocess import Popen, PIPE
+
+import jsonschema
 
 from snactor.utils.variables import resolve_variable_spec
 from snactor.definition import Definition
