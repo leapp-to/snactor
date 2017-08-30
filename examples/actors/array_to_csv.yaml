@@ -13,7 +13,7 @@ executor:
     from json import load, dumps
     import sys
 
-    inputs = load(sys.stdin).get("string_list").get("value", [])
+    inputs = load(sys.stdin)["string_list"]["value"]
     output_str = ""
     
 
