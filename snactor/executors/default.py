@@ -1,11 +1,12 @@
 import json
 import logging
 import os
+import jsonschema
 from subprocess import Popen, PIPE
 
 from snactor.utils.variables import resolve_variable_spec
 from snactor.definition import Definition
-from snactor.registry import registered_executor, get_environment_extension
+from snactor.registry import registered_executor, get_environment_extension, get_schema
 
 
 class ExecutorDefinition(object):
@@ -17,11 +18,21 @@ class ExecutorDefinition(object):
         self.arguments = init.get('arguments', [])
 
 
+def validate_channel_data(channel, data):
+    try:
+        jsonschema.validate(data, get_schema(channel["type"]))
+    except jsonschema.exceptions.ValidationError as error:
+        msg = "Failed to validate channel '{}'. {}".format(channel["name"], str(error))
+        raise jsonschema.exceptions.ValidationError(msg)
+
+
 def filter_by_channel(channel_list, data):
     result = {}
-    channels = set([e['name'] for e in channel_list])
+    channels = {e['name']: e for e in channel_list}
+
     for k in data.keys():
-        if k in channels:
+        if k in channels.keys():
+            validate_channel_data(channels[k], data[k])
             result[k] = data[k]
     return result
 

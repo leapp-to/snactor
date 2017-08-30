@@ -5,7 +5,9 @@ import yaml
 
 from snactor.definition import Definition
 from snactor.loader.extends import ExtendsActor
-from snactor.registry import register_actor, get_executor, get_actor
+from snactor.registry import register_actor, get_executor, get_actor, register_schema, get_registered_actors, get_schema
+import jsl
+import imp
 
 
 def _load(name, definition, tags, post_resolve):
@@ -86,12 +88,55 @@ def load(location, tags=()):
     tags = set(tags)
     for root, dirs, files in os.walk(location):
         if '_actor.yaml' in files:
+            if "schema" in dirs:
+                load_schemas(os.path.join(root, "schema"))
+
             _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), tags, post_resolve)
         else:
             for f in files:
                 filename, ext = os.path.splitext(f)
                 if not filename.startswith('.') and ext.lower() == '.yaml':
-                    _load(filename, os.path.join(root, f), tags, post_resolve)
+                    _load(filename, os.path.join(root, f), tags)
 
     for item in post_resolve.values():
         _try_resolve(item, post_resolve)
+
+
+def _validate_type(actor_name, direction, typename):
+    _log = logging.getLogger('snactor.loader')
+    if not get_schema(typename):
+        _log.warning("Could not resolve schema for type %s on %s in actor %s", typename, direction, actor_name)
+        return False, (typename, direction, actor_name)
+    return True, None
+
+
+class ActorTypeValidationError(LookupError):
+    def __init__(self, message, data):
+        super(ActorTypeValidationError, self).__init__(message)
+        self.data = data
+
+
+def validate_actor_types():
+    result = []
+    for name, (definition, _) in get_registered_actors().items():
+        result.extend((_validate_type(name, 'inputs', current['type']) for current in definition.inputs))
+        result.extend((_validate_type(name, 'outputs', current['type']) for current in definition.outputs))
+    if not all((item[0] for item in result)):
+        raise ActorTypeValidationError("Failed to lookup schema definitions", (x[1] for x in result if not x[0]))
+
+
+def load_schemas(location):
+    _log = logging.getLogger('snactor.loader')
+
+    for root, dirs, files in os.walk(location):
+        for schema in files:
+            filename, ext = os.path.splitext(schema)
+            if not filename.startswith('.') and ext.lower() == '.py':
+                f, path, description = imp.find_module(filename, [root])
+                mod = imp.load_module(filename, f, path, description)
+
+                for symbol in dir(mod):
+                    item = getattr(mod, symbol)
+                    if isinstance(item, type) and issubclass(item, jsl.Document) and item is not jsl.Document:
+                        _log.debug("Loading schema %s ...", os.path.join(root, schema))
+                        register_schema(symbol, item)

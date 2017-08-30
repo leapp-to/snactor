@@ -1,4 +1,5 @@
 _REGISTERED_ACTORS = {}
+_REGISTERED_SCHEMAS = {}
 _REGISTERED_EXECUTORS = {}
 _REGISTERED_OUTPUT_PROCESSORS = {}
 _REGISTERED_ENVIRON_VARS = {}
@@ -12,6 +13,10 @@ def _instantiate_actor(data):
     if not data:
         return None
     return data[1](data[0])
+
+
+def get_registered_actors():
+    return _REGISTERED_ACTORS
 
 
 def get_actor(actor):
@@ -68,3 +73,13 @@ def register_actor(name, definition, executor):
     if name in _REGISTERED_ACTORS:
         raise LookupError("Actor '{}' has been already registered previously".format(name))
     _REGISTERED_ACTORS[name] = (definition, executor)
+
+
+def get_schema(name):
+    return _REGISTERED_SCHEMAS.get(name)
+
+
+def register_schema(name, definition):
+    if name in _REGISTERED_SCHEMAS:
+        raise LookupError("Type schema '{}' has been already registered previously".format(name))
+    _REGISTERED_SCHEMAS[name] = definition.get_schema()
