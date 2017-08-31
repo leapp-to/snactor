@@ -19,9 +19,9 @@ def _build_cmd(source_path, name, img, init_bin, exposed_ports):
 
     for port in exposed_ports:
         if not port.get('exposed_port'):
-            cmd += ' -p {:d}/{p}'.format(port['container_port'], p=port['protocol'])
+            cmd += ' -p {:d}/{p}'.format(port['port'], p=port['protocol'])
         else:
-            cmd += ' -p {:d}:{:d}/{p}'.format(port['exposed_port'], port['container_port'], p=port['protocol'])
+            cmd += ' -p {:d}:{:d}/{p}'.format(port['exposed_port'], port['port'], p=port['protocol'])
 
     cmd += ' --name ' + name + ' ' + img + ' ' + init_bin
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     out, err = _execute(cmd)
     outputs = {
-        'container_id': out or None,
-        'error': err or None
+        'container_id': dict(value=out),
+        'error': dict(value=err)
     }
     print(json.dumps(outputs))

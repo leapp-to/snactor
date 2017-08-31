@@ -4,7 +4,7 @@ import jsl
 class PortMapping(jsl.Document):
     protocol = jsl.StringField(enum=['udp', 'tcp'], required=True)
     exposed_port = jsl.IntField(minimum=1, maximum=65535, required=False)
-    container_port = jsl.IntField(minimum=1, maximum=65535, required=True)
+    port = jsl.IntField(minimum=1, maximum=65535, required=True)
 
 
 class ExposedPorts(jsl.Document):
