@@ -24,7 +24,7 @@ executor:
     machineinfo = {'osversion': data['osversion'],
                    'hostnameinfo': data['hostnameinfo'],
                    'iplist': data['ip_list'],
-                   'rpm_packages': []}
+                   'rpm_packages': {"packages": []}}
 
     if 'rpm_packages' in data:
         machineinfo['rpm_packages'] = data['rpm_packages']
