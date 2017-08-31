@@ -5,12 +5,16 @@ clean:
 	@find . -name '*.pyo' -exec rm -f {} +
 
 install:
+	pip install -r requirements.txt
 	pip install .
 
 test:
 	py.test --flake8 --cov=snactor
 
+test-no-cov:
+	py.test --flake8
+
 test-all:
 	tox
 
-.PHONY: clean install test test-all
+.PHONY: clean install test test-all test-no-cov

@@ -122,7 +122,6 @@ class ActorTypeValidationError(LookupError):
 def validate_actor_types():
     result = []
     for name, (definition, _) in get_registered_actors().items():
-        print name, definition.inputs, definition.outputs
         result.extend((_validate_type(name, 'inputs', current['type']) for current in definition.inputs
                        if not isinstance(current, ExtendsActor.Definition)))
         result.extend((_validate_type(name, 'outputs', current['type']) for current in definition.outputs

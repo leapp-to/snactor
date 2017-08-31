@@ -14,18 +14,22 @@ Source0:	%{name}-%{version}.tar.gz
 
 BuildRequires:   python2-devel
 BuildRequires:   PyYAML
+BuildRequires:   %{py2_dist jsl}
 BuildRequires:   python2-jsonschema
 %if 0%{?rhel} && 0%{?rhel} <= 7
 BuildRequires:   python-setuptools
 BuildRequires:   epel-rpm-macros
 %else
+%if 0%{?fedora} > 25
 BuildRequires:   %{py2_dist pytest-cov}
+%endif
 BuildRequires:   %{py2_dist pytest-flake8}
 BuildRequires:   python2-setuptools
 BuildRequires:   python-rpm-macros
 %endif
 
 Requires:       PyYAML
+Requires:       %{py2_dist jsl}
 Requires:       python2-jsonschema
 
 %description
@@ -50,7 +54,11 @@ cp -r examples/* %{buildroot}%{_datadir}/%{name}/
 %if 0%{?rhel} && 0%{?rhel} <= 7
 echo 'Skipping tests due to missing dependencies'
 %else
+%if 0%{?fedora} > 25
 make test
+%else
+make test-no-cov
+%endif
 %endif
 %files
 %doc README.md LICENSE
