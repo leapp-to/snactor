@@ -3,7 +3,7 @@ tags:
   - packages
 inputs:
   - name: filter
-    type: String
+    type: BaseTypeString
   - name: rpm_packages
     type: RPMPackages
 outputs:

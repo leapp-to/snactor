@@ -21,17 +21,17 @@ class ExtendsActor(object):
         self.definition = definition
 
     def execute(self, data):
-        restricted = filter_by_channel(self.definition.required_inputs, data)
+        restricted = filter_by_channel(self.definition.inputs, data)
         restricted.update({
-            i['name']: resolve_variable_spec(restricted, i['source'])
-            for i in self.definition.inputs if 'source' in i
+            i['name']: resolve_variable_spec(data, i['source'])
+            for i in self.definition.extended_inputs if 'source' in i
         })
-        restricted.update({i['name']: i['value'] for i in self.definition.inputs if 'value' in i})
+        restricted.update({i['name']: i['value'] for i in self.definition.extended_inputs if 'value' in i})
 
-        actor = must_get_actor(self.definition.name)
+        actor = must_get_actor(self.definition.extended.name)
         ret = actor.execute(restricted)
         if ret:
-            for output in self.definition.outputs:
+            for output in self.definition.extended_outputs:
                 restricted[output['name']] = resolve_variable_spec(restricted, output['source'])
             data.update(filter_by_channel(self.definition.outputs, restricted))
 

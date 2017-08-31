@@ -1,16 +1,16 @@
 ---
 inputs:
   - name: source_system_ports
-    type: TypePortList
+    type: TypePortScan
 
   - name: target_system_ports
-    type: TypePortList
+    type: TypePortScan
 
   - name: user_mapping
     type: TypePortMap
 
   - name: excluded_ports
-    type: TypePortList
+    type: TypePortScan
 
 outputs:
   - name: exposed_ports

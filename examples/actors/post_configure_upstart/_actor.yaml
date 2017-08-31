@@ -1,9 +1,9 @@
 ---
 inputs:
   - name: container_directory
-    type: String
+    type: BaseTypeString
   - name: upstart_service_blacklist
-    type: StringList
+    type: TypeStringList
 executor:
   type: python
   script-file: post_configure_upstart.py
