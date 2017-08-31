@@ -1,6 +1,6 @@
 ---
 inputs:
-  - name: container_dir
+  - name: container_directory
     type: BaseTypeString
   - name: container_name
     type: BaseTypeString

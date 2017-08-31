@@ -1,6 +1,6 @@
 ---
 inputs:
-  - name: container_dir
+  - name: container_directory
     type: BaseTypeString
 
 executor:
@@ -12,7 +12,7 @@ executor:
     import json
 
     data = json.load(sys.stdin)
-    container_dir = data["container_dir"]["value"]
+    container_dir = data["container_directory"]["value"]
     try:
         os.makedirs(container_dir)
     except OSError as exc:
