@@ -1,8 +1,5 @@
 """ Sample script to test extended actor """
-import logging
-from pprint import pprint
-from snactor.loader import load
-from snactor.registry import get_actor
+from generic_runner import run, pprint, get_actor
 
 
 def test_extended_actor():
@@ -30,7 +27,4 @@ def test_extended_actor():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s:%(message)s',
-                        level=logging.DEBUG)
-    load('../actors')
-    test_extended_actor()
+    run(test_extended_actor)

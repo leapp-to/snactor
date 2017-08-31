@@ -1,8 +1,5 @@
 """ Sample script to test group executor """
-import logging
-from pprint import pprint
-from snactor.loader import load, validate_actor_types, load_schemas
-from snactor.registry import get_actor
+from generic_runner import run, pprint, get_actor
 
 
 def test_group_actor():
@@ -13,9 +10,4 @@ def test_group_actor():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s:%(message)s',
-                        level=logging.DEBUG)
-    load('../actors')
-    load_schemas('../schema')
-    validate_actor_types()
-    test_group_actor()
+    run(test_group_actor)

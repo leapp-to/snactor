@@ -1,8 +1,5 @@
 """ Sample script to test simple executor """
-import logging
-from pprint import pprint
-from snactor.loader import load
-from snactor.registry import get_actor
+from generic_runner import run, pprint, get_actor
 
 
 def test_simple_actor():
@@ -13,7 +10,4 @@ def test_simple_actor():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s:%(message)s',
-                        level=logging.DEBUG)
-    load('../actors')
-    test_simple_actor()
+    run(test_simple_actor)

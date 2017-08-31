@@ -1,8 +1,5 @@
 """ Run target checks using snactor """
-import logging
-from pprint import pprint
-from snactor.loader import load
-from snactor.registry import get_actor
+from generic_runner import run, pprint, get_actor
 
 
 def check_target():
@@ -15,7 +12,4 @@ def check_target():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s:%(message)s',
-                        level=logging.INFO)
-    load('../actors', tags=['check_target'])
-    check_target()
+    run(check_target, tags=['check_target'])

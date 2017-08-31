@@ -1,8 +1,5 @@
 """ Sample script to test output processors """
-import logging
-from pprint import pprint
-from snactor.loader import load
-from snactor.registry import get_actor
+from generic_runner import run, pprint, get_actor
 
 
 def test_output_processors():
@@ -20,7 +17,4 @@ def test_output_processors():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format='%(levelname)s:%(message)s',
-                        level=logging.DEBUG)
-    load('../actors')
-    test_output_processors()
+    run(test_output_processors)
