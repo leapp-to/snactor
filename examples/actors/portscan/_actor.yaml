@@ -4,7 +4,7 @@ inputs:
     type: BaseTypeString
 
   - name: scan_options 
-    type: TypeScanOptions
+    type: TypePortScanOptions
 
 outputs:
   - name: port_scan_result

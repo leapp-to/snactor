@@ -123,8 +123,10 @@ def validate_actor_types():
     result = []
     for name, (definition, _) in get_registered_actors().items():
         print name, definition.inputs, definition.outputs
-        result.extend((_validate_type(name, 'inputs', current['type']) for current in definition.inputs if not isinstance(current, ExtendsActor.Definition)))
-        result.extend((_validate_type(name, 'outputs', current['type']) for current in definition.outputs if not isinstance(current, ExtendsActor.Definition)))
+        result.extend((_validate_type(name, 'inputs', current['type']) for current in definition.inputs
+                       if not isinstance(current, ExtendsActor.Definition)))
+        result.extend((_validate_type(name, 'outputs', current['type']) for current in definition.outputs
+                       if not isinstance(current, ExtendsActor.Definition)))
     if not all((item[0] for item in result)):
         raise ActorTypeValidationError("Failed to lookup schema definitions", (x[1] for x in result if not x[0]))
 
