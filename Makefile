@@ -11,10 +11,10 @@ install:
 test:
 	py.test --flake8 --cov=snactor
 
-test-no-cov:
-	py.test --flake8
+test-no-cov-no-flake8:
+	py.test
 
 test-all:
 	tox
 
-.PHONY: clean install test test-all test-no-cov
+.PHONY: clean install test test-all test-no-cov-no-flake8

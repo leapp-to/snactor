@@ -22,8 +22,8 @@ BuildRequires:   epel-rpm-macros
 %else
 %if 0%{?fedora} > 25
 BuildRequires:   python2-pytest-cov
-%endif
 BuildRequires:   python2-pytest-flake8
+%endif
 BuildRequires:   python2-setuptools
 BuildRequires:   python-rpm-macros
 %endif
@@ -57,7 +57,7 @@ echo 'Skipping tests due to missing dependencies'
 %if 0%{?fedora} > 25
 make test
 %else
-make test-no-cov
+make test-no-cov-no-flake8
 %endif
 %endif
 %files
