@@ -1,16 +1,16 @@
 %global debug_package %{nil}
 
-Name:		python-snactor
-Version:	0.1
-Release:	1
-Summary:	Python Actor execution library
+Name:       python-snactor
+Version:    0.1
+Release:    1
+Summary:    Python Actor execution library
 
-Group:		Unspecified
-License:	ASL 2.0
-URL:		https://github.com/leapp-to/snactor
+Group:      Unspecified
+License:    ASL 2.0
+URL:        https://github.com/leapp-to/snactor
 # git clone https://github.com/leapp-to/snactor
 # tito build --tgz --tag=%{version}
-Source0:	%{name}-%{version}.tar.gz
+Source0:    %{name}-%{version}.tar.gz
 
 BuildRequires:   python2-devel
 BuildRequires:   PyYAML
@@ -51,11 +51,10 @@ install -dm 0755 %{buildroot}%{_datadir}/%{name}
 cp -r examples/* %{buildroot}%{_datadir}/%{name}/
 
 %check
-%if 0%{?fedora} <= 25 || 0%{?rhel} && 0%{?rhel} <= 7
+%if 0%{?fedora} <= 25 || (0%{?rhel} && 0%{?rhel} <= 7)
 echo 'Skipping tests due to missing dependencies'
 %else
 make test
-%endif
 %endif
 %files
 %doc README.md LICENSE
