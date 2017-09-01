@@ -13,6 +13,18 @@ outputs:
     type: HostnameInfo
   - name: ip_list
     type: IPList
+
+description: |
+  Gather source system information like OS version, hostname and IP addresses by using Ansible
+
+  Inputs:
+    source_host      - hostname of a source system
+    source_user_name - username for a source system
+  Outputs:
+    osversion        - information about Operating System
+    hostnameinfo     - hostname
+    ip_list          - list of IP addresses
+
 executor:
   type: group
   actors:

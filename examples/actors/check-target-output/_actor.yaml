@@ -8,6 +8,18 @@ inputs:
     type: RSyncInfo
   - name: dockerinfo
     type: DockerInfo
+
+description: |
+  Send information about the services (Docker, Rsync) to a socket
+
+  Inputs:
+    check_tartget_service_status - status of services
+    containerslist               - list of containers
+    rsyncinfo                    - Rsync information (path to bin, version)
+    dockerinfo                   - docker information
+  Outputs:
+    None (sending the result to a socket)
+
 executor:
   type: python
   payload: |

@@ -18,6 +18,18 @@ inputs:
   - name: csv_excluded_paths
     type: BaseTypeString
 
+description: |
+  Copy the files from a source to a target host by using Rsync
+
+  Inputs:
+    source_host         - source system hostname
+    source_user_name    - source system username
+    target_host         - target system hostname
+    container_directory - name of the container directory
+    csv_excluded_paths  - excluded file paths from copying
+  Outputs:
+    None
+
 executor:
   type: bash
   arguments:

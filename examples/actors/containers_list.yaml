@@ -5,6 +5,15 @@ tags:
 outputs:
   - name: containerslist
     type: ContainersList
+
+description: |
+  Returns list of containers on a system
+
+  Inputs:
+    None
+  Outputs:
+    contianerslist - list of containers
+
 executor:
   type: python
   payload: |

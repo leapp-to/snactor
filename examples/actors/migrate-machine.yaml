@@ -24,6 +24,26 @@ inputs:
     type: TypePortScan
   - name: use_default_port_map
     type: BaseTypeBool
+
+description: |
+  Main group actor that provides whole workflow to migrate source system to a macrocontainer
+
+  Inputs:
+    source_host            - source system hostname
+    source_user_name       - username for source system
+    target_host            - target system hostname
+    target_user_name       - username on target system
+    tcp_port_list          - list of TCP ports
+    tcp_ports_user_mapping - user ports mapping
+    excluded_tcp_ports     - excluded ports mapping
+    excluded_paths         - excluded file paths
+    user_container_name    - container name defined by user
+    force_create           - option to create container when the container exists
+                             with given name - remove the old one and create the new one
+    start_container        - option to explicit start the container
+  Outputs:
+    None
+
 executor:
   type: group
   actors:

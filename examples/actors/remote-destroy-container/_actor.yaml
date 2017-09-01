@@ -8,6 +8,17 @@ inputs:
     type: BaseTypeString
   - name: container_directory
     type: BaseTypeString
+
+description: |
+  Delete a container on the target system
+
+  Inputs:
+    target_host      - target system hostname
+    target_user_name - username on target system
+    container_name   - container name to delete
+  Outputs:
+    None (Deleted container)
+
 executor:
   type: ansible-script-module
   host: '@target_host.value@'

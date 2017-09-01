@@ -11,6 +11,18 @@ outputs:
     type: RSyncInfo
   - name: dockerinfo
     type: DockerInfo
+
+description: |
+  Collect information about Docker, Rsync and containers list on a target system
+
+  Inputs:
+    target_host      - target system hostname
+    target_user_name - username on target system
+  Outputs:
+    containerslist   - list of containers on target system
+    rsyncinfo        - collected Rsync information
+    dockerinfo       - collected Docker information
+
 executor:
   type: ansible-script-module
   host: '@target_host.value@'

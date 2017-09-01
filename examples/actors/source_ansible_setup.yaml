@@ -9,6 +9,16 @@ inputs:
 outputs:
     - name: source_ansible_setup
       type: AnsibleSetupModuleFacts
+
+description: |
+  Gather a source system information by using Ansible
+
+  Inputs:
+    source_host          - hostname of a source system
+    source_user_name     - username for a source system
+  Outputs:
+    source_ansible_setup - gathered Ansible Facts (source system information)
+
 executor:
     type: ansible-module
     host: '@source_host.value@'

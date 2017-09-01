@@ -7,14 +7,22 @@ outputs:
   - name: source_system_ports
     type: TypePortScan
 
+description: |
+  Scan ports on source system
+
+  Inputs:
+    source_host         - source system hostname
+  Outputs:
+    source_system_ports - found ports on source system
+
 extends:
   name: portscan
   inputs:
     - name: host
       source: "@source_host@"
 
-    - name: scan_options 
-      value: 
+    - name: scan_options
+      value:
         shallow_scan: True
 
   outputs:

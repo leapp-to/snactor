@@ -8,6 +8,16 @@ inputs:
     type: BaseTypeString
   - name: target_user_name
     type: BaseTypeString
+
+description: |
+  Start container with given name
+
+  Inputs:
+    container_name - name of the container (must be existing one?)
+    start_container - option to explicit start the container
+  Outputs:
+    None (starting the conainer)
+
 executor:
   type: bash
   type: ansible-script-module

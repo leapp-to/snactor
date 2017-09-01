@@ -11,6 +11,17 @@ outputs:
     type: IPList
   - name: osversion
     type: OSVersion
+
+description: |
+  Process Ansible Facts (system information) for further usage
+
+  Inputs:
+    source_ansible_setup - Ansible Facts
+  Outputs:
+    hostnameinfo         - hostname
+    ip_list              - list of IP addresses
+    osversion            - information about Operating System
+
 executor:
   type: python
   payload: |
