@@ -51,13 +51,10 @@ install -dm 0755 %{buildroot}%{_datadir}/%{name}
 cp -r examples/* %{buildroot}%{_datadir}/%{name}/
 
 %check
-%if 0%{?rhel} && 0%{?rhel} <= 7
+%if (0%{?rhel} && 0%{?rhel} <= 7) || 0%{?fedora} <= 25
 echo 'Skipping tests due to missing dependencies'
 %else
-%if 0%{?fedora} > 25
 make test
-%else
-make test-no-cov-no-flake8
 %endif
 %endif
 %files
