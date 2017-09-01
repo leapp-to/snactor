@@ -3,7 +3,7 @@ inputs:
   - name: container_directory
     type: BaseTypeString
   - name: container_name
-    type: BaseTypeString
+    type: ContainerName
   - name: image
     type: BaseTypeString
   - name: init_bin

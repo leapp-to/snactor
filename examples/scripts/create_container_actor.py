@@ -4,7 +4,7 @@ from generic_runner import run, pprint, get_actor
 
 def test_create_container_actor():
     data = {
-        'container_dir': {'value': '/var/lib/leapp/macrocontainers/cos7'},
+        'container_directory': {'value': '/var/lib/leapp/macrocontainers/cos7'},
         'container_name': {'value': 'cos7'},
         'image': {'value': 'centos:7'},
         'init_bin': {'value': '/sbin/init'},

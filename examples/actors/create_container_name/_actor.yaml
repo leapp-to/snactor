@@ -1,7 +1,7 @@
 ---
 inputs:
   - name: container_name
-    type: BaseTypeString
+    type: ContainerName
   - name: hostnameinfo
     type: HostnameInfo
 
