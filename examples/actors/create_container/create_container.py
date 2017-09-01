@@ -31,7 +31,7 @@ def _build_cmd(source_path, name, img, init_bin, exposed_ports):
 if __name__ == "__main__":
     inputs = json.load(sys.stdin)
 
-    cmd = _build_cmd(inputs['container_dir']['value'],
+    cmd = _build_cmd(inputs['container_directory']['value'],
                      inputs['container_name']['value'],
                      inputs['image']['value'],
                      inputs['init_bin']['value'],
