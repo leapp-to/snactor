@@ -51,7 +51,7 @@ install -dm 0755 %{buildroot}%{_datadir}/%{name}
 cp -r examples/* %{buildroot}%{_datadir}/%{name}/
 
 %check
-%if (0%{?rhel} && 0%{?rhel} <= 7) || 0%{?fedora} <= 25
+%if 0%{?fedora} <= 25 || 0%{?rhel} && 0%{?rhel} <= 7
 echo 'Skipping tests due to missing dependencies'
 %else
 make test
