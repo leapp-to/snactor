@@ -14,6 +14,12 @@ class GroupExecutor(Executor):
 
     def __init__(self, definition):
         super(GroupExecutor, self).__init__(definition)
+        verify = set(i['name'] for i in definition.inputs)
+        for actor in self.definition.executor.actors:
+            actor_inputs = set(i['name'] for i in actor.definition.inputs)
+            if actor.definition.inputs and not actor_inputs.issubset(verify):
+                raise LookupError("Missing input available inputs:", verify, "actor requested inputs:", actor_inputs)
+            [verify.add(i['name']) for i in actor.definition.outputs]
 
     def execute(self, data):
         restricted = filter_by_channel(self.definition.inputs, data)
