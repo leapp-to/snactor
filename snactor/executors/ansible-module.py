@@ -1,4 +1,5 @@
 from snactor.executors.default import Executor, registered_executor
+from snactor.utils.variables import resolve_variable_spec, resolve_variable_spec_items
 
 
 class AnsibleModuleExecutorDefinition(Executor.Definition):
@@ -15,7 +16,6 @@ class AnsibleModuleExecutor(Executor):
     Definition = AnsibleModuleExecutorDefinition
 
     def handle_stdout(self, stdout, data):
-        print("STDOUT: ", stdout)
         if stdout.strip():
             _, stdout = stdout.split('|', 1)
             result, stdout = stdout.split('=>', 1)
@@ -32,24 +32,21 @@ class AnsibleModuleExecutor(Executor):
     def execute(self, data):
         self.result = False
         self.definition.executor.executable = 'ansible'
-
+        host = resolve_variable_spec(data, self.definition.executor.host) or 'localhost'
+        user = resolve_variable_spec(data, self.definition.executor.user)
         self.definition.executor.arguments = [
-            '-C', '-cssh',
+            '-C',
             '-m', self.definition.executor.module['name'] or 'setup',
-            '-u', self.definition.executor.user]
-        if self.definition.executor.host and self.definition.executor.host != 'localhost':
-            self.definition.executor.arguments.extend([
-                '-i', self.definition.executor.host + ',', 'all'
-            ])
-        else:
-            self.definition.executor.arguments.append('localhost')
+            '-u', user, '-i', host + ',', 'all'
+        ]
+        self.definition.executor.arguments.append('-clocal' if host == 'localhost' else '-cssh')
 
-        if self.definition.executor.module.get('arguments'):
+        args = self.definition.executor.module.get('arguments', ())
+        if args:
             self.definition.executor.arguments.append('--args')
-            args = self.definition.executor.module.get('arguments', ())
             if not isinstance(args, (tuple, list)):
                 args = (args,)
-            self.definition.executor.arguments.extend(args)
+            self.definition.executor.arguments.extend(resolve_variable_spec_items(data, args))
 
         self.log.debug('Executing: %s %s',
                        self.definition.executor.executable,

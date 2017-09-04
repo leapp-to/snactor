@@ -11,6 +11,12 @@ def assign_to_variable_spec(data, spec, value):
     return data[parts[0]]
 
 
+def resolve_variable_spec_items(data, spec):
+    if isinstance(spec, (tuple, list)):
+        return map(lambda item: resolve_variable_spec(data, item), spec)
+    return (resolve_variable_spec(data, spec),)
+
+
 def resolve_variable_spec(data, spec):
     if data and spec.startswith('@') and spec.endswith('@'):
         for element in spec.strip('@').split('.'):
