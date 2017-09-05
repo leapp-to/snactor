@@ -13,7 +13,7 @@ inputs:
   - name: force_create
     type: BaseTypeBool
   - name: user_container_name
-    type: BaseTypeString
+    type: OptionalContainerName
   - name: excluded_paths
     type: TypeStringList
   - name: tcp_port_list
