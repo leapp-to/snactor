@@ -92,7 +92,7 @@ def map_ports(source_ports, target_ports, user_mapped_ports=None, user_excluded_
 
 def from_user(user_mapping):
     mapping = {}
-    for entry in user_mapping:
+    for entry in user_mapping.get("ports", ()):
         item = mapping.get(entry["port"], [])
         item.append(entry["port"])
         mapping[entry["port"]] = item

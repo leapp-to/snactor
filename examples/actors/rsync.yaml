@@ -42,6 +42,7 @@ executor:
         exit 1
     fi
 
+    set -f
     EXCLUDED_PATHS=$(echo $EXCLUDED_PATHS | tr ',' "\n" | sed -e 's/^\s*\(.*\)\s*$/\1/')
     EXCLUDE_OPTIONS=""
 
@@ -55,3 +56,4 @@ executor:
     fi
 
     rsync -aAX -r $EXCLUDE_OPTIONS ${SOURCE_USER}@${SOURCE_HOST}:/ $STORAGE_PATH
+    exit 0;
