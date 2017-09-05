@@ -6,7 +6,7 @@ from snactor.utils.variables import resolve_variable_spec
 
 class ExtendsActorDefinition(Definition):
     def __init__(self, name, init):
-        super(ExtendsActorDefinition, self).__init__(init)
+        super(ExtendsActorDefinition, self).__init__(name, init)
         self.name = name
         self.extended = init['extended']
         self.extended_inputs = init.get('extends', {}).get('inputs', ())

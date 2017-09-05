@@ -15,11 +15,13 @@ inputs:
   - name: user_container_name
     type: BaseTypeString
   - name: excluded_paths
-    type: BaseTypeString
+    type: TypeStringList
   - name: tcp_port_list
     type: BaseTypeString
-  - name: excluded_tcp_port_list
-    type: BaseTypeString
+  - name: tcp_ports_user_mapping
+    type: ExposedPorts
+  - name: excluded_tcp_ports
+    type: TypePortScan
 executor:
   type: group
   actors:
