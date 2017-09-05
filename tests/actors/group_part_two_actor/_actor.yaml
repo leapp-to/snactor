@@ -1,8 +1,9 @@
 tags:
 - group_actor
 outputs:
-- name: foo
-  type: Foo
+  - name: foo
+    type:
+      name: Foo
 description: |
   This actor will be part of a group
 executor:

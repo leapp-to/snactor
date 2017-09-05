@@ -1,8 +1,9 @@
 tags:
 - load_twice_actor
 outputs:
-- name: foo
-  type: Foo
+  - name: foo
+    type:
+      name: Foo
 description: |
   This actor will be loaded twice and should fail
 executor:

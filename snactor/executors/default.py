@@ -33,9 +33,9 @@ class ExecutorDefinition(object):
 
 def validate_channel_data(channel, data):
     try:
-        jsonschema.validate(data, must_get_schema(channel["type"]))
+        jsonschema.validate(data, must_get_schema(channel["name"], channel["version"]))
     except jsonschema.exceptions.ValidationError as error:
-        msg = "Failed to validate channel '{}'. {}".format(channel["name"], str(error))
+        msg = "Failed to validate channel '{}'. {}".format(channel["name"], channel["version"], str(error))
         raise jsonschema.exceptions.ValidationError(msg)
 
 
@@ -45,7 +45,7 @@ def filter_by_channel(channel_list, data):
 
     for k in data.keys():
         if k in channels.keys():
-            validate_channel_data(channels[k], data[k])
+            validate_channel_data(channels[k]["type"], data[k])
             result[k] = data[k]
     return result
 

@@ -7,6 +7,7 @@ from snactor.registry.executors import get_executor, registered_executor
 from snactor.registry.actors import register_actor, get_registered_actors, get_actor, _clear_actors
 from snactor.registry.envs import get_environment_extension, register_environment_variable
 from snactor.registry.output_processors import get_output_processor, registered_output_processor
+from snactor.registry.schemas import LATEST
 
 
 @pytest.fixture(scope="module")
@@ -70,16 +71,17 @@ def test_schema_registration():
     }
 
     # double insert
-    register_schema('name1', definition1)
-    register_schema('name1', definition1)
+    register_schema('name1', LATEST, definition1)
+    register_schema('name1', LATEST, definition1)
 
     # lookup error
     with pytest.raises(LookupError):
-        register_schema('name1', definition2)
+        register_schema('name1', LATEST, definition2)
 
     # retrieve
-    assert get_schema('non_existent_name') is None
-    assert get_schema('name1') == definition1
+    assert get_schema('non_existent_name', LATEST) is None
+    assert get_schema('name1', LATEST) == definition1
+    assert get_schema('name1', "non_existing_version") is None
 
 
 def test_output_processor_registration():

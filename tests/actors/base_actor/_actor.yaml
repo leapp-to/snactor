@@ -2,7 +2,8 @@ tags:
 - extends_actor
 outputs:
 - name: foo
-  type: Foo
+  type:
+    name: Foo
 description: |
   This actor will be extended
 executor:

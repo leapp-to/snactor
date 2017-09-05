@@ -3,11 +3,10 @@ import logging
 import os
 import sys
 
-import jsl
 import yaml
 
 from snactor.definition import Definition
-from snactor.registry import register_actor, get_actor, register_schema, get_registered_actors, get_schema
+from snactor.registry import register_actor, get_actor, get_registered_actors, get_schema
 
 _LOADED_ACTOR_PATH = None
 
@@ -96,11 +95,15 @@ def load(location, tags=()):
         _try_resolve(item, post_resolve)
 
 
-def _validate_type(actor_name, direction, typename):
+def _validate_type(actor_name, direction, type_definition):
     _log = logging.getLogger('snactor.loader')
-    if not get_schema(typename):
-        _log.warning("Could not resolve schema for type %s on %s in actor %s", typename, direction, actor_name)
-        return False, (typename, direction, actor_name)
+    if not get_schema(type_definition["name"], type_definition["version"]):
+        _log.warning("Could not resolve schema for type %s@%s on %s in actor %s",
+                     type_definition["name"],
+                     type_definition["version"],
+                     direction,
+                     actor_name)
+        return False, (type_definition["name"], direction, actor_name)
     return True, None
 
 
@@ -127,12 +130,9 @@ def load_schemas(location):
         for schema_file in files:
             module_name, ext = os.path.splitext(schema_file)
             if not module_name.startswith('.') and ext.lower() == '.py':
+                _log.debug("Loading schema(s) from  %s", os.path.join(root, schema_file))
                 f, path, description = imp.find_module(module_name, [root])
+                # Load schema module
+                imp.load_module(module_name, f, path, description)
 
-                mod = imp.load_module(module_name, f, path, description)
-                for symbol in dir(mod):
-                    item = getattr(mod, symbol)
-                    if isinstance(item, type) and issubclass(item, jsl.Document) and item is not jsl.Document:
-                        _log.debug("Loading schema %s from %s...", symbol, os.path.join(root, schema_file))
-                        register_schema(symbol, item.get_schema())
     sys.path.pop()
