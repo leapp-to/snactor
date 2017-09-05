@@ -8,6 +8,8 @@ inputs:
     type: OSVersion
   - name: exposed_ports
     type: ExposedPorts
+  - name: force_create
+    type: BaseTypeBool
 outputs:
   - name: container_id
     type: BaseTypeString

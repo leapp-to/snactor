@@ -8,9 +8,12 @@ def _execute(cmd):
     return Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE).communicate()
 
 
-def _build_cmd(source_path, name, version, exposed_ports):
+def _build_cmd(source_path, name, version, force, exposed_ports):
     good_mounts = ['bin', 'etc', 'home', 'lib', 'lib64', 'media',
                    'opt', 'root', 'sbin', 'srv', 'usr', 'var']
+
+    if force:
+        _execute('docker rm -f {}'.format(name))
 
     cmd = 'docker create --restart always -ti -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
 
@@ -34,6 +37,7 @@ if __name__ == "__main__":
     cmd = _build_cmd(inputs['container_directory']['value'],
                      inputs['container_name']['value'],
                      inputs['osversion']["version"].split(".")[0],
+                     inputs['force_create']['value'],
                      inputs['exposed_ports']['ports'])
 
     out, err = _execute(cmd)
