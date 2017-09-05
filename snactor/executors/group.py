@@ -18,7 +18,8 @@ class GroupExecutor(Executor):
         for actor in self.definition.executor.actors:
             actor_inputs = set(i['name'] for i in actor.definition.inputs)
             if actor.definition.inputs and not actor_inputs.issubset(verify):
-                raise LookupError("Missing input available for actor ", actor.definition.name, " inputs:", verify, "actor requested inputs:", actor_inputs, "\nMissing input", actor_inputs - verify)
+                raise LookupError("Missing input available for actor ", actor.definition.name, " inputs:", verify,
+                                  "actor requested inputs:", actor_inputs, "Missing input", actor_inputs - verify)
             [verify.add(i['name']) for i in actor.definition.outputs]
 
     def execute(self, data):
