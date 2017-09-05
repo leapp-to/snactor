@@ -1,6 +1,10 @@
 _REGISTERED_SCHEMAS = {}
 
 
+def must_get_schema(name):
+    return _REGISTERED_SCHEMAS[name]
+
+
 def get_schema(name):
     return _REGISTERED_SCHEMAS.get(name)
 

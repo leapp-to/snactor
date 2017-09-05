@@ -14,7 +14,7 @@ def assign_to_variable_spec(data, spec, value):
 def resolve_variable_spec_items(data, spec):
     if isinstance(spec, (tuple, list)):
         return map(lambda item: resolve_variable_spec(data, item), spec)
-    return (resolve_variable_spec(data, spec),)
+    return resolve_variable_spec(data, spec),
 
 
 def resolve_variable_spec(data, spec):

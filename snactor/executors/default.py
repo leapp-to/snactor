@@ -7,7 +7,7 @@ import jsonschema
 
 from snactor.utils.variables import resolve_variable_spec
 from snactor.definition import Definition
-from snactor.registry import registered_executor, get_environment_extension, get_schema
+from snactor.registry import registered_executor, get_environment_extension, must_get_schema
 
 
 class ExecutorDefinition(object):
@@ -21,7 +21,7 @@ class ExecutorDefinition(object):
 
 def validate_channel_data(channel, data):
     try:
-        jsonschema.validate(data, get_schema(channel["type"]))
+        jsonschema.validate(data, must_get_schema(channel["type"]))
     except jsonschema.exceptions.ValidationError as error:
         msg = "Failed to validate channel '{}'. {}".format(channel["name"], str(error))
         raise jsonschema.exceptions.ValidationError(msg)
