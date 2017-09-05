@@ -76,7 +76,7 @@ def _try_resolve(current, to_resolve):
             actor = get_actor(name)
 
         if not actor:
-            raise LookupError("Failed to resolve dependencies for {}".format(current['name']))
+            raise LookupError("Failed to resolve dependency '{}' for {}".format(name, current['name']))
 
     if definition.get('extends'):
         _apply_extension_resolve(current, get_actor(definition['extends'].get('name')))

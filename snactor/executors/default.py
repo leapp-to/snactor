@@ -74,7 +74,7 @@ class Executor(object):
 
     def execute(self, data):
         input_data = filter_by_channel(self.definition.inputs, data)
-        params = [resolve_variable_spec(data, a) for a in self.definition.executor.arguments]
+        params = [str(resolve_variable_spec(data, a)) for a in self.definition.executor.arguments]
         executable = self.definition.executor.executable
 
         env = os.environ.copy()

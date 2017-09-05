@@ -28,6 +28,7 @@ BuildRequires:   python2-setuptools
 BuildRequires:   python-rpm-macros
 %endif
 
+Requires:       ansible
 Requires:       PyYAML
 Requires:       python2-jsl
 Requires:       python2-jsonschema
