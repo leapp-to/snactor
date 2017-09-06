@@ -1,23 +1,17 @@
 ---
 inputs:
-  - name: leapp_root 
+  - name: container_directory 
     type: BaseTypeString
-  
-  - name: container_name 
-    type: BaseTypeString
-
 
 executor:
   type: bash
   arguments:
-    - "@leapp_root.value@"
-    - "@container_name.value@"
+    - "@container_directory.value@"
   payload: |
-    LEAPP_ROOT=$1
-    CONTAINER_NAME=$2
+    CONTAINER_DIRECTORY=$1
    
-    cd $LEAPP_ROOT/$CONTAINER_NAME
+    cd $CONTAINER_DIRECTORY 
 
     # Move hosts, so it can be used in docker 
-    mv etc/hosts /etc/hosts.source
+    mv etc/hosts etc/hosts.source
     ln -s etc/hosts.source etc/hosts
