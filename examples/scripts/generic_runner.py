@@ -11,9 +11,9 @@ from snactor.loader import load, load_schemas, validate_actor_types, get_registe
 
 def actor_names_by_tags(tags, names=None):
     if names is None:
-        return [name for name, a  in get_registered_actors().items() if a[0].tags.intersection(tags)]
+        return [name for name, a in get_registered_actors().items() if a[0].tags.intersection(tags)]
     else:
-        return [name for name, a  in get_registered_actors().items() if a[0].tags.intersection(tags) and name in names]
+        return [name for name, a in get_registered_actors().items() if a[0].tags.intersection(tags) and name in names]
 
 
 def run(fun, tags=()):
@@ -37,5 +37,4 @@ def wf_run(final_actor, fun, tags=()):
         wfresult = wf.run(final_actor)
         fun(wfresult)
 
-    wftags = ('depsolver',) + tags
     run(wf_construct_run, tags)
