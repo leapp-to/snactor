@@ -1,0 +1,13 @@
+---
+inputs:
+  - name: host
+    type: BaseTypeString
+
+  - name: scan_options
+    type: TypePortScanOptions
+
+executor:
+  type: group
+  actors:
+    - portscan
+    - port-inspect-output

@@ -1,0 +1,8 @@
+---
+inputs:
+  - name: port_scan_result
+    type: TypePortScan
+executor:
+  type: bash
+  payload:
+    $ACTOR_PRINTER
