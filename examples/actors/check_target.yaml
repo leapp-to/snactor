@@ -1,6 +1,7 @@
 ---
 tags:
   - check_target
+  - depsolver
 inputs:
   - name: rsyncinfo
     type: RSyncInfo
