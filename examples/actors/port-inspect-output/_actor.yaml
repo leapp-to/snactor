@@ -4,5 +4,5 @@ inputs:
     type: TypePortScan
 executor:
   type: bash
-  payload:
-    $ACTOR_PRINTER
+  payload: |
+    $LEAPP_ACTOR_OUTPUT '{"status": "success", "err_msg": "", "ports": {{json .port_scan_result}} }'
