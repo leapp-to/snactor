@@ -1,0 +1,8 @@
+---
+inputs:
+  - name: exposed_ports
+    type: ExposedPorts
+executor:
+  type: bash
+  payload: |
+    $LEAPP_ACTOR_OUTPUT '[{{range .exposed_ports.ports}}[{{.exposed_port}}, {{.port}}],{{end}}]'

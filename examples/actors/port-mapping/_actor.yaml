@@ -1,0 +1,17 @@
+---
+inputs:
+  - name: source_host
+    type: BaseTypeString
+  - name: target_host
+    type: BaseTypeString
+  - name: tcp_ports_user_mapping
+    type: ExposedPorts
+  - name: excluded_tcp_ports
+    type: TypePortScan
+executor:
+  type: group
+  actors:
+    - source_portscan
+    - target_portscan
+    - portmap
+    - port-mapping-output
