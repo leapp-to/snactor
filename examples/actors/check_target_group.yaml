@@ -14,3 +14,4 @@ executor:
     - docker_info
     - rsync_info
     - containers_list
+    - check-target-output
