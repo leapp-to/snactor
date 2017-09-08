@@ -1,0 +1,16 @@
+---
+inputs:
+  - name: containerslist
+    type: ContainersList
+executor:
+  type: python
+  payload: |
+    import json
+    import socket
+    import sys
+    import os
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect(os.environ['LEAPP_ACTOR_STDOUT_SOCK'])
+    containers = '\n'.join(container.strip('"') for container in json.load(sys.stdin)['containerslist']['containers'])
+    s.sendall(containers + '\n')
+    s.close()
