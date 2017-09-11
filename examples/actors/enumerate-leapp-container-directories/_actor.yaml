@@ -4,7 +4,7 @@ outputs:
     type: TypeStringList
 executor:
   type: python
-  payload:
+  payload: |
     import json
     import os
     import sys
