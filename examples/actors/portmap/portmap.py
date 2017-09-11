@@ -94,7 +94,7 @@ def from_user(user_mapping):
     mapping = {}
     for entry in user_mapping.get("ports", ()):
         item = mapping.get(entry["port"], [])
-        item.append(entry["port"])
+        item.append(entry["exposed_port"])
         mapping[entry["port"]] = item
     return {key: list(set(value)) for key, value in mapping.items()}
 
