@@ -8,6 +8,8 @@ inputs:
     type: RSyncInfo
   - name: dockerinfo
     type: DockerInfo
+  - name: leapp_container_directories
+    type: TypeStringList
 executor:
   type: python
   payload: |
@@ -19,6 +21,8 @@ executor:
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     s.connect(os.environ['LEAPP_ACTOR_STDOUT_SOCK'])
     containers = [container.strip('"') for container in data['containerslist']['containers']]
+    # Add all the directories and container names together to create the list of blocked container names
+    containers = list(set(containers + data['leapp_container_directories']['value']))
     if data['check_target_service_status']['value']:
         rsync_status = 'error'
         docker_status = 'error'

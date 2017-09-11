@@ -11,10 +11,13 @@ outputs:
     type: DockerInfo
   - name: containerslist
     type: ContainersList
+  - name: leapp_container_directories
+    type: TypeStringList
 executor:
   type: group
   actors:
     - docker_info
     - rsync_info
     - containers_list
+    - enumerate-leapp-container-directories
     - check-target-output
