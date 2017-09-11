@@ -1,0 +1,11 @@
+---
+tags:
+  - check_target
+  - depsolver
+outputs:
+  - name: dockerinfo
+    type: DockerInfo
+executor:
+  type: python
+  script-file: docker-info.py
+

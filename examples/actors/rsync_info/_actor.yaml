@@ -1,0 +1,10 @@
+---
+tags:
+  - check_target
+  - depsolver
+outputs:
+  - name: rsyncinfo
+    type: RSyncInfo
+executor:
+  type: python
+  script-file: rsync-info.py
