@@ -28,9 +28,8 @@ executor:
 
     macrocontainers = '/var/lib/leapp/macrocontainers/'
     if os.path.isdir(macrocontainers):
-        retcode, out, err = run_cmd('ls -l "{}"'.format(macrocontainers))
-        if retcode == 0:
-            containerslist['containers'].extend(out.splitlines())
+        _, directories, _ = os.path.walk(macrocontainers).next()
+        containerslist['containers'].extend(directories)
 
-    containerslist['containers'].sort()
+    containerslist['containers'] = list(set(containerslist['containers']))
     print(json.dumps({'containerslist': containerslist}))

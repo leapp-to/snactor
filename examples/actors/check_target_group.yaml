@@ -19,5 +19,4 @@ executor:
     - docker_info
     - rsync_info
     - containers_list
-    - enumerate-leapp-container-directories
     - check-target-output

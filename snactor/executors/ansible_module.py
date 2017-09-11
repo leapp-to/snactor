@@ -35,7 +35,6 @@ class AnsibleModuleExecutor(Executor):
         host = resolve_variable_spec(data, self.definition.executor.host) or 'localhost'
         user = resolve_variable_spec(data, self.definition.executor.user)
         self.definition.executor.arguments = [
-            '-C',
             '-m', self.definition.executor.module['name'] or 'setup',
             '-u', user, '-i', host + ',', 'all'
         ]

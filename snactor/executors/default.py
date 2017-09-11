@@ -79,7 +79,8 @@ class Executor(object):
 
         env = os.environ.copy()
         env.update(get_environment_extension())
-        p = Popen([executable] + params, stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env)
+        p = Popen([executable] + params, stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env,
+                  cwd=self.definition.executor.base_path)
         stdin = self.handle_stdin(input_data)
         out, err = p.communicate(stdin)
         self.handle_stderr(err, data)
