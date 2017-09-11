@@ -1,6 +1,9 @@
 ---
 tags:
   - check_target
+inputs:
+  - name: check_target_service_status
+    type: BaseTypeBool
 outputs:
   - name: rsyncinfo
     type: RSyncInfo
