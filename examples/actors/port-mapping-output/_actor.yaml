@@ -5,4 +5,4 @@ inputs:
 executor:
   type: bash
   payload: |
-    $LEAPP_ACTOR_OUTPUT '[{{range .exposed_ports.ports}}[{{.exposed_port}}, {{.port}}],{{end}}]'
+    $LEAPP_ACTOR_OUTPUT '[{{range $index, $element := .exposed_ports.ports}}{{if $index}},{{end}}[{{$element.exposed_port}}, {{$element.port}}]{{end}}]'
