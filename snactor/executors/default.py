@@ -43,6 +43,7 @@ class Executor(object):
     Definition = ExecutorDefinition
 
     def __init__(self, definition):
+        self._environ = {}
         self.definition = definition or Definition(dict(executor=self.Definition({})))
         self.log = logging.getLogger(self.definition.name).getChild(self.__class__.__name__)
 
@@ -79,6 +80,7 @@ class Executor(object):
 
         env = os.environ.copy()
         env.update(get_environment_extension())
+        env.update(self._environ)
         p = Popen([executable] + params, stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env,
                   cwd=self.definition.executor.base_path)
         stdin = self.handle_stdin(input_data)

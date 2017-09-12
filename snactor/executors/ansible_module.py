@@ -34,8 +34,9 @@ class AnsibleModuleExecutor(Executor):
         self.definition.executor.executable = 'ansible'
         host = resolve_variable_spec(data, self.definition.executor.host) or 'localhost'
         user = resolve_variable_spec(data, self.definition.executor.user)
+
+        self._environ["ANSIBLE_HOST_KEY_CHECKING"] = "False"
         self.definition.executor.arguments = [
-            '-e', 'host_key_checking=False',
             '-m', self.definition.executor.module['name'] or 'setup',
             '-u', user, '-i', host + ',', 'all',
         ]
