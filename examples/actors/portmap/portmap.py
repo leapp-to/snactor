@@ -102,6 +102,8 @@ def from_user(user_mapping):
 if __name__ == '__main__':
     inputs = load(sys.stdin)
 
+    use_default_port_map = inputs["use_default_port_map"]["value"]
+
     # Required arguments
     src_dict = inputs["source_system_ports"]
     tgt_dict = inputs["target_system_ports"]
@@ -110,7 +112,7 @@ if __name__ == '__main__':
     usr_dict = inputs.get("tcp_ports_user_mapping", {})
     exc_dict = inputs.get("excluded_tcp_ports", {})
 
-    src = PortList(src_dict)
+    src = PortList(src_dict) if use_default_port_map else PortList()
     tgt = PortList(tgt_dict)
     exc = PortList(exc_dict)
     usr = PortMap(from_user(usr_dict))
