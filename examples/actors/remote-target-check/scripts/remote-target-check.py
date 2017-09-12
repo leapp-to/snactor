@@ -31,5 +31,8 @@ if os.path.isdir(LEAPP_CONTAINER_DIRECTORY):
     _, directories, _ = os.walk(LEAPP_CONTAINER_DIRECTORY).next()
     containers += directories
 
-info["containerslist"] = {"containers": list(set(containers))}
+containers = list(set(containers))
+containers.sort()
+
+info["containerslist"] = {"containers": containers}
 sys.stdout.write(json.dumps(info))
