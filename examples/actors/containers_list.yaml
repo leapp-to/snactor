@@ -20,11 +20,11 @@ executor:
     containerslist = {'retcode': None,
                       'containers': []}
 
-    retcode, out, err = run_cmd('docker ps -a --format "{{.Names}}"')
-    
+    retcode, out, err = run_cmd('docker ps -a --format {{.Names}}')
+
     containerslist['retcode'] = retcode
     if retcode == 0:
-        containerslist['containers'] = [container.strip('"') for container in out.splitlines()]
+        containerslist['containers'] = out.splitlines()
 
     macrocontainers = '/var/lib/leapp/macrocontainers/'
     if os.path.isdir(macrocontainers):
