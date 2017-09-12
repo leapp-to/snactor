@@ -6,7 +6,7 @@ from pprint import pprint  # noqa
 _BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(os.path.dirname(_BASE_DIR))
 
-from snactor.loader import load, load_schemas, validate_actor_types, get_registered_actors  # noqa
+from snactor.loader import load, load_schemas, validate_actor_types, get_actor, get_registered_actors  # noqa
 
 
 def actor_names_by_tags(tags, names=None):

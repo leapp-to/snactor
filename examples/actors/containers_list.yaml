@@ -28,7 +28,7 @@ executor:
 
     macrocontainers = '/var/lib/leapp/macrocontainers/'
     if os.path.isdir(macrocontainers):
-        _, directories, _ = os.path.walk(macrocontainers).next()
+        _, directories, _ = os.walk(macrocontainers).next()
         containerslist['containers'].extend(directories)
 
     containerslist['containers'] = list(set(containerslist['containers']))
