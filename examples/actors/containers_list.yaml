@@ -24,7 +24,7 @@ executor:
     
     containerslist['retcode'] = retcode
     if retcode == 0:
-        containerslist['containers'] = out.splitlines()
+        containerslist['containers'] = [container.strip('"') for container in out.splitlines()]
 
     macrocontainers = '/var/lib/leapp/macrocontainers/'
     if os.path.isdir(macrocontainers):
