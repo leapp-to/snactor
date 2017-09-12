@@ -35,8 +35,9 @@ class AnsibleModuleExecutor(Executor):
         host = resolve_variable_spec(data, self.definition.executor.host) or 'localhost'
         user = resolve_variable_spec(data, self.definition.executor.user)
         self.definition.executor.arguments = [
+            '-e', 'host_key_checking=False',
             '-m', self.definition.executor.module['name'] or 'setup',
-            '-u', user, '-i', host + ',', 'all'
+            '-u', user, '-i', host + ',', 'all',
         ]
         self.definition.executor.arguments.append('-clocal' if host in ('localhost', '127.0.0.1') else '-cssh')
 
