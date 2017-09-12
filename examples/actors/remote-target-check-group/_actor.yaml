@@ -1,9 +1,11 @@
 ---
-tags:
-  - check_target
 inputs:
   - name: check_target_service_status
     type: BaseTypeBool
+  - name: target_host
+    type: BaseTypeString
+  - name: target_user_name
+    type: BaseTypeString
 outputs:
   - name: rsyncinfo
     type: RSyncInfo
@@ -14,7 +16,5 @@ outputs:
 executor:
   type: group
   actors:
-    - docker_info
-    - rsync_info
-    - containers_list
+    - remote-target-check
     - check-target-output
