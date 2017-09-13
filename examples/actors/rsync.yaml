@@ -9,6 +9,9 @@ inputs:
   - name: target_host
     type: BaseTypeString
 
+  - name: target_user_name
+    type: BaseTypeString
+
   - name: container_directory
     type: BaseTypeString
 
@@ -21,20 +24,16 @@ executor:
     - "@source_host.value@"
     - "@source_user_name.value@"
     - "@target_host.value@"
+    - "@target_user_name.value@"
     - "@container_directory.value@"
     - "@csv_excluded_paths.value@"
   payload: |
     SOURCE_HOST=$1
     SOURCE_USER=$2
     TARGET_HOST=$3
-    STORAGE_PATH=$4
-    EXCLUDED_PATHS=$5
-    
-    # Target check
-    if [ "localhost" != $TARGET_HOST ] && [ "127.0.0.1" != $TARGET_HOST ]; then
-        >&2 echo "Unsupported target"
-        exit 1
-    fi
+    TARGET_USER=$4
+    STORAGE_PATH=$5
+    EXCLUDED_PATHS=$6
 
     # Check path
     if [ -z $STORAGE_PATH ]; then
@@ -56,4 +55,9 @@ executor:
     fi
 
     rsync -aAX -r $EXCLUDE_OPTIONS ${SOURCE_USER}@${SOURCE_HOST}:/ $STORAGE_PATH
+
+    # In case of a remote target
+    if [ "localhost" != $TARGET_HOST ] && [ "127.0.0.1" != $TARGET_HOST ]; then
+      rsync -aAX -r ${STORAGE_PATH}/ ${TARGET_USER}@${TARGET_HOST}:$STORAGE_PATH
+    fi
     exit 0;
