@@ -22,6 +22,8 @@ inputs:
     type: ExposedPorts
   - name: excluded_tcp_ports
     type: TypePortScan
+  - name: use_default_port_map
+    type: BaseTypeBool
 executor:
   type: group
   actors:
