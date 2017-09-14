@@ -10,12 +10,18 @@ inputs:
     type: ExposedPorts
   - name: force_create
     type: BaseTypeBool
+  - name: target_host
+    type: BaseTypeString
+  - name: target_user_name
+    type: BaseTypeString
 outputs:
   - name: container_id
     type: BaseTypeString
   - name: error
     type: BaseTypeString
 executor:
-  type: python
+  type: ansible-script-module
+  host: '@target_host.value@'
+  user: '@target_user_name.value@'
   script-file: create_container.py
 

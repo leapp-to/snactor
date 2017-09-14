@@ -1,18 +1,20 @@
 ---
 inputs:
+  - name: container_name
+    type: ContainerName
+  - name: start_container
+    type: BaseTypeBool
   - name: target_host
     type: BaseTypeString
   - name: target_user_name
     type: BaseTypeString
-  - name: container_name
-    type: BaseTypeString
-  - name: container_directory
-    type: BaseTypeString
 executor:
+  type: bash
   type: ansible-script-module
   host: '@target_host.value@'
   user: '@target_user_name.value@'
-  script-file: ./scripts/delete-containers.py
+  script-file: start.sh
   arguments:
-    - '@container_directory.value@'
-    - '@container_name.value@'
+    - "@container_name.value@"
+    - "@start_container.value@"
+
