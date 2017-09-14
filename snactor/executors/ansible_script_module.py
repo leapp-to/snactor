@@ -38,7 +38,5 @@ class AnsibleScriptModuleExecutor(AnsibleModuleExecutor):
     def execute(self, data):
         translated = (resolve_variable_spec(data, item) for item in self.definition.executor.module['arguments'])
         translated = [shlex_quote(json.dumps(item)) if isinstance(item, dict) else str(item)for item in translated]
-        user = resolve_variable_spec(data, self.definition.executor.user)
-        prefix = ['sudo'] if user != 'root' else []
-        self.definition.executor.module['arguments'] = [' '.join(prefix + translated)]
+        self.definition.executor.module['arguments'] = [' '.join(translated)]
         return super(AnsibleScriptModuleExecutor, self).execute(data)

@@ -14,9 +14,9 @@ def _build_cmd(source_path, name, version, force, exposed_ports):
                    'opt', 'root', 'sbin', 'srv', 'usr', 'var']
 
     if force:
-        _execute('docker rm -f {}'.format(name))
+        _execute('sudo docker rm -f {}'.format(name))
 
-    cmd = 'docker create --restart always -ti -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
+    cmd = 'sudo docker create --restart always -ti -v /sys/fs/cgroup:/sys/fs/cgroup:ro'
 
     for mount in good_mounts:
         cmd += ' -v {d}/{m}:/{m}:Z'.format(d=source_path, m=mount)
