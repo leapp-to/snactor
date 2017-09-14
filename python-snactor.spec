@@ -32,6 +32,11 @@ Requires:       ansible
 Requires:       PyYAML
 Requires:       python2-jsl
 Requires:       python2-jsonschema
+%if 0%{?rhel} && 0%{?rhel} <= 7
+Requires:       python-six
+%else
+Requires:       python2-six
+%endif
 
 %description
 

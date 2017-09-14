@@ -1,4 +1,5 @@
 import json
+from six.moves import shlex_quote
 
 from snactor.executors.ansible_module import AnsibleModuleExecutor, registered_executor, resolve_variable_spec
 
@@ -35,7 +36,9 @@ class AnsibleScriptModuleExecutor(AnsibleModuleExecutor):
         super(AnsibleScriptModuleExecutor, self).__init__(definition)
 
     def execute(self, data):
-        translated = (resolve_variable_spec(data, entry) for entry in self.definition.executor.module['arguments'])
-        translated = (json.dumps(entry) if isinstance(entry, dict) else entry for entry in translated)
-        self.definition.executor.module['arguments'] = [' '.join(translated)]
+        translated = (resolve_variable_spec(data, item) for item in self.definition.executor.module['arguments'])
+        translated = [shlex_quote(json.dumps(item)) if isinstance(item, dict) else str(item)for item in translated]
+        user = resolve_variable_spec(data, self.definition.executor.user)
+        prefix = ['sudo'] if user != 'root' else []
+        self.definition.executor.module['arguments'] = [' '.join(prefix + translated)]
         return super(AnsibleScriptModuleExecutor, self).execute(data)
