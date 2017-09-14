@@ -106,6 +106,7 @@ def from_user(user_mapping):
             result[proto][port].sort()
     return result
 
+
 if __name__ == '__main__':
     inputs = load(sys.stdin)
 
