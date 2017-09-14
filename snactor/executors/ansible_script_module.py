@@ -36,5 +36,6 @@ class AnsibleScriptModuleExecutor(AnsibleModuleExecutor):
 
     def execute(self, data):
         translated = (resolve_variable_spec(data, entry) for entry in self.definition.executor.module['arguments'])
+        translated = (json.dumps(entry) if isinstance(entry, dict) else entry for entry in translated)
         self.definition.executor.module['arguments'] = [' '.join(translated)]
         return super(AnsibleScriptModuleExecutor, self).execute(data)
