@@ -93,11 +93,18 @@ def map_ports(source_ports, target_ports, user_mapped_ports=None, user_excluded_
 def from_user(user_mapping):
     mapping = {}
     for entry in user_mapping.get("ports", ()):
-        item = mapping.get(entry["port"], [])
+        proto = mapping.get(entry["protocol"], {})
+        item = proto.get(entry["port"], [])
         item.append(entry["exposed_port"])
-        mapping[entry["port"]] = item
-    return {"tcp": {key: list(set(value)) for key, value in mapping.items()}}
-
+        proto[entry["port"]] = item
+        mapping[entry["protocol"]] = proto
+    result = {}
+    for proto in mapping.keys():
+        result[proto] = {}
+        for port, exposed_ports in mapping[proto].items():
+            result[proto][port] = list(set(exposed_ports))
+            result[proto][port].sort()
+    return result
 
 if __name__ == '__main__':
     inputs = load(sys.stdin)
