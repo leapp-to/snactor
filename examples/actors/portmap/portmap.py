@@ -96,7 +96,7 @@ def from_user(user_mapping):
         item = mapping.get(entry["port"], [])
         item.append(entry["exposed_port"])
         mapping[entry["port"]] = item
-    return {key: list(set(value)) for key, value in mapping.items()}
+    return {"tcp": {key: list(set(value)) for key, value in mapping.items()}}
 
 
 if __name__ == '__main__':

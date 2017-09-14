@@ -58,6 +58,6 @@ executor:
 
     # In case of a remote target
     if [ "localhost" != $TARGET_HOST ] && [ "127.0.0.1" != $TARGET_HOST ]; then
-      rsync -aAX -r ${STORAGE_PATH}/ ${TARGET_USER}@${TARGET_HOST}:$STORAGE_PATH
+      rsync -aAX -r ${STORAGE_PATH}/ ${TARGET_USER}@${TARGET_HOST}:${STORAGE_PATH}/
     fi
     exit 0;
