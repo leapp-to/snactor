@@ -14,5 +14,5 @@ inputs = json.load(sys.stdin)
 
 if not inputs['force_create']['value']:
     if inputs['container_name']['value'] in inputs['containerslist']['containers']:
-        print "ERROR: container {} already runs on target".format(inputs['container_name']['value'])
+        sys.stderr.write("ERROR: container {} already runs on target".format(inputs['container_name']['value']) + "\n")
         sys.exit(1)
