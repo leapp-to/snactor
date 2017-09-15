@@ -45,3 +45,5 @@ if __name__ == "__main__":
         'error': dict(value=err)
     }
     print(json.dumps(outputs))
+    if err:
+        sys.exit(1)
