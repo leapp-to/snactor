@@ -6,7 +6,9 @@ from subprocess import Popen, PIPE
 
 
 def _execute(cmd):
-    return Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE).communicate()
+    p = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE)
+    out, err = p.communicate()
+    return out, err, p.returncode
 
 
 def _build_cmd(source_path, name, version, force, exposed_ports):
@@ -39,11 +41,10 @@ if __name__ == "__main__":
                      json.loads(sys.argv[5])['value'],
                      json.loads(sys.argv[4])['ports'])
 
-    out, err = _execute(cmd)
+    out, err, return_code = _execute(cmd)
     outputs = {
         'container_id': dict(value=out),
         'error': dict(value=err)
     }
     print(json.dumps(outputs))
-    if err:
-        sys.exit(1)
+    sys.exit(return_code)
