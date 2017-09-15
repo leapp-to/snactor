@@ -1,0 +1,11 @@
+---
+inputs:
+  - name: force_create
+    type: BaseTypeBool
+  - name: containerslist
+    type: ContainersList
+  - name: container_name
+    type: BaseTypeString
+executor:
+  type: python
+  script-file: verify-target-container.py

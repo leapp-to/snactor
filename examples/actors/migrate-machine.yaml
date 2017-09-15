@@ -29,10 +29,12 @@ executor:
   actors:
     - source_ansible_setup
     - source_ansible_setup_converter
+    - create_container_name
+    - remote-target-check
+    - verify-target-container
     - source_portscan
     - target_portscan
     - portmap
-    - create_container_name
     - set_container_directory
     - create_container_dir
     - excluded_paths_to_csv
