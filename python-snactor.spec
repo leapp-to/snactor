@@ -2,7 +2,7 @@
 
 Name:       python-snactor
 Version:    0.2
-Release:    39
+Release:    39.1
 Summary:    Python Actor execution library
 
 Group:      Unspecified
@@ -73,6 +73,9 @@ make test
 %{_datadir}/%{name}/schema/*
 
 %changelog
+* Tue Sep 19 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-39.1
+- spec: BuildRequires python2-six (vfeenstr@redhat.com)
+
 * Tue Sep 19 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-39
 - Add the Actors decriptions (jzigmund@redhat.com)
 - checks aren't happy about the print (vfeenstr@redhat.com)
