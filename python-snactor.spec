@@ -2,7 +2,7 @@
 
 Name:       python-snactor
 Version:    0.2
-Release:    39.1
+Release:    39.2
 Summary:    Python Actor execution library
 
 Group:      Unspecified
@@ -73,6 +73,9 @@ make test
 %{_datadir}/%{name}/schema/*
 
 %changelog
+* Wed Sep 20 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-39.2
+- start_container: Remove non breakable space from yaml (vfeenstr@redhat.com)
+
 * Tue Sep 19 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-39.1
 - spec: BuildRequires python2-six (vfeenstr@redhat.com)
 
