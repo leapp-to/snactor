@@ -56,7 +56,7 @@ def load_actors(actors_dir, schemas_dir):
 
 def main():
     """ Execute actor passing and retrieving data"""
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+    logging.basicConfig(stream=sys.stderr, format='%(levelname)s: %(message)s', level=logging.DEBUG)
 
     args = parse_arguments()
 
