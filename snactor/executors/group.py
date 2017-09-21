@@ -22,12 +22,21 @@ class GroupExecutor(Executor):
                                   actor_inputs - verify)
             [verify.add(i['name']) for i in actor.definition.outputs]
 
+    def execute_remote(self, data, host, user):
+        return self._execute(data, (host, user))
+
     def execute(self, data):
+        return self._execute(data)
+
+    def _execute(self, data, remote=None):
         restricted = filter_by_channel(self.definition.inputs, data)
 
         ret = True
         for actor in self.definition.executor.actors:
-            ret = actor.execute(restricted)
+            if remote:
+                ret = actor.execute_remote(restricted, *remote)
+            else:
+                ret = actor.execute(restricted)
             if not ret:
                 break
 

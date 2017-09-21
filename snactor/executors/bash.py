@@ -1,9 +1,10 @@
 import snactor.output_processors  # noqa
-from snactor.executors.payload import PayloadExecutor, registered_executor
+from snactor.executors.script_file import ScriptFileExecutor
+from snactor.executors.default import registered_executor
 from snactor.registry import get_output_processor
 
 
-class BashExecutorDefinition(PayloadExecutor.Definition):
+class BashExecutorDefinition(ScriptFileExecutor.Definition):
     def __init__(self, init):
         super(BashExecutorDefinition, self).__init__(init)
         self.executable = "/bin/bash"
@@ -11,7 +12,7 @@ class BashExecutorDefinition(PayloadExecutor.Definition):
 
 
 @registered_executor('bash')
-class BashExecutor(PayloadExecutor):
+class BashExecutor(ScriptFileExecutor):
     Definition = BashExecutorDefinition
 
     def handle_stdout(self, stdout, data):

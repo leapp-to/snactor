@@ -11,6 +11,12 @@ from snactor.loader.extends import ExtendsActor
 from snactor.registry import register_actor, get_executor, get_actor, register_schema, get_registered_actors,\
     get_schema
 
+_LOADED_ACTOR_PATH = None
+
+
+def get_loaded_path():
+    return _LOADED_ACTOR_PATH
+
 
 def _load(name, definition, tags, post_resolve):
     _log = logging.getLogger('snactor.loader')
@@ -87,6 +93,9 @@ def _try_resolve(current, to_resolve):
 
 
 def load(location, tags=()):
+    global _LOADED_ACTOR_PATH
+    _LOADED_ACTOR_PATH = location
+
     post_resolve = {}
     tags = set(tags)
     for root, dirs, files in os.walk(location):
