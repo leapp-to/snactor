@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import shlex
 from subprocess import Popen, PIPE
 
 import jsonschema
@@ -72,6 +73,16 @@ class Executor(object):
 
     def handle_return_code(self, return_code, data):
         self.log.debug("handle_return_code(%d)", return_code)
+
+    def execute_remote(self, data, address, user):
+        tpl = 'ansible -m synchronize -i {host}, all -u {user} -a "dest=/tmp/actors/ src={actor_dir} copy_links=yes'
+        cmd = tpl.format(host=address, user=user, actor_dir=self.definition.executor.base_path)
+        p = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE)
+        stdout, stderr = p.communicate()
+        if p.returncode:
+            self.log.error("Failed to synchronize actors\nError Code: %d\nStdOut:\n%s\nStdErr:\n%s\n", p.returncode,
+                           stdout, stderr)
+            return False
 
     def execute(self, data):
         input_data = filter_by_channel(self.definition.inputs, data)
