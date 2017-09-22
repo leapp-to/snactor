@@ -11,11 +11,10 @@ description: |
     excluded_paths     - paths to be excluded
   Outputs:
     csv_excluded_paths - final csv with excluded paths
-extends:
-  inputs:
-  - name: string_list
-    source: '@excluded_paths@'
-  name: array_to_csv
-  outputs:
-  - name: csv_excluded_paths
-    source: '@csv_string@'
+executor:
+  script-file: array_to_csv.py
+  type: default
+  executable: /usr/bin/python
+  arguments:
+    - in=excluded_paths
+    - out=csv_excluded_paths

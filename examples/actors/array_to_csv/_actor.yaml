@@ -15,3 +15,6 @@ executor:
   script-file: array_to_csv.py
   type: default
   executable: /usr/bin/python
+  arguments:
+      - in=string_list
+      - out=csv_string

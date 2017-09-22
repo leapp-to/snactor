@@ -9,11 +9,8 @@ description: |
   Outputs:
     ansible_setup - gathered facts about the system
 executor:
-  host: localhost
-  module:
+    type: default
+    executable: /usr/bin/python
+    script-file: ansible_setup.py
     arguments:
-    - gather_subset=!hardware,!virtual,!ohai,!facter
-    name: setup
-  output: ansible_setup
-  type: ansible-module
-  user: root
+        - output=ansible_setup

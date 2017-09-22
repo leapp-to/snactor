@@ -1,0 +1,13 @@
+tags:
+- extends_actor
+outputs:
+- name: foo
+  type: Foo
+description: |
+  This actor will be extended
+executor:
+  arguments:
+  - -c
+  - 'echo {\"foo\": \"bar\"}'
+  executable: /bin/bash
+  type: default

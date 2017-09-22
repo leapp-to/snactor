@@ -19,11 +19,6 @@ class TestLoader(unittest.TestCase):
         load(self.actors_path, tags=['simple_actor'])
         self.assertIsNotNone(get_actor('simple_actor'))
 
-    def test_extends_actor(self):
-        """ Load an extended actor """
-        load(self.actors_path, tags=['extends_actor'])
-        self.assertIsNotNone(get_actor('extends_actor'))
-
     def test_group_actor(self):
         """ Load a group actor """
         load(self.actors_path, tags=['group_actor'])
@@ -47,18 +42,6 @@ class TestLoader(unittest.TestCase):
         self.assertIsNotNone(get_actor('load_twice_actor'))
         with self.assertRaises(LookupError):
             load(self.actors_path, tags=['load_twice_actor'])
-
-    def test_extends_executor_actor(self):
-        """ Load an actor with both extends and executor """
-        with self.assertRaises(ValueError):
-            load(self.actors_path, tags=['extends_executor_actor'])
-        self.assertIsNone(get_actor('extends_executor_actor'))
-
-    def test_extends_no_actor(self):
-        """ Load an actor that extends a non-existent actor """
-        with self.assertRaises(LookupError):
-            load(self.actors_path, tags=['extends_no_actor'])
-        self.assertIsNone(get_actor('extends_no_actor'))
 
     def test_incomplete_actor(self):
         """ Load aa incomplete actor """

@@ -11,14 +11,10 @@ description: |
     target_host - hostname of a target system
   Outputs:
     target_system_ports - list of found ports on a target system
-extends:
-  inputs:
-  - name: host
-    source: '@target_host@'
-  - name: scan_options
-    value:
-      shallow_scan: true
-  name: portscan
-  outputs:
-  - name: target_system_ports
-    source: '@port_scan_result@'
+executor:
+  type: default
+  script-file: portscan.py
+  executable: /usr/bin/python
+  - arguments:
+      - host=target_host
+      - output=target_system_ports

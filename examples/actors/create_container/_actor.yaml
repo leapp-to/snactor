@@ -34,13 +34,9 @@ description: |
     container_id        - ID of the new container
     error               - any error returned by 'docker create'
 executor:
-  arguments:
-  - '@container_directory@'
-  - '@container_name@'
-  - '@osversion@'
-  - '@exposed_ports@'
-  - '@force_create@'
-  host: '@target_host.value@'
+  remote:
+    host: '@target_host.value@'
+    user: '@target_user_name.value@'
+  type: default
+  executable: /usr/bin/python
   script-file: create_container.py
-  type: ansible-script-module
-  user: '@target_user_name.value@'

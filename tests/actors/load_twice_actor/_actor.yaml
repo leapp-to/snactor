@@ -1,0 +1,13 @@
+tags:
+- load_twice_actor
+outputs:
+- name: foo
+  type: Foo
+description: |
+  This actor will be loaded twice and should fail
+executor:
+  arguments:
+  - -c
+  - 'echo {\"foo\": \"bar\"}'
+  executable: /bin/bash
+  type: default
