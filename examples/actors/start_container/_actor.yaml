@@ -16,10 +16,12 @@ description: |
   Outputs:
     None (starting the conainer)
 executor:
+  remote:
+    host: '@target_host.value@'
+    user: '@target_user_name.value@'
+  type: default
+  executable: /bin/bash
+  script-file: start.sh
   arguments:
   - '@container_name.value@'
   - '@start_container.value@'
-  host: '@target_host.value@'
-  script-file: start.sh
-  type: ansible-script-module
-  user: '@target_user_name.value@'

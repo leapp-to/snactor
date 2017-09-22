@@ -1,0 +1,13 @@
+tags:
+- simple_actor
+outputs:
+- name: foo
+  type: Foo
+description: |
+  This is a simple actor example
+executor:
+  arguments:
+  - -c
+  - 'echo {\"foo\": \"bar\"}'
+  executable: /bin/bash
+  type: default

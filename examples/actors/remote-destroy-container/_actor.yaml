@@ -17,10 +17,12 @@ description: |
   Outputs:
     None (Deleted container)
 executor:
+  remote:
+    host: '@target_host.value@'
+    user: '@target_user_name.value@'
+  type: default
+  executable: /usr/bin/python
+  script-file: ./scripts/delete-containers.py
   arguments:
   - '@container_directory.value@'
   - '@container_name.value@'
-  host: '@target_host.value@'
-  script-file: ./scripts/delete-containers.py
-  type: ansible-script-module
-  user: '@target_user_name.value@'

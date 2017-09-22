@@ -23,6 +23,7 @@ class ExecutorDefinition(object):
         self.script_file = init.get('script-file')
         if self.script_file:
             self.arguments.insert(0, self.script_file)
+        self.remote = init.get('remote')
 
 
 def validate_channel_data(channel, data):
@@ -92,6 +93,9 @@ class Executor(object):
             return False
 
     def execute(self, data):
+        if self.definition.executor.remote:
+            remote = self.definition.executor.remote
+            return self.execute_remote(data, remote.get('host', 'localhost'), remote.get('user', 'root'))
         input_data = filter_by_channel(self.definition.inputs, data)
         params = [str(resolve_variable_spec(data, a)) for a in self.definition.executor.arguments]
         executable = self.definition.executor.executable

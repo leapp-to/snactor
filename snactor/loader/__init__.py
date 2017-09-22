@@ -7,7 +7,6 @@ import jsl
 import yaml
 
 from snactor.definition import Definition
-from snactor.loader.extends import ExtendsActor
 from snactor.registry import register_actor, get_executor, get_actor, register_schema, get_registered_actors,\
     get_schema
 
@@ -30,15 +29,11 @@ def _load(name, definition, tags, post_resolve):
                 _log.debug("Skipping %s due to missing selected tags", definition)
                 return
 
-        if d.get('extends') and d.get('executor'):
-            raise ValueError("Conflicting extends and executor specification found in {}".format(name))
+        if not d.get('executor'):
+            raise ValueError("Missing executor specification in {}".format(name))
+        d['executor']['$location'] = os.path.abspath(definition)
 
-        if not d.get('extends'):
-            if not d.get('executor'):
-                raise ValueError("Missing executor specification in {}".format(name))
-            d['executor']['$location'] = os.path.abspath(definition)
-
-        if d.get('extends') or not all(map(get_actor, d.get('executor', {}).get('actors', ()))):
+        if not all(map(get_actor, d.get('executor', {}).get('actors', ()))):
             d['$location'] = os.path.abspath(definition)
             post_resolve[name] = {'definition': d, 'name': name, 'resolved': False}
             return
@@ -57,12 +52,6 @@ def create_actor(name, definition):
     register_actor(name, Definition(name, definition), executor)
 
 
-def _apply_extension_resolve(data, base):
-    definition = data['definition']
-    definition['extended'] = base.definition
-    register_actor(data['name'], ExtendsActor.Definition(data['name'], definition), ExtendsActor)
-
-
 def _try_resolve(current, to_resolve):
     if current['resolved']:
         return
@@ -70,9 +59,6 @@ def _try_resolve(current, to_resolve):
     definition = current['definition']
 
     pending = definition.get('executor', {}).get('actors', ())
-    if definition.get('extends'):
-        pending = (definition['extends'].get('name'),)
-
     for name in pending:
         actor = get_actor(name)
 
@@ -84,10 +70,7 @@ def _try_resolve(current, to_resolve):
         if not actor:
             raise LookupError("Failed to resolve dependency '{}' for {}".format(name, current['name']))
 
-    if definition.get('extends'):
-        _apply_extension_resolve(current, get_actor(definition['extends'].get('name')))
-    else:
-        create_actor(current['name'], definition)
+    create_actor(current['name'], definition)
 
     current['resolved'] = True
 

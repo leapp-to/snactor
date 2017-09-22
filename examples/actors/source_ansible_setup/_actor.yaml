@@ -17,11 +17,10 @@ description: |
   Outputs:
     source_ansible_setup - gathered Ansible Facts (source system information)
 executor:
-  host: '@source_host.value@'
-  module:
+    type: default
+    executable: /usr/bin/python
+    script-file: ansible_setup.py
     arguments:
-    - gather_subset=!hardware,!virtual,!ohai,!facter
-    name: setup
-  output: source_ansible_setup
-  type: ansible-module
-  user: '@source_user_name.value@'
+        - host=source_host
+        - user=source_user_name
+        - output=source_ansible_setup

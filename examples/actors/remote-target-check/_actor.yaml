@@ -21,7 +21,9 @@ description: |
     rsyncinfo        - collected Rsync information
     dockerinfo       - collected Docker information
 executor:
-  host: '@target_host.value@'
+  type: default
+  remote:
+    host: '@target_host.value@'
+    user: '@target_user_name.value@'
+  executable: /usr/bin/python
   script-file: ./scripts/remote-target-check.py
-  type: ansible-script-module
-  user: '@target_user_name.value@'
