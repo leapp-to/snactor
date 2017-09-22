@@ -22,4 +22,5 @@ description: |
     targetinfo     - result of the statuses of the tools on a target system
 executor:
   script-file: check_target.py
-  type: python
+  type: default
+  executable: /usr/bin/python

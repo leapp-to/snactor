@@ -12,4 +12,5 @@ executor:
   arguments:
   - '@container_name.value@'
   script-file: delete_container.sh
-  type: bash
+  type: default
+  executable: /bin/bash

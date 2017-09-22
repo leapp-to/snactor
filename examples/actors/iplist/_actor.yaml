@@ -15,4 +15,5 @@ executor:
     target: '@ip_list.ips@'
     type: string-list
   script-file: iplist.sh
-  type: bash
+  type: default
+  executable: /bin/bash

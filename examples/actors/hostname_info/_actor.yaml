@@ -11,4 +11,5 @@ description: |
     hostnameinfo - hostname
 executor:
   script-file: hostname_info.py
-  type: python
+  type: default
+  executable: /usr/bin/python

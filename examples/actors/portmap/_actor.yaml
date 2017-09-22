@@ -24,4 +24,5 @@ description: |
     exposed_ports           - final ports mapping
 executor:
   script-file: portmap.py
-  type: python
+  type: default
+  executable: /usr/bin/python

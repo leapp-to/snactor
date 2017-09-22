@@ -13,4 +13,5 @@ description: |
     csv_string  - CSV record
 executor:
   script-file: array_to_csv.py
-  type: python
+  type: default
+  executable: /usr/bin/python

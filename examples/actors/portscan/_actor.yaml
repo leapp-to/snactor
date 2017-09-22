@@ -20,4 +20,5 @@ description: |
     port_scan_result - ports on a system
 executor:
   script-file: portscan.py
-  type: python
+  type: default
+  executable: /usr/bin/python

@@ -25,4 +25,5 @@ description: |
     machineinfo  - all inputs together
 executor:
   script-file: inspect_machine.py
-  type: python
+  type: default
+  executable: /usr/bin/python

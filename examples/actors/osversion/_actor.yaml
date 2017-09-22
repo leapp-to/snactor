@@ -12,4 +12,5 @@ description: |
     osversion - Operating System information (name and version number)
 executor:
   script-file: osversion.py
-  type: python
+  type: default
+  executable: /usr/bin/python

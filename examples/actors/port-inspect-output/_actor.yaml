@@ -10,4 +10,5 @@ description: |
     Print the port scan result to $LEAPP_ACTOR_OUTPUT
 executor:
   script-file: port-inspect-output.sh
-  type: bash
+  type: default
+  executable: /bin/bash

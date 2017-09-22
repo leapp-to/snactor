@@ -31,4 +31,5 @@ executor:
   - '@container_directory.value@'
   - '@csv_excluded_paths.value@'
   script-file: rsync.sh
-  type: bash
+  type: default
+  executable: /bin/bash

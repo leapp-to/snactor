@@ -21,4 +21,5 @@ description: |
     osversion            - information about Operating System
 executor:
   script-file: source_ansible_setup_converter.py
-  type: python
+  type: default
+  executable: /usr/bin/python

@@ -13,4 +13,5 @@ description: |
     None
 executor:
   script-file: post_configure_upstart.py
-  type: python
+  type: default
+  executable: /usr/bin/python

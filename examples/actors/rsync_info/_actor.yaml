@@ -13,4 +13,5 @@ description: |
     rsyncinfo - collected information about Rsync
 executor:
   script-file: rsync-info.py
-  type: python
+  type: default
+  executable: /usr/bin/python
