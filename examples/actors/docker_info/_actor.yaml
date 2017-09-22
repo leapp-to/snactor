@@ -13,4 +13,5 @@ description: |
     dockerinfo - collected Docker information (like Docker bin path, its systemd state and general available Docker information)
 executor:
   script-file: docker-info.py
-  type: python
+  type: default
+  executable: /usr/bin/python

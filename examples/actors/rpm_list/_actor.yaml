@@ -13,4 +13,5 @@ description: |
     rpm_packages - list of the packages
 executor:
   script-file: rpm_list.py
-  type: python
+  type: default
+  executable: /usr/bin/python

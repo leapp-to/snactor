@@ -6,9 +6,10 @@ from subprocess import Popen, PIPE
 
 import jsonschema
 
+import snactor.output_processors  # noqa
 from snactor.utils.variables import resolve_variable_spec
 from snactor.definition import Definition
-from snactor.registry import registered_executor, get_environment_extension, must_get_schema
+from snactor.registry import get_environment_extension, get_output_processor, must_get_schema, registered_executor
 
 
 class ExecutorDefinition(object):
@@ -18,6 +19,10 @@ class ExecutorDefinition(object):
         if self.executable and not os.path.isabs(self.executable):
             self.executable = os.path.abspath(os.path.join(self.base_path, self.executable))
         self.arguments = init.get('arguments', [])
+        self.output_processor = get_output_processor(init.get('output-processor', None))
+        self.script_file = init.get('script-file')
+        if self.script_file:
+            self.arguments.insert(0, self.script_file)
 
 
 def validate_channel_data(channel, data):
@@ -59,7 +64,9 @@ class Executor(object):
 
     def handle_stdout(self, stdout, data):
         self.log.debug("handle_stdout(%s)", stdout)
-        if self.definition.outputs or stdout:
+        if self.definition.executor.output_processor:
+            self.definition.executor.output_processor.process(stdout, data)
+        elif self.definition.outputs or stdout:
             try:
                 output = filter_by_channel(self.definition.outputs, json.loads(stdout))
                 data.update(output)

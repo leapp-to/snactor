@@ -20,4 +20,5 @@ executor:
   arguments:
   - '@filter.value@'
   script-file: filter_packages.py
-  type: python
+  type: default
+  executable: /usr/bin/python

@@ -19,4 +19,5 @@ description: |
     None (sending the result to a socket)
 executor:
   script-file: check-target-output.py
-  type: python
+  type: default
+  executable: /usr/bin/python

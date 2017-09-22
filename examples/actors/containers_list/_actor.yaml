@@ -13,4 +13,5 @@ description: |
     contianerslist - list of containers
 executor:
   script-file: containers_list.py
-  type: python
+  type: default
+  executable: /usr/bin/python

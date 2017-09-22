@@ -12,4 +12,5 @@ executor:
   arguments:
   - '@container_directory.value@'
   script-file: delete_container_data.sh
-  type: bash
+  type: default
+  executable: /bin/bash

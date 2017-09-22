@@ -10,4 +10,5 @@ description: |
     None or exception (in case of error when creating directory)
 executor:
   script-file: create_container_dir.py
-  type: python
+  type: default
+  executable: /usr/bin/python

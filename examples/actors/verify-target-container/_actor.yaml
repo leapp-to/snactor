@@ -17,4 +17,5 @@ description: |
     None
 executor:
   script-file: verify-target-container.py
-  type: python
+  type: default
+  executable: /usr/bin/python

@@ -16,4 +16,5 @@ description: |
     container_name      - user defined name (if user_container_name is provided) or 'container_<hostname>'
 executor:
   script-file: create_container_name.py
-  type: python
+  type: default
+  executable: /usr/bin/python
