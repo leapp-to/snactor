@@ -203,3 +203,106 @@ python3-dnf-plugins-core-2.1.3-1.fc26.noarch
 python2-SecretStorage-2.3.1-4.fc26.noarch
 python2-iniparse-0.4-24.fc26.noarch
 ```
+
+
+## Retrieving data from our actor ##
+
+Right now, we are saving the generated package list to a text file. That is fine, but what if we want to pass such a list for another actor in the same way we passed filter string to this one? To support that we can define and actor's outputs in the same way we defined the inputs. So, let's change our actor to return the package list as output data.
+
+As we did before, first step is update actor's yaml to describe output. We will add an out put named **packages** of type **PackagesList**:
+
+```yaml
+---
+inputs:
+  - name: filter
+    type: PackageFilter
+outputs:
+  - name: packages
+    type: PackagesList
+description: |
+  An actor to list all installed packages
+executor:
+  type: default
+  executable: /bin/bash
+  script-file: list_packages.sh
+```
+
+Next, we should tell snactor what **PackagesList** is. For that, let's add **packageslist.py** under **schemas** directory:
+
+```py
+from jsl import ArrayField, Document
+from jsl.fields import StringField
+
+
+class PackagesList(Document):
+    entries = ArrayField(StringField())
+```
+```
+├── actors
+│   └── list_packages
+│       ├── _actor.yaml
+│       └── list_packages.sh
+├── execute.py
+└── schemas
+    ├── packagefilter.py
+    └── packageslist.py
+```
+
+Now, we have to change our bash script to output data with the specified format:
+
+```
+input=""
+while read line; do
+  input+=${line}
+done < "${1:-/dev/stdin}"
+
+filter=$(echo ${input} | python -c "\
+import json, sys
+obj=json.load(sys.stdin)
+print(obj[\"filter\"][\"value\"])")
+
+entries=$(rpm -qa | grep ${filter} | awk '{ print "\""$0"\""}' | tr '\n' ',' | sed 's/,$//')
+
+echo -e "{\"packages\": {\"entries\": [${entries}]}}"
+```
+
+If we change our **executor.py** script to print the returned data from our actor, we can verify that now the packages list is being returned as output data:
+
+```py
+#!/usr/bin/env python
+import os
+from pprint import pprint
+from snactor.loader import load, load_schemas, validate_actor_types, get_actor
+
+
+def main():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    actors_dir = os.path.join(base_dir, 'actors')
+    schemas_dir = os.path.join(base_dir, 'schemas')
+
+    data = {'filter': {'value': 'python'}}
+
+    load(actors_dir)
+    load_schemas(schemas_dir)
+    validate_actor_types()
+
+    get_actor('list_packages').execute(data)
+
+    pprint(data['packages'])
+
+
+if __name__ == '__main__':
+    main()
+```
+
+Note that the same data object used to pass input data is updated to contain output data.
+
+```
+$ ./execute.py
+{u'entries': [u'python3-pytest-pep8-1.0.6-9.fc26.noarch',
+              u'python2-fedora-0.9.0-6.fc26.noarch',
+              u'python3-dnf-plugins-core-2.1.3-1.fc26.noarch',
+              u'python2-SecretStorage-2.3.1-4.fc26.noarch',
+              (...)
+              u'python2-bcrypt-3.1.3-1.fc26.x86_64']}
+```
