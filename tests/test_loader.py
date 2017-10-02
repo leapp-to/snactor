@@ -30,12 +30,6 @@ class TestLoader(unittest.TestCase):
             load(self.actors_path, tags=['no_executor_actor'])
         self.assertIsNone(get_actor('no_executor_actor'))
 
-    def test_unknown_executor_actor(self):
-        """ Load an actor with an unknown executor """
-        with self.assertRaises(LookupError):
-            load(self.actors_path, tags=['unknown_executor_actor'])
-        self.assertIsNone(get_actor('unknown_executor_actor'))
-
     def test_load_actor_twice(self):
         """ Load an actor twice"""
         load(self.actors_path, tags=['load_twice_actor'])

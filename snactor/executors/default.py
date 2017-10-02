@@ -2,14 +2,19 @@ import json
 import logging
 import os
 import shlex
+import tempfile
+from six.moves import shlex_quote
 from subprocess import Popen, PIPE
 
 import jsonschema
 
 import snactor.output_processors  # noqa
-from snactor.utils.variables import resolve_variable_spec
 from snactor.definition import Definition
+from snactor.loader import get_loaded_path
 from snactor.registry import get_environment_extension, get_output_processor, must_get_schema, registered_executor
+from snactor.utils.variables import resolve_variable_spec
+
+_ACTOR_REMOTE_PATH = '/tmp/actors'
 
 
 class ExecutorDefinition(object):
@@ -82,15 +87,72 @@ class Executor(object):
     def handle_return_code(self, return_code, data):
         self.log.debug("handle_return_code(%d)", return_code)
 
-    def execute_remote(self, data, address, user):
-        tpl = 'ansible -m synchronize -i {host}, all -u {user} -a "dest=/tmp/actors/ src={actor_dir} copy_links=yes'
-        cmd = tpl.format(host=address, user=user, actor_dir=self.definition.executor.base_path)
-        p = Popen(shlex.split(cmd), stdout=PIPE, stderr=PIPE)
-        stdout, stderr = p.communicate()
-        if p.returncode:
-            self.log.error("Failed to synchronize actors\nError Code: %d\nStdOut:\n%s\nStdErr:\n%s\n", p.returncode,
-                           stdout, stderr)
-            return False
+    def execute_remote(self, data, address, user, sync_repo=True):
+        actor_relative_path = os.path.relpath(self.definition.executor.base_path, get_loaded_path())
+        actor_remote_path = os.path.normpath(os.path.join(_ACTOR_REMOTE_PATH, actor_relative_path))
+        input_data = filter_by_channel(self.definition.inputs, data)
+        actor_input = self.handle_stdin(input_data)
+        params = [str(resolve_variable_spec(data, a)) for a in self.definition.executor.arguments]
+        executable = self.definition.executor.executable
+        playbook = os.path.normpath(os.path.join(get_loaded_path(), '../playbooks/remote-execute-actor.yaml'))
+
+        quoted_remote_command = ' '.join(shlex_quote(element) for element in [executable] + params)
+
+        with tempfile.NamedTemporaryFile("r") as input_file:
+            if actor_input:
+                with open(input_file, 'r') as f:
+                    f.write(actor_input)
+
+            with tempfile.NamedTemporaryFile("r") as output_file:
+
+                command_template = '''
+                    ansible-playbook
+                            {playbook}
+                            -i {host},
+                            -u {user}
+                            -e actor_repository="{actor_repo_path}"
+                            -e sync_repo={sync_repo}
+                            -e remote_host={host}
+                            -e actor_output_file="{actor_output_file}"
+                            -e actor_input_file="{actor_input_file}"
+                            -e actor_command="'{actor_command}'"
+                            -e actor_name="{actor_name}"
+                            -e actor_cwd="{actor_cwd}"
+                            -e actor_remote_repo_path="{remote_repo_path}"
+                '''
+                command = command_template.format(
+                    playbook=playbook,
+                    user=user,
+                    host=address,
+                    # Repo information
+                    actor_repo_path=get_loaded_path(),
+                    remote_repo_path=_ACTOR_REMOTE_PATH,
+                    sync_repo='True' if sync_repo else 'False',
+                    # actor configuration
+                    actor_name=self.definition.name,
+                    actor_command=quoted_remote_command,
+                    actor_cwd=actor_remote_path,
+                    actor_input_file=input_file.name,
+                    actor_output_file=output_file.name)
+
+                ansible_process = Popen(shlex.split(command), stdout=PIPE, stderr=PIPE)
+                playbook_output = ansible_process.communicate()
+
+                self.log.debug("PLAYBOOK STANDARD OUTPUT:\n------------------------\n%s\n----------------------",
+                               playbook_output[0])
+                self.log.debug("PLAYBOOK STANDARD ERROR:\n------------------------\n%s\n----------------------",
+                               playbook_output[1])
+
+                if ansible_process.returncode:
+                    return False
+
+                with open(output_file.name, 'r') as f:
+                    actor_output = json.load(f)
+
+                self.handle_stdout(actor_output['stdout'], data)
+                self.handle_stderr(actor_output['stderr'], data)
+                self.handle_return_code(actor_output['rc'], data)
+                return actor_output['rc'] == 0
 
     def execute(self, data):
         if self.definition.executor.remote:

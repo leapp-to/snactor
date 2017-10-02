@@ -7,8 +7,7 @@ import jsl
 import yaml
 
 from snactor.definition import Definition
-from snactor.registry import register_actor, get_executor, get_actor, register_schema, get_registered_actors,\
-    get_schema
+from snactor.registry import register_actor, get_actor, register_schema, get_registered_actors, get_schema
 
 _LOADED_ACTOR_PATH = None
 
@@ -42,11 +41,11 @@ def _load(name, definition, tags, post_resolve):
 
 
 def create_actor(name, definition):
-    executor_name = definition.get('executor', {}).get('type')
-    executor = get_executor(executor_name)
-    if not executor:
-        raise LookupError("Unknown executor {}".format(executor_name))
+    from snactor.executors.default import Executor
+    from snactor.executors.group import GroupExecutor
 
+    executor_name = definition.get('executor', {}).get('type')
+    executor = GroupExecutor if executor_name == 'group' else Executor
     definition.update({
         'executor': executor.Definition(definition.get('executor'))})
     register_actor(name, Definition(name, definition), executor)
