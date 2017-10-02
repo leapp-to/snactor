@@ -32,9 +32,11 @@ class GroupExecutor(Executor):
         restricted = filter_by_channel(self.definition.inputs, data)
 
         ret = True
+        sync_repo = True
         for actor in self.definition.executor.actors:
             if remote:
-                ret = actor.execute_remote(restricted, *remote)
+                ret = actor.execute_remote(restricted, *remote, sync_repo=sync_repo)
+                sync_repo = False
             else:
                 ret = actor.execute(restricted)
             if not ret:

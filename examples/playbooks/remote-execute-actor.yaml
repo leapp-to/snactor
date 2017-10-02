@@ -1,0 +1,30 @@
+---
+- hosts: '{{ remote_host }}'
+  gather_facts: no
+  vars:
+    actor_input: '{{ lookup("file", actor_input_file) }}'
+    sync_repo: False
+  tasks:
+    - name: Synchronize repository
+      synchronize:
+        src: '{{ actor_repository }}/'
+        dest: '{{ actor_remote_repo_path }}'
+        copy_links: no
+        delete: yes
+        recursive: yes
+        links: yes
+      register: sync
+      when: sync_repo
+    - name: "Execute actor {{ actor_name }}"
+      command: "{{ actor_command }}"
+      args:
+        chdir: "{{ actor_cwd }}"
+        stdin: '{{ actor_input | to_json }}'
+      register: actor_output
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Store result
+      copy:
+        content: "{{ hostvars[remote_host]['actor_output'] | to_json }}"
+        dest: "{{ actor_output_file }}"

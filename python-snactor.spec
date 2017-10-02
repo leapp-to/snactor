@@ -71,6 +71,7 @@ make test
 %{_datadir}/%{name}/scripts/*
 %{_datadir}/%{name}/actors/*
 %{_datadir}/%{name}/schema/*
+%{_datadir}/%{name}/playbooks/*
 
 %changelog
 * Wed Sep 20 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-39.2

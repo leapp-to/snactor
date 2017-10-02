@@ -15,6 +15,6 @@ executor:
   type: default
   script-file: portscan.py
   executable: /usr/bin/python
-  - arguments:
-      - host=target_host
-      - output=target_system_ports
+  arguments:
+    - host=target_host
+    - output=target_system_ports
