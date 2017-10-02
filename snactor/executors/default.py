@@ -157,7 +157,8 @@ class Executor(object):
     def execute(self, data):
         if self.definition.executor.remote:
             remote = self.definition.executor.remote
-            return self.execute_remote(data, remote.get('host', 'localhost'), remote.get('user', 'root'))
+            return self.execute_remote(data, resolve_variable_spec(remote.get('host', 'localhost'), data),
+                                       resolve_variable_spec(remote.get('user', 'root'), data))
         input_data = filter_by_channel(self.definition.inputs, data)
         params = [str(resolve_variable_spec(data, a)) for a in self.definition.executor.arguments]
         executable = self.definition.executor.executable
