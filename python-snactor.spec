@@ -2,7 +2,7 @@
 
 Name:       python-snactor
 Version:    0.2
-Release:    39.2
+Release:    40.1
 Summary:    Python Actor execution library
 
 Group:      Unspecified
@@ -72,8 +72,12 @@ make test
 %{_datadir}/%{name}/actors/*
 %{_datadir}/%{name}/schema/*
 %{_datadir}/%{name}/playbooks/*
+%{_bindir}/snactor_runner
 
 %changelog
+* Thu Oct 05 2017 Arthur Mello <amello@redhat.com> 0.2-40.1
+- snactor_runner: Install script to execute an actor (amello@redhat.com)
+
 * Wed Sep 20 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-39.2
 - start_container: Remove non breakable space from yaml (vfeenstr@redhat.com)
 

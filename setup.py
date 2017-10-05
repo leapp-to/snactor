@@ -10,5 +10,8 @@ setup(
     author="Vinzenz 'evilissimo' Feenstra",
     author_email='evilissimo@redhat.com',
     description='snactor is a python library for actors',
-    install_requires=['PyYAML', 'jsl', 'argcomplete', 'jsonschema', 'six']
+    install_requires=['PyYAML', 'jsl', 'argcomplete', 'jsonschema', 'six'],
+    scripts=['tools/snactor_runner'],
+    include_package_data=True,
+    zip_safe=False
 )
