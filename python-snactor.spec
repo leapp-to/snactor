@@ -2,7 +2,7 @@
 
 Name:       python-snactor
 Version:    0.2
-Release:    40
+Release:    40.1
 Summary:    Python Actor execution library
 
 Group:      Unspecified
@@ -75,6 +75,9 @@ make test
 %{_bindir}/snactor_runner
 
 %changelog
+* Fri Oct 06 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-40.1
+- Drop wrong message (vfeenstr@redhat.com)
+
 * Fri Oct 06 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-40
 - Install snactor-runner tool (amello@redhat.com)
 - Added debug logging to executor (vfeenstr@redhat.com)
