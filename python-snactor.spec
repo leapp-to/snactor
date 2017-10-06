@@ -2,7 +2,7 @@
 
 Name:       python-snactor
 Version:    0.2
-Release:    40.1
+Release:    40
 Summary:    Python Actor execution library
 
 Group:      Unspecified
@@ -75,6 +75,27 @@ make test
 %{_bindir}/snactor_runner
 
 %changelog
+* Fri Oct 06 2017 Vinzenz Feenstra <vfeenstr@redhat.com> 0.2-40
+- Install snactor-runner tool (amello@redhat.com)
+- Added debug logging to executor (vfeenstr@redhat.com)
+- README: Updated to the current state (vfeenstr@redhat.com)
+- Schema versioning applied + more simplification of the actor format
+  (vfeenstr@redhat.com)
+- Fixed remote variable resolving: wrong parameter order (vfeenstr@redhat.com)
+- Refactored remote_execute a bit (vfeenstr@redhat.com)
+- ADD: Initial implementation of schema versioning (mgazdik@redhat.com)
+- remote.host and remote.user need to have variable support
+  (vfeenstr@redhat.com)
+- Added remote ability via an ansible playbook (vfeenstr@redhat.com)
+- Drop extends and ansible executors (vfeenstr@redhat.com)
+- Drop python and bash executors (vfeenstr@redhat.com)
+- Drop payload support (vfeenstr@redhat.com)
+- Updated GETTING_STARTED.md (amello@redhat.com)
+- Update GETTING_STARTED.md (amello@redhat.com)
+- Start docummenting HowTo create an Actor (amello@redhat.com)
+- Set logging stream to sys.stderr (amello@redhat.com)
+- Add runner: a tool to execute actors using snactor (amello@redhat.com)
+
 * Thu Oct 05 2017 Arthur Mello <amello@redhat.com> 0.2-40.1
 - snactor_runner: Install script to execute an actor (amello@redhat.com)
 
