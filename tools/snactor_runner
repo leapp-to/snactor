@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 from snactor.loader import load, load_schemas, validate_actor_types, get_actor
 
-__version__ = '0.0.1'
+__version__ = '0.1.0'
 
 
 def parse_arguments():
@@ -20,17 +20,22 @@ def parse_arguments():
                         type=str)
 
     parser.add_argument('--actors_dir',
-                        default=None,
+                        default=os.environ.get('SNACTOR_ACTORS_DIR'),
                         help="path containing actor(s) definition")
 
     parser.add_argument('--schemas_dir',
-                        default=None,
+                        default=os.environ.get('SNACTOR_SCHEMAS_DIR'),
                         help="path containing schema(s) definition")
 
     parser.add_argument('--validate',
                         action='store_true',
                         default=False,
                         help="validate loaded actors and schemas")
+
+    parser.add_argument('-d', '--debug',
+                        action='store_true',
+                        default=False,
+                        help="display debug messages")
 
     parser.add_argument('-v', '--version',
                         action='version',
@@ -56,9 +61,10 @@ def load_actors(actors_dir, schemas_dir):
 
 def main():
     """ Execute actor passing and retrieving data"""
-    logging.basicConfig(stream=sys.stderr, format='%(levelname)s: %(message)s', level=logging.DEBUG)
-
     args = parse_arguments()
+
+    logging_level = logging.DEBUG if args.debug else logging.INFO
+    logging.basicConfig(stream=sys.stderr, format='%(levelname)s: %(message)s', level=logging_level)
 
     load_actors(args.actors_dir, args.schemas_dir)
     if args.validate:
