@@ -2,8 +2,6 @@ tags:
 - incomplete_group_actor
 description: |
   This actor will not load for missing group's actors
-executor:
-  actors:
-  - UNKNOWN_ACTOR_ONE
-  - UNKNOWN_ACTOR_TWO
-  type: group
+group:
+- UNKNOWN_ACTOR_ONE
+- UNKNOWN_ACTOR_TWO

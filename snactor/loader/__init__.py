@@ -20,18 +20,18 @@ def _load(name, definition, tags, post_resolve):
     with open(definition) as f:
         _log.debug("Loading %s ...", definition)
         d = yaml.load(f)
+        d['$location'] = os.path.abspath(definition)
 
         if tags:
             actor_tags = set(d.get('tags', ()))
-            if not actor_tags or not actor_tags.intersection(tags):
+            if not actor_tags.intersection(tags):
                 _log.debug("Skipping %s due to missing selected tags", definition)
                 return
 
-        if not d.get('executor'):
-            raise ValueError("Missing executor specification in {}".format(name))
-        d['executor']['$location'] = os.path.abspath(definition)
+        if not d.get('execute') and not d.get('group'):
+            raise ValueError("Missing execute or group specification in {}".format(name))
 
-        if not all(map(get_actor, d.get('executor', {}).get('actors', ()))):
+        if not all(map(get_actor, d.get('group', ()))):
             d['$location'] = os.path.abspath(definition)
             post_resolve[name] = {'definition': d, 'name': name, 'resolved': False}
             return
@@ -43,10 +43,9 @@ def create_actor(name, definition):
     from snactor.executors.default import Executor
     from snactor.executors.group import GroupExecutor
 
-    executor_name = definition.get('executor', {}).get('type')
-    executor = GroupExecutor if executor_name == 'group' else Executor
-    definition.update({
-        'executor': executor.Definition(definition.get('executor'))})
+    executor = Executor
+    if definition.get('group', None):
+        executor = GroupExecutor
     register_actor(name, Definition(name, definition), executor)
 
 
@@ -56,7 +55,7 @@ def _try_resolve(current, to_resolve):
 
     definition = current['definition']
 
-    pending = definition.get('executor', {}).get('actors', ())
+    pending = definition.get('group', ())
     for name in pending:
         actor = get_actor(name)
 

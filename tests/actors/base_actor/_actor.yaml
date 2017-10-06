@@ -6,9 +6,8 @@ outputs:
     name: Foo
 description: |
   This actor will be extended
-executor:
+execute:
   arguments:
   - -c
   - 'echo {\"foo\": \"bar\"}'
   executable: /bin/bash
-  type: default

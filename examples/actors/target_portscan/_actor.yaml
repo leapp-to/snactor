@@ -1,9 +1,11 @@
 inputs:
 - name: target_host
-  type: BaseTypeString
+  type:
+    name: BaseTypeString
 outputs:
 - name: target_system_ports
-  type: TypePortScan
+  type:
+    name: TypePortScan
 description: |
   Scan the ports on a target system
 
@@ -11,8 +13,7 @@ description: |
     target_host - hostname of a target system
   Outputs:
     target_system_ports - list of found ports on a target system
-executor:
-  type: default
+execute:
   script-file: portscan.py
   executable: /usr/bin/python
   arguments:

@@ -1,6 +1,0 @@
-tags:
-- unknown_executor_actor
-description: |
-  This is actor has an unknown executor
-executor:
-  type: UNKNOWN_EXECUTOR

@@ -4,6 +4,10 @@ import os
 import unittest
 from snactor.loader import load
 from snactor.registry import get_actor
+import logging
+
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 
 class TestLoader(unittest.TestCase):

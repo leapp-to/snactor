@@ -1,6 +1,7 @@
 outputs:
 - name: ansible_setup
-  type: AnsibleSetupModuleFacts
+  type:
+    name: AnsibleSetupModuleFacts
 description: |
   Run Ansible to gather system information
 
@@ -8,8 +9,7 @@ description: |
     None
   Outputs:
     ansible_setup - gathered facts about the system
-executor:
-    type: default
+execute:
     executable: /usr/bin/python
     script-file: ansible_setup.py
     arguments:

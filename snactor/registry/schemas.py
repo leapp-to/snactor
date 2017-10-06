@@ -3,7 +3,7 @@ _REGISTERED_SCHEMAS = {}
 LATEST = "latest"
 
 
-def registered_schema(versions):
+def registered_schema(*versions):
     def func(schema):
         # Shout that there are no versions?
         if not versions:
