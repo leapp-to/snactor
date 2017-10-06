@@ -44,8 +44,7 @@ As mentioned before, an actor needs to contain an yaml file defining, at least, 
 ---
 description: |
   An actor to list all installed packages
-executor:
-  type: default
+execute:
   executable: /bin/bash
   script-file: list_packages.sh
 ```
@@ -122,11 +121,11 @@ Now that we know how to write and execute an actor using snactor, let's see how 
 ---
 inputs:
   - name: filter
-    type: PackageFilter
+    type:
+      name: PackageFilter
 description: |
   An actor to list all installed packages
-executor:
-  type: default
+execute:
   executable: /bin/bash
   script-file: list_packages.sh
 ```
@@ -136,8 +135,10 @@ We should list under *inputs* a name identifier and a type for each input data t
 ```py
 from jsl import Document
 from jsl.fields import StringField
+from snactor.registry.schemas import registered_schema
 
 
+@registered_schema('1.0')
 class PackageFilter(Document):
     value = StringField()
 ```
@@ -215,14 +216,14 @@ As we did before, first step is update actor's yaml to describe output. We will 
 ---
 inputs:
   - name: filter
-    type: PackageFilter
+    type:
+      name: PackageFilter
 outputs:
   - name: packages
     type: PackagesList
 description: |
   An actor to list all installed packages
-executor:
-  type: default
+execute:
   executable: /bin/bash
   script-file: list_packages.sh
 ```
@@ -232,8 +233,10 @@ Next, we should tell snactor what **PackagesList** is. For that, let's add **pac
 ```py
 from jsl import ArrayField, Document
 from jsl.fields import StringField
+from snactor.registry.schemas import registered_schema
 
 
+@registered_schema('1.0')
 class PackagesList(Document):
     entries = ArrayField(StringField())
 ```
