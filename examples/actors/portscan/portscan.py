@@ -70,7 +70,7 @@ if __name__ == '__main__':
 
     # Required
     host = inputs[keys["host"]].get("value")
-    inputs.set_default(keys["options"], {})
+    inputs.setdefault(keys["options"], {})
     # Optional
     shallow = inputs[keys["options"]].get("shallow_scan", True)
     force_nmap = inputs[keys["options"]].get("force_nmap", False)

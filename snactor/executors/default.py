@@ -80,6 +80,7 @@ class Executor(object):
             input_file.close()
 
     def execute_remote(self, data, address, user, sync_repo=True):
+        self.log.debug("Running %s REMOTELY", self.definition.name)
         actor_relative_path = os.path.relpath(self.definition.base_path, get_loaded_path())
         actor_remote_path = os.path.normpath(os.path.join(_ACTOR_REMOTE_PATH, actor_relative_path))
         input_data = filter_by_channel(self.definition.inputs, data)
@@ -150,6 +151,7 @@ class Executor(object):
             remote = self.definition.remote
             return self.execute_remote(data, resolve_variable_spec(data, remote.get('host', 'localhost')),
                                        resolve_variable_spec(data, remote.get('user', 'root')))
+        self.log.debug("Running %s", self.definition.name)
         input_data = filter_by_channel(self.definition.inputs, data)
         params = [str(resolve_variable_spec(data, a)) for a in self.definition.arguments]
         executable = self.definition.executable
