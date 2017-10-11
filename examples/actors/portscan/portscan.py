@@ -76,6 +76,10 @@ if __name__ == '__main__':
     force_nmap = inputs[keys["options"]].get("force_nmap", False)
     port_range = inputs[keys["options"]].get("port_range", None)
 
+    # Set port_range to None if it is empty string or null in input JSON
+    if not port_range:
+        port_range = None
+
     port_list = PortList()
     result = port_scan(host, shallow=shallow, force_nmap=force_nmap, port_range=port_range)
     for ports in result.values():
