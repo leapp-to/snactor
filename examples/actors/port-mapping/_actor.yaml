@@ -14,6 +14,10 @@ inputs:
 - name: use_default_port_map
   type:
     name: BaseTypeBool
+outputs:
+- name: exposed_ports
+  type:
+    name: ExposedPorts
 description: |
   Group actor that scan ports on source and target system, create an port mapping and print out
   the result of port mapping
