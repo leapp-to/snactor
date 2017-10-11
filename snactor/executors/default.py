@@ -42,7 +42,7 @@ class Executor(object):
         self.log = logging.getLogger(self.definition.name).getChild(self.__class__.__name__)
 
     def handle_stdin(self, input_data):
-        self.log.debug("handle_stdin()")
+        self.log.debug("handle_stdin(%s)", input_data)
         if self.definition.inputs:
             try:
                 return json.dumps(input_data) + "\n"
