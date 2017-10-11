@@ -25,11 +25,11 @@ if not sys.stdin.isatty():
 
 host = 'localhost'
 if keys['host'] in inputs:
-    host = inputs[keys['host']]['value']
+    host = inputs[keys['host']]['value'] or host
 
 user = 'root'
 if keys['user'] in inputs:
-    user = inputs[keys['user']]['value']
+    user = inputs[keys['user']]['value'] or user
 
 mode = 'local' if host in ('127.0.0.1', 'localhost') else 'ssh'
 
