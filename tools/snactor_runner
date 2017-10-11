@@ -79,8 +79,10 @@ def main():
         logging.error("Unable to find actor: %s", args.actor)
         sys.exit(1)
 
-    actor.execute(data)
+    success = not actor.execute(data)
     print(json.dumps(data))
+
+    sys.exit(success)
 
 
 if __name__ == '__main__':
