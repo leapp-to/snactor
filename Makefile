@@ -5,6 +5,8 @@ clean:
 	@find . -name '*.pyo' -exec rm -f {} +
 
 install:
+	# WORKAROUND FOR: https://github.com/ansible/ansible/issues/31741
+	pip install --upgrade setuptools
 	pip install -r requirements.txt
 	pip install .
 
