@@ -12,14 +12,14 @@ Lets get a script to list all installed packages at a Fedora machine and place t
 $ ls
 list_packages.sh
 
-$ cat list_packages.sh 
+$ cat list_packages.sh
 rpm -qa > packages.txt
 
-$ bash list_packages.sh 
+$ bash list_packages.sh
 $ ls
 list_packages.sh  packages.txt
 
-$ head -5 packages.txt 
+$ head -5 packages.txt
 python3-pytest-pep8-1.0.6-9.fc26.noarch
 pcre-8.41-1.fc26.x86_64
 python2-fedora-0.9.0-6.fc26.noarch
@@ -94,7 +94,7 @@ If we run this script we can verify that our actor was executed by checking the 
 │       └── list_packages.sh
 └── execute.py
 
-$ ./execute.py 
+$ ./execute.py
 
 (...)
 ├── actors
@@ -220,7 +220,8 @@ inputs:
       name: PackageFilter
 outputs:
   - name: packages
-    type: PackagesList
+    type:
+      name: PackagesList
 description: |
   An actor to list all installed packages
 execute:
