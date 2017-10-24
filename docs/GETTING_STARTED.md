@@ -56,7 +56,6 @@ Our directory structure will look like this:
     └── list_packages
         ├── _actor.yaml
         └── list_packages.sh
-
 ```
 
 
@@ -130,7 +129,11 @@ execute:
   script-file: list_packages.sh
 ```
 
-We should list under *inputs* a name identifier and a type for each input data that our script will receive. Here we are defining a **filter** input of type **PackageFilter**. With snactor all data used as input or output for an actor is formatted as JSON and the used schema is defined, using JSL, by the provided type. That way we need to tell snactor how **PackageFilter** type looks like. We will save such definition in a Python file named **packagefilter.py** and save it under a directory named **schemas**. All these names are arbitrary and you can change them as you wish.
+We should list under *inputs* a name identifier and a type for each input data that our script will receive.
+Here we are defining a **filter** input of type **PackageFilter**.
+With snactor all data used as input or output for an actor is formatted as JSON and the used schema is defined, using JSL, by the provided type.
+That way we need to tell snactor how **PackageFilter** type looks like.
+We will save such definition in a Python file named **packagefilter.py**:
 
 ```py
 from jsl import Document
@@ -142,6 +145,9 @@ from snactor.registry.schemas import registered_schema
 class PackageFilter(Document):
     value = StringField()
 ```
+
+and save it under a directory named **schemas**:
+
 ```
 ├── actors
 │   └── list_packages
@@ -150,8 +156,9 @@ class PackageFilter(Document):
 ├── execute.py
 └── schemas
     └── packagefilter.py
-
 ```
+
+All these names are arbitrary and you can change them as you wish.
 
 With input data defined we need to change our script to receive such input and filter the list of package with it:
 
@@ -210,7 +217,7 @@ python2-iniparse-0.4-24.fc26.noarch
 
 Right now, we are saving the generated package list to a text file. That is fine, but what if we want to pass such a list for another actor in the same way we passed filter string to this one? To support that we can define and actor's outputs in the same way we defined the inputs. So, let's change our actor to return the package list as output data.
 
-As we did before, first step is update actor's yaml to describe output. We will add an out put named **packages** of type **PackagesList**:
+As we did before, first step is update actor's yaml to describe output. We will add an output named **packages** of type **PackagesList**:
 
 ```yaml
 ---
