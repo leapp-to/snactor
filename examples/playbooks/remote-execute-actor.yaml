@@ -1,5 +1,5 @@
 ---
-- hosts: '{{ remote_host }}'
+- hosts: all
   gather_facts: no
   vars:
     actor_input: '{{ lookup("file", actor_input_file) }}'
@@ -21,10 +21,9 @@
         chdir: "{{ actor_cwd }}"
         stdin: '{{ actor_input | to_json }}'
       register: actor_output
-- hosts: localhost
-  gather_facts: no
-  tasks:
     - name: Store result
       copy:
-        content: "{{ hostvars[remote_host]['actor_output'] | to_json }}"
+        unsafe_writes: yes
+        content: "{{ actor_output | to_json }}"
         dest: "{{ actor_output_file }}"
+      delegate_to: localhost

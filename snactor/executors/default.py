@@ -103,7 +103,6 @@ class Executor(object):
                         -u {user}
                         -e actor_repository="{actor_repo_path}"
                         -e sync_repo={sync_repo}
-                        -e remote_host={host}
                         -e actor_output_file="{actor_output_file}"
                         -e actor_input_file="{actor_input_file}"
                         -e actor_command="'{actor_command}'"

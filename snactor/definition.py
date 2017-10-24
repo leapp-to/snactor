@@ -33,7 +33,6 @@ class Definition(object):
         self.__resolve_channel_type(self.outputs)
 
         self.description = init.get('description', 'No description has been provided for this actor')
-        self.executor = init.get('executor', None)
 
         self.remote = init.get('remote')
         execute = init.get('execute')

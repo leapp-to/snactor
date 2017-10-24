@@ -3,7 +3,6 @@ import pytest
 from snactor.executors.default import Executor
 from snactor.definition import Definition
 from snactor.registry.schemas import get_schema, register_schema
-from snactor.registry.executors import get_executor, registered_executor
 from snactor.registry.actors import register_actor, get_registered_actors, get_actor, _clear_actors
 from snactor.registry.envs import get_environment_extension, register_environment_variable
 from snactor.registry.output_processors import get_output_processor, registered_output_processor
@@ -48,14 +47,6 @@ def test_environment_variable_variables():
             register_environment_variable(k, v)
 
     assert get_environment_extension() == data
-
-
-def test_executor_registration():
-    @registered_executor('test_executor')
-    class TestExecutor(Executor):
-        pass
-    assert get_executor('non_existent_executor') is None
-    assert get_executor('test_executor') is TestExecutor
 
 
 def test_schema_registration():
