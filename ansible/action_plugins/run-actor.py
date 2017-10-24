@@ -72,9 +72,9 @@ class ActionModule(ActionBase):
         if 'script-file' in actor['execute']:
             params.insert(0, actor['execute']['script-file'])
         command_result = self._low_level_execute_command(
-                ' '.join(shlex_quote(element) for element in [executable] + params),
-                in_data=json.dumps(inputs),
-                chdir=self._templar.template("'{{actor_remote_repo_path}}/%s'" % actor_name))
+            ' '.join(shlex_quote(element) for element in [executable] + params),
+            in_data=json.dumps(inputs),
+            chdir=self._templar.template("'{{actor_remote_repo_path}}/%s'" % actor_name))
 
         try:
             outputs = json.loads(command_result['stdout'])
@@ -96,8 +96,8 @@ class ActionModule(ActionBase):
     def _repo_sync(self, actor):
         args = {'src': self._templar.template("'{{actor_repository}}/'"),
                 'dest': self._templar.template("'{{actor_remote_repo_path}}'"),
-                'copy_links':'no',
+                'copy_links': 'no',
                 'delete': 'yes',
-                'recursive':'yes',
-                'links':'yes'}
+                'recursive': 'yes',
+                'links': 'yes'}
         return self._execute_module(module_name='synchronize', module_args=args, task_vars=self._task.args)
