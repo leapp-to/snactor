@@ -162,7 +162,7 @@ All these names are arbitrary and you can change them as you wish.
 
 With input data defined we need to change our script to receive such input and filter the list of package with it:
 
-```
+```shell
 input=""
 while read line; do
   input+=${line}
@@ -177,6 +177,7 @@ rpm -qa | grep ${filter} > packages.txt
 ```
 
 Finally, to be able to test it, we should change our **executor.py** script to pass some filter string to our actor:
+
 ```py
 #!/usr/bin/env python
 import os
@@ -236,7 +237,8 @@ execute:
   script-file: list_packages.sh
 ```
 
-Next, we should tell snactor what **PackagesList** is. For that, let's add **packageslist.py** under **schemas** directory:
+Next, we should tell snactor what **PackagesList** is.
+Create **packageslist.py**:
 
 ```py
 from jsl import ArrayField, Document
@@ -248,6 +250,9 @@ from snactor.registry.schemas import registered_schema
 class PackagesList(Document):
     entries = ArrayField(StringField())
 ```
+
+and put it inside the **schemas** directory:
+
 ```
 ├── actors
 │   └── list_packages
@@ -261,7 +266,7 @@ class PackagesList(Document):
 
 Now, we have to change our bash script to output data with the specified format:
 
-```
+```shell
 input=""
 while read line; do
   input+=${line}
