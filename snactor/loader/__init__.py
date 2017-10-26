@@ -74,7 +74,7 @@ def _try_resolve(current, to_resolve):
 
 def load(location, tags=()):
     global _LOADED_ACTOR_PATH
-    _LOADED_ACTOR_PATH = location
+    _LOADED_ACTOR_PATH = os.path.abspath(location)
 
     post_resolve = {}
     tags = set(tags)

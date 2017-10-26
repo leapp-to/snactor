@@ -16,11 +16,12 @@ from snactor.utils.variables import resolve_variable_spec
 _ACTOR_REMOTE_PATH = '/tmp/actors'
 
 
-def validate_channel_data(channel, data):
+def _validate_channel_data(channel_name, channel_type, data):
     try:
-        jsonschema.validate(data, must_get_schema(channel["name"], channel["version"]))
+        jsonschema.validate(data, must_get_schema(channel_type["name"], channel_type["version"]))
     except jsonschema.exceptions.ValidationError as error:
-        msg = "Failed to validate channel '{}'. {}".format(channel["name"], channel["version"], str(error))
+        msg = "Failed to validate channel '{}' Type: {} . {}\n{}".format(channel_name, channel_type["name"],
+                                                                         channel_type["version"], str(error))
         raise jsonschema.exceptions.ValidationError(msg)
 
 
@@ -30,7 +31,7 @@ def filter_by_channel(channel_list, data):
 
     for k in data.keys():
         if k in channels.keys():
-            validate_channel_data(channels[k]["type"], data[k])
+            _validate_channel_data(channels[k]["name"], channels[k]["type"], data[k])
             result[k] = data[k]
     return result
 

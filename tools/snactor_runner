@@ -19,6 +19,14 @@ def parse_arguments():
                         help="execute actor",
                         type=str)
 
+    parser.add_argument('--user',
+                        default='root',
+                        help="User to use for remote execution")
+
+    parser.add_argument('--host',
+                        default=None,
+                        help="Remote host")
+
     parser.add_argument('--actors_dir',
                         default=os.environ.get('SNACTOR_ACTORS_DIR'),
                         help="path containing actor(s) definition")
@@ -87,7 +95,10 @@ def main():
         logging.error("Unable to find actor: %s", args.actor)
         sys.exit(1)
 
-    success = not actor.execute(data)
+    if args.host:
+        success = not actor.execute_remote(data, args.host, args.user)
+    else:
+        success = not actor.execute(data)
     print(json.dumps(data))
 
     sys.exit(success)
