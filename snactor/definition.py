@@ -24,10 +24,10 @@ class Definition(object):
         self.base_path = os.path.dirname(os.path.abspath(init['$location']))
         self.name = name
         self.tags = set(init.get('tags', ()))
-        self.inputs = init.get('inputs', ())
+        self.inputs = init.get('inputs') or ()
         self.__resolve_channel_type(self.inputs)
 
-        self.outputs = init.get('outputs', ())
+        self.outputs = init.get('outputs') or ()
         if not isinstance(self.outputs, (list, tuple)):
             self.outputs = (self.outputs,)
         self.__resolve_channel_type(self.outputs)
