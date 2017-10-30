@@ -32,7 +32,6 @@ def _load(name, definition, tags, post_resolve):
             raise ValueError("Missing execute or group specification in {}".format(name))
 
         if not all(map(get_actor, d.get('group', ()))):
-            d['$location'] = os.path.abspath(definition)
             post_resolve[name] = {'definition': d, 'name': name, 'resolved': False}
             return
 
@@ -65,6 +64,7 @@ def _try_resolve(current, to_resolve):
             actor = get_actor(name)
 
         if not actor:
+            logging.debug('to_resolve: %s', to_resolve)
             raise LookupError("Failed to resolve dependency '{}' for {}".format(name, current['name']))
 
     create_actor(current['name'], definition)
@@ -82,13 +82,7 @@ def load(location, tags=()):
         if '_actor.yaml' in files:
             if "schema" in dirs:
                 load_schemas(os.path.join(root, "schema"))
-
             _load(os.path.basename(root), os.path.join(root, '_actor.yaml'), tags, post_resolve)
-        else:
-            for f in files:
-                filename, ext = os.path.splitext(f)
-                if not filename.startswith('.') and ext.lower() == '.yaml':
-                    _load(filename, os.path.join(root, f), tags, post_resolve)
 
     for item in post_resolve.values():
         _try_resolve(item, post_resolve)

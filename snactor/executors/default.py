@@ -16,9 +16,9 @@ from snactor.utils.variables import resolve_variable_spec
 _ACTOR_REMOTE_PATH = '/tmp/actors'
 
 
-def _validate_channel_data(channel_name, channel_type, data):
+def _validate_channel_item(channel_name, channel_type, item):
     try:
-        jsonschema.validate(data, must_get_schema(channel_type["name"], channel_type["version"]))
+        jsonschema.validate(item, must_get_schema(channel_type["name"], channel_type["version"]))
     except jsonschema.exceptions.ValidationError as error:
         msg = "Failed to validate channel '{}' Type: {} . {}\n{}".format(channel_name, channel_type["name"],
                                                                          channel_type["version"], str(error))
@@ -31,7 +31,13 @@ def filter_by_channel(channel_list, data):
 
     for k in data.keys():
         if k in channels.keys():
-            _validate_channel_data(channels[k]["name"], channels[k]["type"], data[k])
+            if not isinstance(data[k], list):
+                raise jsonschema.exceptions.ValidationError("Channel data in channel '{}' is not a list".format(
+                    channels[k]["name"]))
+            if not data[k]:
+                raise jsonschema.exceptions.ValidationError("No data in channel '{}'".format(channels[k]["name"]))
+            for item in data[k]:
+                _validate_channel_item(channels[k]["name"], channels[k]["type"], item)
             result[k] = data[k]
     return result
 
@@ -56,11 +62,15 @@ class Executor(object):
         if self.definition.output_processor:
             self.definition.output_processor.process(stdout, data)
         elif self.definition.outputs or stdout:
+            parsed = {}
             try:
-                output = filter_by_channel(self.definition.outputs, json.loads(stdout))
-                data.update(output)
+                parsed = json.loads(stdout)
             except ValueError:
                 self.log.warn("Failed to decode output: %s", stdout, exc_info=True)
+
+            filtered = filter_by_channel(self.definition.outputs, parsed)
+            for chan_name, chan_data in filtered.items():
+                data.setdefault(chan_name, []).extend(chan_data)
 
     def handle_stderr(self, stderr, data):
         self.log.debug("handle_stderr(%s)", stderr)
