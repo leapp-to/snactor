@@ -3,8 +3,8 @@ from generic_runner import run, pprint, get_actor
 
 
 def test_set_container_directory_actor():
-    # data = {'container_name': {'value': 'container-name_name8'}}
-    data = {'container_name': {'value': 'a'}}
+    # data = {'container_name': [{'value': 'container-name_name8'}]}
+    data = {'container_name': [{'value': 'a'}]}
     get_actor('set_container_directory').execute(data)
     pprint(data)
 

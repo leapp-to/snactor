@@ -6,7 +6,7 @@ from generic_runner import wf_run
 
 
 def process_result(wfresult):
-    pprint(wfresult['targetinfo'].pop().payload)
+    pprint(wfresult['targetinfo'][0].pop().payload)
 
 
 if __name__ == '__main__':
