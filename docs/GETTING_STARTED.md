@@ -61,7 +61,7 @@ Our directory structure will look like this:
 
 ## Running our new actor
 
-At this moment we are ready to execute our script as a snactor actor. To execute it you could either use **runner.py** tool provided by snactor or write some Python code to load and run our new actor using the library. We will provide some sample runner script to show how to use snactor to get an actor executed:
+At this moment we are ready to execute our script as a snactor actor. To execute it you could either use **/usr/bin/snactor_runner** tool provided by snactor or write some Python code to load and run our new actor using the library. We will provide some sample runner script to show how to use snactor to get an actor executed:
 
 ```py
 #!/usr/bin/env python
@@ -171,7 +171,7 @@ done < "${1:-/dev/stdin}"
 filter=$(echo ${input} | python -c "\
 import json, sys
 obj=json.load(sys.stdin)
-print(obj[\"filter\"][\"value\"])")
+print(obj[\"filter\"][0][\"value\"])")
 
 rpm -qa | grep ${filter} > packages.txt
 ```
@@ -189,7 +189,7 @@ def main():
     actors_dir = os.path.join(base_dir, 'actors')
     schemas_dir = os.path.join(base_dir, 'schemas')
 
-    data = {'filter': {'value': 'python'}}
+    data = {'filter': [{'value': 'python'}]}
 
     load(actors_dir)
     load_schemas(schemas_dir)
@@ -275,11 +275,11 @@ done < "${1:-/dev/stdin}"
 filter=$(echo ${input} | python -c "\
 import json, sys
 obj=json.load(sys.stdin)
-print(obj[\"filter\"][\"value\"])")
+print(obj[\"filter\"][0][\"value\"])")
 
 entries=$(rpm -qa | grep ${filter} | awk '{ print "\""$0"\""}' | tr '\n' ',' | sed 's/,$//')
 
-echo -e "{\"packages\": {\"entries\": [${entries}]}}"
+echo -e "{\"packages\": [{\"entries\": [${entries}]}]}"
 ```
 
 If we change our **executor.py** script to print the returned data from our actor, we can verify that now the packages list is being returned as output data:
@@ -296,7 +296,7 @@ def main():
     actors_dir = os.path.join(base_dir, 'actors')
     schemas_dir = os.path.join(base_dir, 'schemas')
 
-    data = {'filter': {'value': 'python'}}
+    data = {'filter': [{'value': 'python'}]}
 
     load(actors_dir)
     load_schemas(schemas_dir)
