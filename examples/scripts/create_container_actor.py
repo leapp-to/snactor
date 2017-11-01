@@ -13,8 +13,8 @@ def test_create_container_actor():
                 {'protocol': 'tcp', 'port': 22},
                 {'protocol': 'tcp', 'port': 80, 'exposed_port': 8080},
                 {'protocol': 'udp', 'port': 80, 'exposed_port': 8080},
-                ]
-            }],
+            ]
+        }],
     }
     get_actor('create_container').execute(data)
     pprint(data)
