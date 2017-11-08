@@ -23,6 +23,7 @@ class Definition(object):
         init = init or {}
         self.base_path = os.path.dirname(os.path.abspath(init['$location']))
         self.name = name
+        self.init = init
         self.tags = set(init.get('tags', ()))
         self.inputs = init.get('inputs') or ()
         self.__resolve_channel_type(self.inputs)

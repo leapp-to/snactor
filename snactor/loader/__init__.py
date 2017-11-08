@@ -78,7 +78,7 @@ def load(location, tags=()):
 
     post_resolve = {}
     tags = set(tags)
-    for root, dirs, files in os.walk(location):
+    for root, dirs, files in os.walk(location, followlinks=True):
         if '_actor.yaml' in files:
             if "schema" in dirs:
                 load_schemas(os.path.join(root, "schema"))
