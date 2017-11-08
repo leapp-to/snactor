@@ -1,0 +1,9 @@
+outputs:
+- name: sampleout
+  type:
+    name: SampleOut
+description: |
+  $description
+execute:
+  script-file: $scriptfile
+  executable: $executable

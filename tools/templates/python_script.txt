@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+
+import json
+
+print(json.dumps({'sampleout': [{'value': "Sample Actor Output"}]}))

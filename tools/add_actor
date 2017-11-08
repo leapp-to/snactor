@@ -5,38 +5,6 @@ import sys
 from string import Template
 
 
-YAML_TEMPL = r"""outputs:
-- name: sampleout
-  type:
-    name: SampleOut
-description: |
-  $description
-execute:
-  script-file: $scriptfile
-  executable: $executable
-"""
-
-PYTHON_SCRIPT = r"""#!/usr/bin/env python
-
-import json
-
-print(json.dumps({'sampleout': [{'value': "Sample Actor Output"}]}))
-"""
-
-BASH_SCRIPT = r"""#!/bin/bash
-
-echo {\"sampleout\": [{\"value\": \"Sample Actor Output\"}]}
-"""
-
-SCHEMA_FILE = r"""from jsl import Document
-from jsl.fields import StringField
-from snactor.registry.schemas import registered_schema
-
-@registered_schema('1.0')
-class SampleOut(Document):
-    value = StringField()
-"""
-
 CMD_TEMPL = "snactor_runner --actors_dir=$actors_dir --schemas_dir=$schemas_dir --validate $name"
 
 
@@ -85,6 +53,8 @@ def confirm_actor_data(actor):
 
 def create_actor(actor):
     """ Create Actor's files """
+    templates_path = './templates'
+
     # Create Actor dir
     actor_path = os.path.join(actor['actors_dir'], actor['name'])
     if os.path.exists(actor_path):
@@ -112,7 +82,15 @@ def create_actor(actor):
     yaml_path = os.path.join(actor_path, "_actor.yaml")
     yaml_file = open(yaml_path, 'w+')
 
-    content = Template(YAML_TEMPL).substitute(description=actor['desc'],
+    yaml_templ_path = os.path.join(templates_path, 'actor_yaml.txt')
+    if not os.path.exists(yaml_templ_path):
+        print("ERROR: Missing YAML template: {}".format(yaml_templ_path))
+        sys.exit(1)
+
+    with open(yaml_templ_path) as yaml_templ_file:
+        yaml_templ = yaml_templ_file.read()
+
+    content = Template(yaml_templ).substitute(description=actor['desc'],
                                               scriptfile=script,
                                               executable=exe_opt[actor['exe']]['executable'])
     yaml_file.write(content)
@@ -123,16 +101,41 @@ def create_actor(actor):
     script_file = open(script_path, 'w+')
 
     if actor['exe'] == 'python':
-        script_file.write(PYTHON_SCRIPT)
+        py_script_path = os.path.join(templates_path, 'python_script.txt')
+        if not os.path.exists(py_script_path):
+            print("ERROR: Missing Python script template: {}".format(py_script_path))
+            sys.exit(1)
+
+        with open(py_script_path) as py_script_file:
+            py_script = py_script_file.read()
+
+        script_file.write(py_script)
     else:
-        script_file.write(BASH_SCRIPT)
+        sh_script_path = os.path.join(templates_path, 'bash_script.txt')
+        if not os.path.exists(sh_script_path):
+            print("ERROR: Missing Bash script template: {}".format(sh_script_path))
+            sys.exit(1)
+
+        with open(sh_script_path) as sh_script_file:
+            sh_script = sh_script_file.read()
+
+        script_file.write(sh_script)
 
     script_file.close()
 
     # Create schema file
     schema_path = os.path.join(actor['schemas_dir'], 'sampleout.py')
     schema_file = open(schema_path, 'w+')
-    schema_file.write(SCHEMA_FILE)
+
+    schema_templ_path = os.path.join(templates_path, 'schema.txt')
+    if not os.path.exists(schema_templ_path):
+        print("ERROR: Missing Schema template: {}".format(schema_templ_path))
+        sys.exit(1)
+
+    with open(schema_templ_path) as schema_templ_file:
+        schema_templ = schema_templ_file.read()
+
+    schema_file.write(schema_templ)
     schema_file.close()
 
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo {\"sampleout\": [{\"value\": \"Sample Actor Output\"}]}
