@@ -1,0 +1,159 @@
+#!/usr/bin/env python
+""" Script to gather information and create a new actor using Snactor """
+import os
+import sys
+from string import Template
+
+
+YAML_TEMPL = r"""outputs:
+- name: sampleout
+  type:
+    name: SampleOut
+description: |
+  $description
+execute:
+  script-file: $scriptfile
+  executable: $executable
+"""
+
+PYTHON_SCRIPT = r"""#!/usr/bin/env python
+
+import json
+
+print(json.dumps({'sampleout': [{'value': "Sample Actor Output"}]}))
+"""
+
+BASH_SCRIPT = r"""#!/bin/bash
+
+echo {\"sampleout\": [{\"value\": \"Sample Actor Output\"}]}
+"""
+
+SCHEMA_FILE = r"""from jsl import Document
+from jsl.fields import StringField
+from snactor.registry.schemas import registered_schema
+
+@registered_schema('1.0')
+class SampleOut(Document):
+    value = StringField()
+"""
+
+CMD_TEMPL = "snactor_runner --actors_dir=$actors_dir --schemas_dir=$schemas_dir --validate $name"
+
+
+def get_actor_data(actor):
+    """ Request user for Actor information """
+    name = raw_input("Actor name [{}]: ".format(actor['name']))
+    if name:
+        actor['name'] = name
+
+    desc = raw_input("Actor description [{}]: ".format(actor['desc']))
+    if desc:
+        actor['desc'] = desc
+
+    while True:
+        exe = raw_input("Executable to run Actor (python/bash) [{}]: ".format(actor['exe']))
+        if not exe or exe in ('python', 'bash'):
+            break
+    if exe:
+        actor['exe'] = exe
+
+    actors_dir = raw_input("Actor's path [{}]: ".format(actor['actors_dir']))
+    if actors_dir:
+        actor['actors_dir'] = actors_dir
+
+    schemas_dir = raw_input("Actor's schemas path [{}]: ".format(actor['schemas_dir']))
+    if schemas_dir:
+        actor['schemas_dir'] = schemas_dir
+
+
+def confirm_actor_data(actor):
+    """ Display Actor's information and ask for user confirmation """
+    print("")
+    print("="*80)
+    print("Following Actor will be created:")
+    print("="*80)
+    print("{:<21} {}".format("Name:", actor['name']))
+    print("{:<21} {}".format("Description:", actor['desc']))
+    print("{:<21} {}".format("Executable:", actor['exe']))
+    print("{:<21} {}".format("Actor's path:", actor['actors_dir']))
+    print("{:<21} {}".format("Actor's schemas path:", actor['schemas_dir']))
+    print("="*80)
+    confirm = raw_input("\nIs this ok [y/N]: ")
+    if confirm.lower() != 'y':
+        sys.exit(1)
+
+
+def create_actor(actor):
+    """ Create Actor's files """
+    # Create Actor dir
+    actor_path = os.path.join(actor['actors_dir'], actor['name'])
+    if os.path.exists(actor_path):
+        print("ERROR: Actor path already exists: {}".format(actor_path))
+        sys.exit(1)
+    try:
+        os.makedirs(actor_path)
+    except OSError as err:
+        print("ERROR: Creating actor path: {}".format(err))
+        sys.exit(1)
+
+    # Create Schema dir (if necessary)
+    if not os.path.exists(actor['schemas_dir']):
+        try:
+            os.makedirs(actor['schemas_dir'])
+        except OSError as err:
+            print("ERROR: Creating schemas path: {}".format(err))
+            sys.exit(1)
+
+    exe_opt = {'python': {'suffix': '.py', 'executable': '/usr/bin/python'},
+               'bash': {'suffix': '.sh', 'executable': '/bin/bash'}}
+    script = actor['name'] + exe_opt[actor['exe']]['suffix']
+
+    # Create YAML file
+    yaml_path = os.path.join(actor_path, "_actor.yaml")
+    yaml_file = open(yaml_path, 'w+')
+
+    content = Template(YAML_TEMPL).substitute(description=actor['desc'],
+                                              scriptfile=script,
+                                              executable=exe_opt[actor['exe']]['executable'])
+    yaml_file.write(content)
+    yaml_file.close()
+
+    # Create script file
+    script_path = os.path.join(actor_path, script)
+    script_file = open(script_path, 'w+')
+
+    if actor['exe'] == 'python':
+        script_file.write(PYTHON_SCRIPT)
+    else:
+        script_file.write(BASH_SCRIPT)
+
+    script_file.close()
+
+    # Create schema file
+    schema_path = os.path.join(actor['schemas_dir'], 'sampleout.py')
+    schema_file = open(schema_path, 'w+')
+    schema_file.write(SCHEMA_FILE)
+    schema_file.close()
+
+
+def main():
+    """ Script entry point """
+    # Set actor's parameters default values
+    actor = {'name': 'new_actor',
+             'desc': 'This is a sample actor',
+             'exe': 'python',
+             'actors_dir': './actors',
+             'schemas_dir': './schemas'}
+
+    get_actor_data(actor)
+    confirm_actor_data(actor)
+    create_actor(actor)
+
+    print("{} has been created successfully.".format(actor['name']))
+    print("To execute it run the following command:")
+    command = Template(CMD_TEMPL).substitute(actor)
+    print("\t{}".format(command))
+
+
+if __name__ == '__main__':
+    main()
