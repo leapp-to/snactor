@@ -32,6 +32,8 @@ class GroupExecutor(Executor):
             if not ret:
                 break
 
-        data.update(filter_by_channel(self.definition.outputs, restricted))
+        filtered = filter_by_channel(self.definition.outputs, restricted)
+        for chan_name, chan_data in filtered.items():
+            data.setdefault(chan_name, []).extend(chan_data)
 
         return ret
