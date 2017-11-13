@@ -46,7 +46,7 @@ def dump_group_to_yaml(group_actor):
     if group_actor.definition.outputs:
         d['outputs'] = group_actor.definition.outputs
     if group_actor.definition.tags:
-        d['tags'] = group_actor.definition.tags
+        d['tags'] = list(group_actor.definition.tags)
     if group_actor.definition.description:
         d['description'] = group_actor.definition.description
     return yaml.dump(_replacer(d), default_flow_style=False)

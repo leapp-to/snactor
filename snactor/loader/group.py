@@ -18,9 +18,6 @@ def _order_by_channels(channels, actors):
                 if channels[channel['name']]['producers']:
                     break
             else:
-                # for channel in actor[0].inputs:
-                #    channels[channel['name']]['consumers'].remove(actor[0].name)
-
                 for channel in actor[0].outputs:
                     channels[channel['name']]['producers'].remove(actor[0].name)
 
