@@ -40,6 +40,11 @@ def _inner_replacer(o):
 
 
 def dump_group_to_yaml(group_actor):
+    """
+    Dumps the given actor in the group actor yaml format
+    :param group_actor: The actor to dump
+    :return: A yaml string with the group actor format
+    """
     d = {'group': group_actor.definition.init.get("group", ())}
     if group_actor.definition.inputs:
         d['inputs'] = group_actor.definition.inputs

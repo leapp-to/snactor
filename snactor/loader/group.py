@@ -6,6 +6,9 @@ from snactor.utils import get_chan
 
 
 class UnresolvedDependenciesError(Exception):
+    """
+    UnresolvedDependenciesError is thrown when the dependencies between actors can't be automatically resolved
+    """
     pass
 
 
@@ -35,11 +38,26 @@ def _order_by_channels(channels, actors):
 
 
 def load_as_group(name, location, tags=()):
+    """
+    load_as_group creates a group actor with the given `name`, with actors loaded from `location` and is filtered
+    by `tags`
+    :param name: Name of the group actor to create
+    :param location: Where to load the actors from
+    :param tags: List of tags to filter by
+    :return: A group actor ordered with resolved dependencies
+    """
     load(location, tags)
     return _create_group_from_actors(name, get_registered_actors().values(), tags)
 
 
 def create_group_from_names(name, names):
+    """
+    create_group_from_names creates a group actor named `name`, from a list of names specified in `names` (requires
+    the actors to be loaded before)
+    :param name: Name of the group actor to create
+    :param names: List of actor names
+    :return: A group actor ordered with resolved dependencies
+    """
     return _create_group_from_actors(name, map(lambda x: get_registered_actors().get(x), names), None)
 
 

@@ -5,6 +5,11 @@ import pydot
 
 
 def convert_to_graph(actors=None):
+    """
+    :param actors: List of actors or None. In case this is None or empty the graph will be generated from all loaded
+                   actors
+    :return: A pydot.Graph instance representing the actor dependency graph
+    """
     g = pydot.Graph()
 
     channels = {}
@@ -34,4 +39,9 @@ def convert_to_graph(actors=None):
 
 
 def dump_as_dot_graph(actors=None):
+    """
+    :param actors: List of actors or None. In case this is None or empty the graph will be generated from all loaded
+                   actors
+    :return: A string in the dot graph format
+    """
     return convert_to_graph(actors).to_string()
