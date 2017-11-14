@@ -11,4 +11,4 @@ def before_version(version):
 
 
 def between_versions(version_first, version_last):
-    return Scope(lambda v: v >= version_first and v <= version_last)
+    return Scope(lambda v: version_first <= v <= version_last)
