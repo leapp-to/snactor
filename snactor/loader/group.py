@@ -90,6 +90,7 @@ def _create_group_from_actors(name, actors, tags):
         'inputs': [channels[chan]['data'] for chan in initial],
         'outputs': [channels[chan]['data'] for chan in outputs.difference(initial)],
         'group': _order_by_channels(channels, actor_list),
+        'description': 'Auto generated group actor',
         'tags': tags or (),
     })
     return must_get_actor(name)
