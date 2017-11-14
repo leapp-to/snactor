@@ -6,6 +6,10 @@ from snactor.registry.schemas import LATEST
 from snactor.registry import must_get_actor
 
 
+class InvalidDefinitionError(Exception):
+    pass
+
+
 class Definition(object):
     def __resolve_channel_type(self, channels):
         """
@@ -48,3 +52,5 @@ class Definition(object):
                 self.arguments.insert(0, self.script_file)
         elif init.get('group'):
             self.actors = map(must_get_actor, init.get('group', ()))
+        else:
+            raise InvalidDefinitionError("Actor does not contain an execute or group section")
