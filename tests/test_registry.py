@@ -12,9 +12,12 @@ from snactor.registry.schemas import LATEST
 @pytest.fixture(scope="module")
 def actor_data():
     return (
-        ('actor_name1', Definition('actor_name1', {'$location': './actor_name1/_actor.yaml'}), Executor),
-        ('actor_name2', Definition('actor_name2', {'$location': './actor_name2/_actor.yaml'}), Executor),
-        ('actor_name3', Definition('actor_name3', {'$location': './actor_name3/_actor.yaml'}), Executor)
+        ('actor_name1', Definition('actor_name1', {'$location': './actor_name1/_actor.yaml',
+                                                   'execute': {'executable': ''}}), Executor),
+        ('actor_name2', Definition('actor_name2', {'$location': './actor_name2/_actor.yaml',
+                                                   'execute': {'executable': ''}}), Executor),
+        ('actor_name3', Definition('actor_name3', {'$location': './actor_name3/_actor.yaml',
+                                                   'execute': {'executable': ''}}), Executor)
     )
 
 
