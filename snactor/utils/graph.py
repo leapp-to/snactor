@@ -1,7 +1,10 @@
 from snactor.registry import get_registered_actors
 from snactor.utils import get_chan
 
-import pydot
+try:
+    import pydot
+except ImportError:
+    pydot = None
 
 
 def convert_to_graph(actors=None):
@@ -10,6 +13,9 @@ def convert_to_graph(actors=None):
                    actors
     :return: A pydot.Graph instance representing the actor dependency graph
     """
+    if not pydot:
+        raise Exception("Please install pydot before you use the snactor graph support")
+
     g = pydot.Graph()
 
     channels = {}
