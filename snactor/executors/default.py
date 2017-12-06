@@ -104,7 +104,7 @@ class Executor(object):
 
         with self._in_out_temp_files() as (input_file, output_file):
             if actor_input:
-                with open(input_file, 'r') as f:
+                with open(input_file.name, 'w') as f:
                     f.write(actor_input)
 
             command_template = '''
