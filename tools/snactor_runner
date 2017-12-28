@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import sys
+import yaml
 from argparse import ArgumentParser
 
 from snactor.loader import load, load_schemas, validate_actor_types, get_actor
@@ -35,6 +36,10 @@ def parse_arguments():
                         default=os.environ.get('SNACTOR_SCHEMAS_DIR'),
                         help="path containing schema(s) definition")
 
+    parser.add_argument('--config',
+                        default=None,
+                        help="file containing snactor configuration")
+
     parser.add_argument('--validate',
                         action='store_true',
                         default=False,
@@ -51,6 +56,33 @@ def parse_arguments():
                         help='display version information')
 
     return parser.parse_args()
+
+
+def find_config_file(args):
+    """ Return available config file passed by argument, at cwd or homedir """
+    paths = []
+
+    path = args.config
+    if path is not None:
+        if os.path.isdir(path):
+            path += '/snactor.cfg'
+    paths.append(path)
+
+    try:
+        path = os.getcwd() + '/snactor.cfg'
+    except OSError:
+        path = None
+    paths.append(path)
+
+    paths.append(os.path.expanduser('~/.snactor.cfg'))
+
+    for path in paths:
+        if path is not None and os.path.exists(path):
+            break
+    else:
+        path = None
+
+    return path
 
 
 def load_actors(actors_dir, schemas_dir):
@@ -76,7 +108,21 @@ def main():
                         format='%(asctime)s [%(levelname)s %(name)s]: %(message)s',
                         level=logging_level)
 
-    load_actors(args.actors_dir, args.schemas_dir)
+    config_file = find_config_file(args)
+    logging.debug("Found config file: %s", config_file)
+    if config_file:
+        with open(config_file, 'r') as ymlfile:
+            cfg = yaml.load(ymlfile)
+
+    actors_dir = args.actors_dir
+    if actors_dir is None:
+        actors_dir = cfg.get('actors_dir')
+
+    schemas_dir = args.schemas_dir
+    if schemas_dir is None:
+        schemas_dir = cfg.get('schemas_dir')
+
+    load_actors(actors_dir, schemas_dir)
     if args.validate:
         logging.debug("Validating actors/schemas")
         validate_actor_types()
