@@ -60,39 +60,20 @@ def parse_arguments():
 
 def find_config_file(args):
     """ Return available config file passed by argument, at cwd or homedir """
-    paths = []
-
-    path = args.config
-    if path is not None:
-        if os.path.isdir(path):
-            path += '/snactor.cfg'
-    paths.append(path)
-
-    try:
-        path = os.getcwd() + '/snactor.cfg'
-    except OSError:
-        path = None
-    paths.append(path)
-
-    paths.append(os.path.expanduser('~/.snactor.cfg'))
-
+    paths = [args.config, './snactor.cfg', '~/.snactor.cfg']
     for path in paths:
-        if path is not None and os.path.exists(path):
-            break
-    else:
-        path = None
-
-    return path
+        if path:
+            try:
+                path = os.path.realpath(os.path.expanduser(path))
+                if os.path.isfile(path):
+                    return path
+            except OSError:
+                pass
+    return None
 
 
 def load_actors(actors_dir, schemas_dir):
     """ Load and validade actors and schemas """
-    if not actors_dir:
-        actors_dir = os.getcwd()
-
-    if not schemas_dir:
-        schemas_dir = os.getcwd()
-
     logging.debug("Loading actors definition: %s", actors_dir)
     load(actors_dir)
     logging.debug("Loading schemas definition: %s", schemas_dir)
@@ -110,17 +91,18 @@ def main():
 
     config_file = find_config_file(args)
     logging.debug("Found config file: %s", config_file)
+    cfg = {}
     if config_file:
         with open(config_file, 'r') as ymlfile:
             cfg = yaml.load(ymlfile)
 
     actors_dir = args.actors_dir
     if actors_dir is None:
-        actors_dir = cfg.get('actors_dir')
+        actors_dir = cfg.get('actors_dir', os.getcwd())
 
     schemas_dir = args.schemas_dir
     if schemas_dir is None:
-        schemas_dir = cfg.get('schemas_dir')
+        schemas_dir = cfg.get('schemas_dir', os.getcwd())
 
     load_actors(actors_dir, schemas_dir)
     if args.validate:
