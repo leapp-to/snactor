@@ -96,13 +96,8 @@ def main():
         with open(config_file, 'r') as ymlfile:
             cfg = yaml.load(ymlfile)
 
-    actors_dir = args.actors_dir
-    if actors_dir is None:
-        actors_dir = cfg.get('actors_dir', os.getcwd())
-
-    schemas_dir = args.schemas_dir
-    if schemas_dir is None:
-        schemas_dir = cfg.get('schemas_dir', os.getcwd())
+    actors_dir = args.actors_dir or cfg.get('actors_dir', os.getcwd())
+    schemas_dir = args.schemas_dir or cfg.get('schemas_dir', os.getcwd())
 
     load_actors(actors_dir, schemas_dir)
     if args.validate:
