@@ -56,7 +56,7 @@ BuildRequires:       python-six
 
 echo Starting to copy data from: $PWD
 install -dm 0755 %{buildroot}%{_datadir}/%{name}
-cp -r examples/* %{buildroot}%{_datadir}/%{name}/
+cp -r examples/playbooks %{buildroot}%{_datadir}/%{name}/
 
 %check
 %if 0%{?fedora} <= 25 || (0%{?rhel} && 0%{?rhel} <= 7)
@@ -68,9 +68,6 @@ make test
 %doc README.md LICENSE
 %{python2_sitelib}/*
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/scripts/*
-%{_datadir}/%{name}/actors/*
-%{_datadir}/%{name}/schema/*
 %{_datadir}/%{name}/playbooks/*
 %{_bindir}/snactor_runner
 
