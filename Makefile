@@ -8,12 +8,11 @@ build:
 	true
 
 install-deps:
+	# WORKAROUND FOR: https://github.com/ansible/ansible/issues/31741
 	pip install --upgrade setuptools
 	pip install -r requirements-tests.txt
 
 install:
-	# WORKAROUND FOR: https://github.com/ansible/ansible/issues/31741
-	pip install --upgrade setuptools
 	pip install .
 
 
